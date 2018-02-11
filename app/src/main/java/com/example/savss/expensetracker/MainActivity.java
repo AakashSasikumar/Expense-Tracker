@@ -21,12 +21,15 @@ public class MainActivity extends AppCompatActivity {
                 view.getContext().startActivity(toLoginPage);
             }
         });
+
+        Button signUpButton = (Button) findViewById(R.id.signUpButton);
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toSignUpPage = new Intent(view.getContext(), SignUpActivity.class);
+                view.getContext().startActivity(toSignUpPage);
+            }
+        });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Button loginButton = (Button) findViewById(R.id.loginButton);
-
-    }
 }
