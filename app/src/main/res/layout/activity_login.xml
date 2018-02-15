@@ -6,6 +6,18 @@
     android:background="@drawable/activity_main_background"
     tools:context="com.example.savss.expensetracker.LoginActivity">
 
+    <TextView
+        android:id="@+id/LoginTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:text="@string/loginButtonName"
+        android:textColor="#FFFFFF"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"/>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/emailAddressInputLayout"
         android:layout_width="match_parent"
@@ -14,6 +26,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
         android:layout_marginTop="20dp"
+        android:layout_below="@+id/LoginTextView"
         android:layout_centerHorizontal="true">
         <EditText
             android:id="@+id/emailAddress"
