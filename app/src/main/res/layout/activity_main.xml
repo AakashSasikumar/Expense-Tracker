@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/activity_main_background"
     tools:context="com.example.savss.expensetracker.MainActivity">
 
     <TextView
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:textSize="50dp"
         android:text="ExpenseTracker"
+        android:textColor="#FFFFFF"
         android:layout_centerInParent="true"/>
     <Button
         android:id="@+id/loginButton"
@@ -20,8 +22,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginLeft="50dp"
+        android:textColor="#000"
         android:layout_marginBottom="100dp"
-        android:background="@layout/rounded_button_settings"/>
+        android:background="@drawable/login_button_background"/>
     <Button
         android:id="@+id/signUpButton"
         android:text="Sign Up"
@@ -31,6 +34,7 @@
         android:layout_centerInParent="true"
         android:layout_marginLeft="50dp"
         android:layout_marginBottom="50dp"
-        android:background="@layout/rounded_button_settings"/>
+        android:textColor="#FFFF"
+        android:background="@drawable/signup_button_background"/>
 
 </RelativeLayout>
