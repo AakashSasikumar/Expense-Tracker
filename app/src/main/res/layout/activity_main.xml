@@ -15,18 +15,22 @@
     <Button
         android:id="@+id/loginButton"
         android:text="Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="100dp"/>
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="100dp"
+        android:background="@layout/rounded_button_settings"/>
     <Button
         android:id="@+id/signUpButton"
         android:text="Sign Up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="50dp"/>
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="50dp"
+        android:background="@layout/rounded_button_settings"/>
 
 </RelativeLayout>
