@@ -6,32 +6,47 @@
     android:background="@drawable/activity_main_background"
     tools:context="com.example.savss.expensetracker.LoginActivity">
 
-    <EditText
-        android:id="@+id/emailAddress"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/emailAddressInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
+        android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:hint="@string/idEditTextHint"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true">
+        <EditText
+            android:id="@+id/emailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="@string/idEditTextHint"/>
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/password"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/passwordInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
+        android:inputType="textEmailAddress"
+        android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:layout_below="@+id/emailAddress"
-        android:hint="@string/passwordEditTextHint"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
+        android:layout_below="@+id/emailAddressInputLayout"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true">
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/passwordEditTextHint"/>
+    </android.support.design.widget.TextInputLayout>
+
 
     <TextView
         android:id="@+id/invalidText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/password"
+        android:layout_below="@id/passwordInputLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textColor="@color/invalidColour"
@@ -44,9 +59,9 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:text="@string/loginButtonName"
-        android:layout_below="@+id/password"
+        android:layout_below="@+id/passwordInputLayout"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="40dp"
         android:background="@drawable/login_button_background"
         android:onClick="loginValidation"/>
