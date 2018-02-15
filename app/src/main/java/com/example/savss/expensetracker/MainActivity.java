@@ -13,23 +13,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
-        Button loginButton = (Button) findViewById(R.id.loginButton);
-        loginButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent toLoginPage = new Intent(view.getContext(), LoginActivity.class);
-                view.getContext().startActivity(toLoginPage);
-            }
-        });
+    }
 
-        Button signUpButton = (Button) findViewById(R.id.signUpButton);
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent toSignUpPage = new Intent(view.getContext(), SignUpActivity.class);
-                //view.getContext().startActivity(toSignUpPage);
-            }
-        });
+    public  void loginButton_onClick(View v){
+        Intent toLoginPage = new Intent(this, LoginActivity.class);
+        startActivity(toLoginPage);
+    }
+
+    public void signUpButton_onClick(View v){
+        Intent toSignUpPage = new Intent(this, SignUpActivity.class);
+        startActivity(toSignUpPage);
     }
 
 }
