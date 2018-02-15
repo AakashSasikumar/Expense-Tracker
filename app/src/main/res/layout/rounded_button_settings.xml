@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#00000000"/>
+            <solid android:color="#ae665e5e"/>
             <corners android:radius="20dp"/>
             <stroke android:width="5px" android:color="#ffffff" />
         </shape>
