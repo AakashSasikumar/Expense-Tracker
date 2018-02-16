@@ -5,7 +5,7 @@
     <string name="idEditTextHint">EMAIL ID / PHONE NUMBER</string>
     <string name="passwordEditTextHint">PASSWORD</string>
     <string name="loginErrorMessage">Invalid Credentials</string>
-    <string name="userNameEditTextHint">USER NAME</string>
+    <string name="userNameEditTextHint">YOUR NAME</string>
     <string name="emailAddressEditTextHint">EMAIL ID</string>
     <string name="phoneNumberEditTextHint">PHONE NUMBER</string>
 </resources>

@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#565656</color>
     <color name="invalidColour">#e40101</color>
+    <color name="BackgroundWhiteColor">#FFFF</color>
+    <!--<color name="errorTextColour">#ff0000</color>-->
 </resources>

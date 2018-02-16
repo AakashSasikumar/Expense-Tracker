@@ -11,8 +11,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+        setContentView(R.layout.activity_main);/*
+        getSupportActionBar().hide();*/
     }
 
     public  void loginButton_onClick(View v){

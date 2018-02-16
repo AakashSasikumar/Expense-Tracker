@@ -18,13 +18,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setTitle("Login");
-        getSupportActionBar().hide();
+        setTitle("Login");/*
+        getSupportActionBar().hide();*/
     }
 
     public void loginValidation(View v) {
         EditText id = findViewById(R.id.emailAddress);
         EditText password = findViewById(R.id.password);
+        TextInputLayout idInputLayout = (TextInputLayout) findViewById(R.id.emailAddressInputLayout);
         TextInputLayout passwordInputLayout = (TextInputLayout) findViewById(R.id.passwordInputLayout);
         TextView invText = findViewById(R.id.invalidText);
 
@@ -36,8 +37,8 @@ public class LoginActivity extends AppCompatActivity {
             invText.setVisibility(View.GONE);
         }
         else {
-            passwordInputLayout.setErrorEnabled(true);
-            passwordInputLayout.setError("Invalid password");
+            //idInputLayout.setError("Invalid password");
+            //idInputLayout.setErrorEnabled(true);
 
             Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vib.vibrate(120);
