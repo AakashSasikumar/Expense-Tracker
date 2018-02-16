@@ -19,7 +19,7 @@
         android:layout_marginBottom="15dp"/>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/userNameInputLayout"
+        android:id="@+id/yourNameInputLayout"
         android:layout_width="match_parent"
         android:theme="@style/EditTextHint"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_below="@+id/signUpTextView"
         android:layout_centerHorizontal="true">
         <EditText
-            android:id="@+id/userName"
+            android:id="@+id/yourName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
@@ -46,7 +46,7 @@
         android:inputType="textEmailAddress"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:layout_below="@+id/userNameInputLayout"
+        android:layout_below="@+id/yourNameInputLayout"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true">
         <EditText
@@ -99,12 +99,32 @@
             android:hint="@string/passwordEditTextHint"/>
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/confirmPasswordInputLayout"
+        android:theme="@style/EditTextHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_below="@+id/passwordInputLayout"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true">
+        <EditText
+            android:id="@+id/confirmPassword"
+            android:layout_width="match_parent"
+            android:textColor="#FFFFFF"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/confirmPasswordEditTextHint"/>
+    </android.support.design.widget.TextInputLayout>
+
     <Button
         android:id="@+id/signUpButton"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:text="@string/signUpButtonName"
-        android:layout_below="@+id/passwordInputLayout"
+        android:layout_below="@+id/confirmPasswordInputLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:background="@drawable/login_button_background"

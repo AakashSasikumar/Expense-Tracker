@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.support.design.widget.TextInputLayout;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,30 +26,49 @@ public class LoginActivity extends AppCompatActivity {
     public void loginValidation(View v) {
         EditText id = findViewById(R.id.emailAddress);
         EditText password = findViewById(R.id.password);
-        TextInputLayout idInputLayout = (TextInputLayout) findViewById(R.id.emailAddressInputLayout);
-        TextInputLayout passwordInputLayout = (TextInputLayout) findViewById(R.id.passwordInputLayout);
-        TextView invText = findViewById(R.id.invalidText);
+        // TextInputLayout idInputLayout = (TextInputLayout) findViewById(R.id.emailAddressInputLayout);
+        // TextInputLayout passwordInputLayout = (TextInputLayout) findViewById(R.id.passwordInputLayout);
+
+        if (id.getText().toString().isEmpty()){
+            displayError(R.string.emptyIDError, id);
+            return;
+        }
+
+        if (password.getText().toString().isEmpty()){
+            displayError(R.string.emptyPasswordError, password);
+            return;
+        }
 
 
         if (id.getText().toString().equals("a") && password.getText().toString().equals("a")) {
-            //Intent toDashboard = new Intent(v.getContext(), DashboardActivity.class);
-            //v.getContext().startActivity(toDashboard);
+            // Intent toDashboard = new Intent(this, DashboardActivity.class);
+            // startActivity(toDashboard);
             System.out.println("Valid");
-            invText.setVisibility(View.GONE);
         }
         else {
-            //idInputLayout.setError("Invalid password");
-            //idInputLayout.setErrorEnabled(true);
+            // idInputLayout.setError("Invalid password");
+            // idInputLayout.setErrorEnabled(true);
 
-            Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            vib.vibrate(120);
-
-            Animation animShake = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.shake);
-            id.setAnimation(animShake);
-            id.startAnimation(animShake);
+            displayError(R.string.loginErrorMessage);
 
             System.out.println("Invalid");
-            invText.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void displayError(int message) {
+        Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vib.vibrate(120);
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private void displayError(int message, View view) {
+        Animation animShake = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.shake);
+        view.setAnimation(animShake);
+        view.startAnimation(animShake);
+
+        Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vib.vibrate(120);
+
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
