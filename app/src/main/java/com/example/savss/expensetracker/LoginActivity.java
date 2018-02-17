@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
         toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
     }
 
+
     public void loginValidation(View v) {
         EditText id = findViewById(R.id.emailAddress);
         EditText password = findViewById(R.id.password);
