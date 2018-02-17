@@ -43,8 +43,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
         if (id.getText().toString().equals("a") && password.getText().toString().equals("a")) {
-            // Intent toDashboard = new Intent(this, DashboardActivity.class);
-            // startActivity(toDashboard);
+            Intent toDashboard = new Intent(this, DashboardActivity.class);
+            startActivity(toDashboard);
             System.out.println("Valid");
         }
         else {
