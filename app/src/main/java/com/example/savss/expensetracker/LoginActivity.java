@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.support.design.widget.TextInputLayout;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
@@ -43,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         if (id.getText().toString().equals("a") && password.getText().toString().equals("a")) {
-            Intent toDashboard = new Intent(this, DashboardActivity.class);
+            Intent toDashboard = new Intent(this, HomeActivity.class);
             startActivity(toDashboard);
             System.out.println("Valid");
         }

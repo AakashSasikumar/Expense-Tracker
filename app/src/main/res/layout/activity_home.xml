@@ -6,7 +6,7 @@
     android:background="@drawable/activity_main_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.savss.expensetracker.DashboardActivity">
+    tools:context="com.example.savss.expensetracker.HomeActivity">
 
     <FrameLayout
         android:id="@+id/frame_layout"
