@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
+    Toast toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,11 @@ public class LoginActivity extends AppCompatActivity {
     private void displayError(int message) {
         Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vib.vibrate(120);
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+
+        toast.setText(message);
+        toast.show();
+
+        // Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private void displayError(int message, View view) {
@@ -69,6 +75,9 @@ public class LoginActivity extends AppCompatActivity {
         Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vib.vibrate(120);
 
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        toast.setText(message);
+        toast.show();
+
+        // Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

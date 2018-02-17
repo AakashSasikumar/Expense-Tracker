@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    Toast toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,9 @@ public class SignUpActivity extends AppCompatActivity {
         Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vib.vibrate(120);
 
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        toast.setText(message);
+        toast.show();
+
+        // Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
