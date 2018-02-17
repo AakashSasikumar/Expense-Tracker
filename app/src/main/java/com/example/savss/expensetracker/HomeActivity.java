@@ -18,22 +18,17 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_add:
-                    // selectedFragment = ItemOneFragment.newInstance();
+                    // return setFragment(new AddFragment());
                     break;
                 case R.id.navigation_dashboard:
-                    selectedFragment = new DashboardFragment();
-                    break;
+                    return setFragment(new DashboardFragment());
                 case R.id.navigation_settings:
-                    // selectedFragment = ItemOneFragment.newInstance();
+                    // return setFragment(new SettingsFragment());
                     break;
             }
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_layout, selectedFragment);
-            transaction.commit();
-            return true;
+            return false;
         }
     };
 
@@ -45,6 +40,13 @@ public class HomeActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    private boolean setFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, fragment);
+        transaction.commit();
+        return true;
     }
 
 }
