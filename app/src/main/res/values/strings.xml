@@ -15,4 +15,5 @@
     <string name="emptyPhoneNumberError">Enter your Phone Number</string>
     <string name="emptyConfirmPasswordError">Verify your Password in Confirm Password</string>
     <string name="passwordNotMatchError">Password did not match</string>
+    <string name="confirmPasswordEditTextHint">CONFIRM PASSWORD</string>
 </resources>

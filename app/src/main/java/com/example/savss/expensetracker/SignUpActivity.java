@@ -53,7 +53,7 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        if (password.getText().toString().equals(confirmPassword.getText().toString())){
+        if (!password.getText().toString().equals(confirmPassword.getText().toString())){
             displayError(R.string.passwordNotMatchError, confirmPassword);
             return;
         }
