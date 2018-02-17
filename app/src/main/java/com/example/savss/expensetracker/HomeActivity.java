@@ -20,8 +20,7 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_add_transaction:
-                    // return setFragment(new AddFragment(), R.id.navigation_add_transaction);
-                    break;
+                    return setFragment(new AddTransactionFragment(), R.id.navigation_add_transaction);
                 case R.id.navigation_dashboard:
                     return setFragment(new DashboardFragment(), R.id.navigation_dashboard);
                 case R.id.navigation_settings:
