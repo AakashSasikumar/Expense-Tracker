@@ -15,14 +15,14 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Toast toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
+    Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setTitle("Login");/*
-        getSupportActionBar().hide();*/
+        setTitle("Login");
+        toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
     }
 
     public void loginValidation(View v) {
