@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">ExpenseTracker</string>
+    <string name="app_name">Expense Tracker</string>
+    <string name="loginButtonName">LOGIN</string>
+    <string name="signUpButtonName">SIGN UP</string>
+    <string name="idEditTextHint">EMAIL ID / PHONE NUMBER</string>
+    <string name="passwordEditTextHint">PASSWORD</string>
+    <string name="loginErrorMessage">Invalid Credentials</string>
+    <string name="userNameEditTextHint">YOUR NAME</string>
+    <string name="emailAddressEditTextHint">EMAIL ID</string>
+    <string name="phoneNumberEditTextHint">PHONE NUMBER</string>
+    <string name="emptyIDError">Enter ID</string>
+    <string name="emptyPasswordError">Enter Password</string>
+    <string name="emptyYourNameError">Enter your name</string>
+    <string name="emptyEmailAddressError">Enter your Email Address</string>
+    <string name="emptyPhoneNumberError">Enter your Phone Number</string>
+    <string name="emptyConfirmPasswordError">Verify your Password in Confirm Password</string>
+    <string name="passwordNotMatchError">Password did not match</string>
+    <string name="confirmPasswordEditTextHint">CONFIRM PASSWORD</string>
 </resources>
