@@ -12,12 +12,13 @@ import android.widget.Toast;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    Toast toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
+    Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
     }
 
     public void signUpButton_onClick(View view) {
@@ -70,7 +71,5 @@ public class SignUpActivity extends AppCompatActivity {
 
         toast.setText(message);
         toast.show();
-
-        // Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

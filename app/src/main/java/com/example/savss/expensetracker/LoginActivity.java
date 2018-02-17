@@ -63,8 +63,6 @@ public class LoginActivity extends AppCompatActivity {
 
         toast.setText(message);
         toast.show();
-
-        // Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private void displayError(int message, View view) {
@@ -77,7 +75,5 @@ public class LoginActivity extends AppCompatActivity {
 
         toast.setText(message);
         toast.show();
-
-        // Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }
