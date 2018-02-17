@@ -19,8 +19,8 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_add:
-                    // return setFragment(new AddFragment(), R.id.navigation_add);
+                case R.id.navigation_add_transaction:
+                    // return setFragment(new AddFragment(), R.id.navigation_add_transaction);
                     break;
                 case R.id.navigation_dashboard:
                     return setFragment(new DashboardFragment(), R.id.navigation_dashboard);
