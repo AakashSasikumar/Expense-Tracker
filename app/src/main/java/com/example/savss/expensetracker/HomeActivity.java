@@ -24,8 +24,7 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.navigation_dashboard:
                     return setFragment(new DashboardFragment(), R.id.navigation_dashboard);
                 case R.id.navigation_settings:
-                    // return setFragment(new SettingsFragment(), R.id.navigation_settings);
-                    break;
+                    return setFragment(new SettingsFragment(), R.id.navigation_settings);
             }
             return false;
         }
@@ -36,8 +35,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        setFragment(new DashboardFragment(), R.id.navigation_dashboard);
     }
 
     private boolean setFragment(Fragment fragment, int id) {

@@ -5,7 +5,6 @@
     android:background="@drawable/activity_main_background"
     tools:context="com.example.savss.expensetracker.AddTransactionFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
