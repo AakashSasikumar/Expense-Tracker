@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
+    private int selectedID = -1;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -20,12 +20,12 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_add:
-                    // return setFragment(new AddFragment());
+                    // return setFragment(new AddFragment(), R.id.navigation_add);
                     break;
                 case R.id.navigation_dashboard:
-                    return setFragment(new DashboardFragment());
+                    return setFragment(new DashboardFragment(), R.id.navigation_dashboard);
                 case R.id.navigation_settings:
-                    // return setFragment(new SettingsFragment());
+                    // return setFragment(new SettingsFragment(), R.id.navigation_settings);
                     break;
             }
             return false;
@@ -36,13 +36,16 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        
-        mTextMessage = (TextView) findViewById(R.id.message);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    private boolean setFragment(Fragment fragment) {
+    private boolean setFragment(Fragment fragment, int id) {
+        if (selectedID == id) {
+            return false;
+        }
+        selectedID = id;
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, fragment);
         transaction.commit();
