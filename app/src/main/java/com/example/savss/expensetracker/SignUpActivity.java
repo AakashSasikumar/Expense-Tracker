@@ -102,22 +102,23 @@ public class SignUpActivity extends AppCompatActivity {
 
         // Count all types of characters
         for(int i = 0; i < password.length(); i++){
-            char c = password.charAt(i);
+            char passwordChar = password.charAt(i);
 
-            if(Character.isUpperCase(c)){
+            if(Character.isUpperCase(passwordChar)){
                 upperCount++;
             }
-
-            if(Character.isLowerCase(c)){
+            else if(Character.isLowerCase(passwordChar)){
                 lowerCount++;
             }
-
-            if(Character.isDigit(c)){
+            else if(Character.isDigit(passwordChar)){
                 numberCount++;
             }
-
-            if((c >= 33 && c <= 46) || c == 64){
+            else if((passwordChar >= 33 && passwordChar <= 46) || passwordChar == 64){
                 specialCount++;
+            }
+            else {
+                displayError(passwordChar + " character is not supported", passwordEditText);
+                return false;
             }
         }
 
