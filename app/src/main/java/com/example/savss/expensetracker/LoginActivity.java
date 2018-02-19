@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.support.design.widget.TextInputLayout;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
@@ -24,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
         setTitle("Login");
         toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
     }
+
 
     public void loginValidation(View v) {
         EditText id = findViewById(R.id.emailAddress);
@@ -43,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
         if (id.getText().toString().equals("a") && password.getText().toString().equals("a")) {
-            // Intent toDashboard = new Intent(this, DashboardActivity.class);
-            // startActivity(toDashboard);
+            Intent toDashboard = new Intent(this, HomeActivity.class);
+            startActivity(toDashboard);
             System.out.println("Valid");
         }
         else {

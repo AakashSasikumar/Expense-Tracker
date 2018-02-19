@@ -16,4 +16,11 @@
     <string name="emptyConfirmPasswordError">Verify your Password in Confirm Password</string>
     <string name="passwordNotMatchError">Password did not match</string>
     <string name="confirmPasswordEditTextHint">CONFIRM PASSWORD</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="title_add">Add Transaction</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
