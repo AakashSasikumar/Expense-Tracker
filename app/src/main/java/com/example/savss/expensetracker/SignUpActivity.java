@@ -1,6 +1,7 @@
 package com.example.savss.expensetracker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,7 +33,15 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (isSignUpDetailsValid(yourName, emailAddress, phoneNumber, password, confirmPassword)) {
             LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(this, null, null, 1);
-            localDatabaseHelper.addUser(yourName.getText().toString(), emailAddress.getText().toString(), phoneNumber.getText().toString(), password.getText().toString());
+            boolean addUserResult = localDatabaseHelper.tryAddUser(yourName.getText().toString(), emailAddress.getText().toString(), phoneNumber.getText().toString(), password.getText().toString());
+            if (addUserResult) {
+                Intent toDashboard = new Intent(this, HomeActivity.class);
+                startActivity(toDashboard);
+                displayTosat(R.string.userSuccessfullyAdded);
+            }
+            else {
+                displayTosat(R.string.userAlreadyExistError);
+            }
         }
 
     }
@@ -68,6 +77,14 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private void displayTosat(int message) {
+        Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vib.vibrate(120);
+
+        toast.setText(message);
+        toast.show();
     }
 
     private void displayError(int message, View view) {
