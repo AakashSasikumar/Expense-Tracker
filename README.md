@@ -6,11 +6,11 @@ Android App for tracking expenses
 
 User should be able set category-wise spend limit and application should alert the user when the limits are breached.
 
-- [ ] Login Management
+- [x] Login Management
     - [x] Open the login/register page
-    - [ ] Enable logging-in [user-id, password, OTP (if applicable)]
-    - [ ] Upon successful login, redirect to the page intended
-    - [ ] Upon failure, redirect to exception processing (retry, forgot password or register)
+    - [x] Enable logging-in [user-id, password, OTP (if applicable)]
+    - [x] Upon successful login, redirect to the page intended
+    - [x] Upon failure, redirect to exception processing (retry, forgot password or register)
 - [ ] Profile Management - Show the personal information collect and allow options for editing (name, address, DoB, current password, preferences)
 - [ ] Settings Management
     - [ ] Display the current list of categories and the maximum monthly spending limit under each category
