@@ -32,12 +32,12 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(userTableCreationQuery);
     }
 
-    public void addUser(String name, String email, String phoneHumber, String password) {
+    public void addUser(String name, String email, String phoneNumber, String password) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, name);
-        contentValues.put(COLUMN_EMAIL, name);
-        contentValues.put(COLUMN_PHONENUMBER, name);
-        contentValues.put(COLUMN_PASSWORD, name);
+        contentValues.put(COLUMN_EMAIL, email);
+        contentValues.put(COLUMN_PHONENUMBER, phoneNumber);
+        contentValues.put(COLUMN_PASSWORD, password);
 
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.insert(TABLE_USERS, null, contentValues);
@@ -75,6 +75,8 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        String dropTableQuery = "DROP TABLE IF EXISTS " + TABLE_USERS;
+        sqLiteDatabase.execSQL(dropTableQuery);
+        onCreate(sqLiteDatabase);
     }
 }
