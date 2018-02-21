@@ -1,6 +1,7 @@
 package com.example.savss.expensetracker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void signUpButton_onClick(View view) {
-        //TODO: OTP
+        // TODO: OTP for Phone Number validation
 
         EditText yourName = findViewById(R.id.yourName);
         EditText emailAddress = findViewById(R.id.emailAddress);
@@ -30,34 +31,60 @@ public class SignUpActivity extends AppCompatActivity {
         EditText password = findViewById(R.id.password);
         EditText confirmPassword = findViewById(R.id.confirmPassword);
 
+        if (isSignUpDetailsValid(yourName, emailAddress, phoneNumber, password, confirmPassword)) {
+            LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(this, null, null, 1);
+            boolean addUserResult = localDatabaseHelper.tryAddUser(yourName.getText().toString(), emailAddress.getText().toString(), phoneNumber.getText().toString(), password.getText().toString());
+            if (addUserResult) {
+                Intent toDashboard = new Intent(this, HomeActivity.class);
+                startActivity(toDashboard);
+                displayTosat(R.string.userSuccessfullyAdded);
+            }
+            else {
+                displayTosat(R.string.userAlreadyExistError);
+            }
+        }
+
+    }
+
+    private boolean isSignUpDetailsValid(EditText yourName, EditText emailAddress, EditText phoneNumber, EditText password, EditText confirmPassword) {
         if (yourName.getText().toString().isEmpty()){
             displayError(R.string.emptyYourNameError, yourName);
-            return;
+            return false;
         }
 
         if (emailAddress.getText().toString().isEmpty()){
             displayError(R.string.emptyEmailAddressError, emailAddress);
-            return;
+            return false;
         }
 
         if (phoneNumber.getText().toString().isEmpty()){
             displayError(R.string.emptyPhoneNumberError, phoneNumber);
-            return;
+            return false;
         }
 
         if (!isPasswordValid(password.getText().toString())) {
-            return;
+            return false;
         }
 
         if (confirmPassword.getText().toString().isEmpty()){
             displayError(R.string.emptyConfirmPasswordError, confirmPassword);
-            return;
+            return false;
         }
 
         if (!password.getText().toString().equals(confirmPassword.getText().toString())){
             displayError(R.string.passwordNotMatchError, confirmPassword);
-            return;
+            return false;
         }
+
+        return true;
+    }
+
+    private void displayTosat(int message) {
+        Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vib.vibrate(120);
+
+        toast.setText(message);
+        toast.show();
     }
 
     private void displayError(int message, View view) {

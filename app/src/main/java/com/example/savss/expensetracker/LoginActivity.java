@@ -27,8 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     public void loginValidation(View v) {
         EditText id = findViewById(R.id.emailAddress);
         EditText password = findViewById(R.id.password);
-        // TextInputLayout idInputLayout = (TextInputLayout) findViewById(R.id.emailAddressInputLayout);
-        // TextInputLayout passwordInputLayout = (TextInputLayout) findViewById(R.id.passwordInputLayout);
 
         if (id.getText().toString().isEmpty()){
             displayError(R.string.emptyIDError, id);
@@ -40,19 +38,28 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-
+        // TODO: Remove this if in final product
         if (id.getText().toString().equals("a") && password.getText().toString().equals("a")) {
             Intent toDashboard = new Intent(this, HomeActivity.class);
             startActivity(toDashboard);
-            System.out.println("Valid");
+        }
+
+        LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(this, null, null, 1);
+        LocalDatabaseHelper.IDType idType;
+
+        if (id.getText().toString().contains("@")) {
+            idType = LocalDatabaseHelper.IDType.Email;
         }
         else {
-            // idInputLayout.setError("Invalid password");
-            // idInputLayout.setErrorEnabled(true);
+            idType = LocalDatabaseHelper.IDType.PhoneNumber;
+        }
 
+        if (password.getText().toString().equals(localDatabaseHelper.getPassword(id.getText().toString(), idType))) {
+            Intent toDashboard = new Intent(this, HomeActivity.class);
+            startActivity(toDashboard);
+        }
+        else {
             displayError(R.string.loginErrorMessage);
-
-            System.out.println("Invalid");
         }
     }
 
