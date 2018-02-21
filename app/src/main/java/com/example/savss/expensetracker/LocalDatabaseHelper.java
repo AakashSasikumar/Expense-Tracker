@@ -69,24 +69,22 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         String getPassword = "";
 
         if (idType == IDType.Email) {
-            getPassword = String.format("SELECT %S FROM %S WHERE %S = '%S'", COLUMN_PASSWORD, TABLE_USERS, COLUMN_EMAIL, id);
+            getPassword = String.format("SELECT %s FROM %s WHERE %s = '%s'", COLUMN_PASSWORD, TABLE_USERS, COLUMN_EMAIL, id);
         }
         else if (idType == IDType.PhoneNumber) {
-            getPassword = String.format("SELECT %S FROM %S WHERE %S = '%S'", COLUMN_PASSWORD, TABLE_USERS, COLUMN_PHONENUMBER, id);
+            getPassword = String.format("SELECT %s FROM %s WHERE %s = '%s'", COLUMN_PASSWORD, TABLE_USERS, COLUMN_PHONENUMBER, id);
         }
 
         Cursor cursor = sqLiteDatabase.rawQuery(getPassword, null);
-        cursor.moveToFirst();
-
         String password = "";
 
+        cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             if (cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD)) != null) {
                 password = cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD));
             }
             cursor.moveToNext();
         }
-
         sqLiteDatabase.close();
 
         return password;
