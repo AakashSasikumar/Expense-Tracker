@@ -27,21 +27,40 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String userTableCreationQuery = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AND AUTOINCREMENT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
+        String userTableCreationQuery = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
                 TABLE_USERS, COLUMN_ID, COLUMN_NAME, COLUMN_EMAIL, COLUMN_PHONENUMBER, COLUMN_PASSWORD);
         sqLiteDatabase.execSQL(userTableCreationQuery);
     }
 
-    public void addUser(String name, String email, String phoneNumber, String password) {
+    public boolean tryAddUser(String name, String email, String phoneNumber, String password) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, name);
         contentValues.put(COLUMN_EMAIL, email);
         contentValues.put(COLUMN_PHONENUMBER, phoneNumber);
         contentValues.put(COLUMN_PASSWORD, password);
+        if (isExisting(phoneNumber)) {
+            return false;
+        }
+        else {
+            SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+            sqLiteDatabase.insert(TABLE_USERS, null, contentValues);
+            sqLiteDatabase.close();
+            return true;
+        }
+    }
 
+    private boolean isExisting(String phoneNumber){
+        String checkQuery = String.format("SELECT * FROM %s WHERE %s = '%s'", TABLE_USERS, COLUMN_PHONENUMBER, phoneNumber);
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        sqLiteDatabase.insert(TABLE_USERS, null, contentValues);
-        sqLiteDatabase.close();
+        Cursor cursor = sqLiteDatabase.rawQuery(checkQuery, null);
+        if (cursor.getCount() == 0) {
+            sqLiteDatabase.close();
+            return false;
+        }
+        else {
+            sqLiteDatabase.close();
+            return true;
+        }
     }
 
     public String getPassword(String id, IDType idType) {
