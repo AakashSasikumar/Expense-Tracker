@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,68 +7,94 @@
     android:background="@drawable/activity_main_background"
     tools:context="com.example.savss.expensetracker.DashboardFragment">
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/todayCardView"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        app:contentPadding="8dp"
-        app:cardBackgroundColor="@color/dashboardCardViewBackground"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="4dp">
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Today"
-            android:textSize="40dp"
-            android:textStyle="bold"
-            android:textColor="#FFFF"
-            android:layout_gravity="center"/>
-    </android.support.v7.widget.CardView>
+            android:id="@+id/todayCardView"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            app:contentPadding="8dp"
+            app:cardBackgroundColor="@color/dashboardCardViewBackground"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="4dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Today"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#82ffffff"
+                    android:layout_gravity="top|start"/>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/lastMonthCardView"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        app:contentPadding="8dp"
-        app:cardBackgroundColor="@color/dashboardCardViewBackground"
-        app:cardCornerRadius="5dp">
-        <TextView
-            android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$1000"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#82ffffff"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/todayExpense"/>
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/todayPieChart"
+                    android:layout_below="@id/todayExpense"/>
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Last Month"
-            android:textSize="40dp"
-            android:textStyle="bold"
-            android:textColor="#FFFF"
-            android:layout_gravity="center"/>
-    </android.support.v7.widget.CardView>
+            android:id="@+id/lastMonthCardView"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            app:contentPadding="8dp"
+            app:cardBackgroundColor="@color/dashboardCardViewBackground"
+            app:cardCornerRadius="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Month"
+                android:textSize="40dp"
+                android:textStyle="bold"
+                android:textColor="#FFFF"
+                android:layout_gravity="center"/>
+        </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/customDaysCardView"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        app:contentPadding="8dp"
-        app:cardBackgroundColor="@color/dashboardCardViewBackground"
-        app:cardCornerRadius="5dp">
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Custom Days"
-            android:textSize="40dp"
-            android:textStyle="bold"
-            android:textColor="#FFFF"
-            android:layout_gravity="center"/>
-    </android.support.v7.widget.CardView>
+            android:id="@+id/customDaysCardView"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            app:contentPadding="8dp"
+            app:cardBackgroundColor="@color/dashboardCardViewBackground"
+            app:cardCornerRadius="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Custom Days"
+                android:textSize="40dp"
+                android:textStyle="bold"
+                android:textColor="#FFFF"
+                android:layout_gravity="center"/>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
