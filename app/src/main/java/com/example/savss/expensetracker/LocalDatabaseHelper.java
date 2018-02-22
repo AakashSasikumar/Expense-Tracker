@@ -33,6 +33,17 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
     public static final String TRANSACTION_DESCRIPTION = "description";
 
     public static enum IDType { Email, PhoneNumber }
+    public static enum TransactionType {Income, Expense;
+
+        public String toString(TransactionType tType) {
+            if (tType == TransactionType.Expense) {
+                return "expense";
+            }
+            else {
+                return "income";
+            }
+        }
+    };
 
     public LocalDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -142,10 +153,24 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         return Integer.parseInt(userID);
     }
 
-    /*public ExpenseData getTodaysExpenses(String userID) {
+    public ExpenseData getTodaysExpenses(String userID) {
         ExpenseData ed = new ExpenseData();
-        String fetchDataQuery = String.format("SELECT ");
-    }*/
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        TransactionType tType = TransactionType.Income;
+        String amount;
+        String category;
+        String fetchDataQuery = String.format("SELECT SUM(%s), %s, FROM %s WHERE %s != '%s' AND %s.%s = %s.%s and %s = %s GROUP BY (%s.%s);",
+                TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TRANSACTION_TYPE, tType.toString(tType), TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
+        System.out.println();
+        Cursor c = sqLiteDatabase.rawQuery(fetchDataQuery, null);
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            if (c.getString(c.getColumnIndex(c.getColumnNames()[0])) != null) {
+
+            }
+        }
+        return ed;
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
