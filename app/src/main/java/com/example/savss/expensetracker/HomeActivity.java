@@ -12,6 +12,7 @@ import android.widget.TextView;
 public class HomeActivity extends AppCompatActivity {
 
     private int selectedID = -1;
+    private int userID;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -34,6 +35,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        userID = getIntent().getIntExtra(LocalDatabaseHelper.COLUMN_ID, -1);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

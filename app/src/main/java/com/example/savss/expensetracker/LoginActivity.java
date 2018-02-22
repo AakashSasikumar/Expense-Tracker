@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (password.getText().toString().equals(localDatabaseHelper.getPassword(id.getText().toString(), idType))) {
             Intent toDashboard = new Intent(this, HomeActivity.class);
+            toDashboard.putExtra(LocalDatabaseHelper.COLUMN_ID, localDatabaseHelper.getUserID(id.getText().toString(), idType));
             startActivity(toDashboard);
         }
         else {

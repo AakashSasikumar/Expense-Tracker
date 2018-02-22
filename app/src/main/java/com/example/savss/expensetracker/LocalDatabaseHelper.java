@@ -63,19 +63,19 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public String getPassword(String id, IDType idType) {
+    public String getPassword(String loginID, IDType idType) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
-        String getPassword = "";
+        String getPasswordQuery = "";
 
         if (idType == IDType.Email) {
-            getPassword = String.format("SELECT %s FROM %s WHERE %s = '%s'", COLUMN_PASSWORD, TABLE_USERS, COLUMN_EMAIL, id);
+            getPasswordQuery = String.format("SELECT %s FROM %s WHERE %s = '%s'", COLUMN_PASSWORD, TABLE_USERS, COLUMN_EMAIL, loginID);
         }
         else if (idType == IDType.PhoneNumber) {
-            getPassword = String.format("SELECT %s FROM %s WHERE %s = '%s'", COLUMN_PASSWORD, TABLE_USERS, COLUMN_PHONENUMBER, id);
+            getPasswordQuery = String.format("SELECT %s FROM %s WHERE %s = '%s'", COLUMN_PASSWORD, TABLE_USERS, COLUMN_PHONENUMBER, loginID);
         }
 
-        Cursor cursor = sqLiteDatabase.rawQuery(getPassword, null);
+        Cursor cursor = sqLiteDatabase.rawQuery(getPasswordQuery, null);
         String password = "";
 
         cursor.moveToFirst();
@@ -88,6 +88,37 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.close();
 
         return password;
+    }
+
+    public int getUserID(String loginID) {
+        return getUserID(loginID, IDType.Email);
+    }
+
+    public int getUserID(String loginID, IDType idType) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        String getUserIDQuery = "";
+
+        if (idType == IDType.Email) {
+            getUserIDQuery = String.format("SELECT %s FROM %s WHERE %s = '%s'", COLUMN_ID, TABLE_USERS, COLUMN_EMAIL, loginID);
+        }
+        else if (idType == IDType.PhoneNumber) {
+            getUserIDQuery = String.format("SELECT %s FROM %s WHERE %s = '%s'", COLUMN_ID, TABLE_USERS, COLUMN_PHONENUMBER, loginID);
+        }
+
+        Cursor cursor = sqLiteDatabase.rawQuery(getUserIDQuery, null);
+        String userID = "";
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            if (cursor.getString(cursor.getColumnIndex(COLUMN_ID)) != null) {
+                userID = cursor.getString(cursor.getColumnIndex(COLUMN_ID));
+            }
+            cursor.moveToNext();
+        }
+        sqLiteDatabase.close();
+
+        return Integer.parseInt(userID);
     }
 
     @Override
