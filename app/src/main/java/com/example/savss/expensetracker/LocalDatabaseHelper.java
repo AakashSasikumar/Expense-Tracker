@@ -163,10 +163,13 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         TransactionType tType = TransactionType.Income;
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String fetchDataQuery = String.format("SELECT SUM(%s), %s FROM %s, %s WHERE %s != '%s' AND %s.%s = %s.%s AND %s = %s AND %s = '%s' GROUP BY (%s.%s);",
-                TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(tType), TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE, date, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
+                TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(tType), TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE, "2018-22-02", TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
         Cursor c = sqLiteDatabase.rawQuery(fetchDataQuery, null);
         c.moveToFirst();
+        System.out.println(fetchDataQuery);
         while (!c.isAfterLast()) {
+            System.out.println(c.getString(1));
+            System.out.println(c.getInt(0));
             ed.add(c.getString(1), c.getInt(0));
             c.moveToNext();
         }
