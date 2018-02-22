@@ -1,21 +1,19 @@
 package com.example.savss.expensetracker;
 
 import android.graphics.Color;
-
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class ExpenseData {
-    private ArrayList<String> categories = new ArrayList<>();
     private ArrayList<PieEntry> expenseAmounts = new ArrayList<>();
 
     public void add(String category, int expenseAmount) {
-        categories.add(category);
-        expenseAmounts.add(new PieEntry(expenseAmount));
+        expenseAmounts.add(new PieEntry(expenseAmount, category));
     }
 
     public PieDataSet getPieDataSet() {
@@ -23,7 +21,7 @@ public class ExpenseData {
         pieDataSet.setSliceSpace(5);
         pieDataSet.setValueTextSize(12f);
 
-        ArrayList<Integer> chartColors = new ArrayList<>();
+        /*ArrayList<Integer> chartColors = new ArrayList<>();
         Random random = new Random();
         float[] hsv = new float[3];
 
@@ -32,9 +30,9 @@ public class ExpenseData {
             hsv[1] = 0.5f + (random.nextFloat() * 0.5f);
             hsv[2] = 0.5f + (random.nextFloat() * 0.5f);
             chartColors.add(Color.HSVToColor(hsv));
-        }
+        }*/
 
-        pieDataSet.setColors(chartColors);
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
         return pieDataSet;
     }
