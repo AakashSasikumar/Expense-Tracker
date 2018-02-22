@@ -6,6 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
@@ -153,21 +157,18 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         return Integer.parseInt(userID);
     }
 
-    public ExpenseData getTodaysExpenses(String userID) {
+    public ExpenseData getTodaysExpenses(int userID) {
         ExpenseData ed = new ExpenseData();
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         TransactionType tType = TransactionType.Income;
-        String amount;
-        String category;
-        String fetchDataQuery = String.format("SELECT SUM(%s), %s, FROM %s WHERE %s != '%s' AND %s.%s = %s.%s and %s = %s GROUP BY (%s.%s);",
-                TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TRANSACTION_TYPE, tType.toString(tType), TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
-        System.out.println();
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String fetchDataQuery = String.format("SELECT SUM(%s), %s FROM %s, %s WHERE %s != '%s' AND %s.%s = %s.%s AND %s = %s AND %s = '%s' GROUP BY (%s.%s);",
+                TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(tType), TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE, date, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
         Cursor c = sqLiteDatabase.rawQuery(fetchDataQuery, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
-            if (c.getString(c.getColumnIndex(c.getColumnNames()[0])) != null) {
-
-            }
+            ed.add(c.getString(1), c.getInt(0));
+            c.moveToNext();
         }
         return ed;
     }
