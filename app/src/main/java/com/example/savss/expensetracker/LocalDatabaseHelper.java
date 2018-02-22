@@ -12,6 +12,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "expensetrakerDB.db";
     private static final String TABLE_USERS = "users";
+    private static final String TABLE_CATEGORY = "category";
 
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
