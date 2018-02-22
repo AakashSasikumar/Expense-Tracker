@@ -12,13 +12,25 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "expensetrakerDB.db";
     private static final String TABLE_USERS = "users";
-    private static final String TABLE_CATEGORY = "category";
+    private static final String TABLE_CATEGORY = "categories";
+    private static final String TABLE_TRANSACTION = "transactions";
 
-    public static final String USERS_ID = "id";
+    public static final String USERS_ID = "user_id";
     public static final String USERS_NAME = "name";
     public static final String USERS_EMAIL = "email";
     public static final String USERS_PHONENUMBER = "phonenumber";
     public static final String USERS_PASSWORD = "password";
+
+    public static final String CATEGORY_ID = "category_id";
+    public static final String CATEGORY_NAME = "name";
+
+    public static final String TRANSACTION_ID = "transaction_id";
+    public static final String TRANSACTION_FKEY_USERS_ID = "user_id";
+    public static final String TRANSACTION_DATE = "tdate";
+    public static final String TRANSACTION_FKEY_CATEGORY_ID = "category_id";
+    public static final String TRANSACTION_TYPE = "type";
+    public static final String TRANSACTION_AMOUNT = "amount";
+    public static final String TRANSACTION_DESCRIPTION = "description";
 
     public static enum IDType { Email, PhoneNumber }
 
@@ -30,7 +42,15 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String userTableCreationQuery = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
                 TABLE_USERS, USERS_ID, USERS_NAME, USERS_EMAIL, USERS_PHONENUMBER, USERS_PASSWORD);
+        String categoryTableCreationQuery = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT);",
+                TABLE_CATEGORY, CATEGORY_ID, CATEGORY_NAME);
+
+        String transactionTableCreationQuery = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s INTEGER, %s DATETIME, %s INTEGER, %s TEXT, %s INTEGER, %s TEXT, FOREIGN KEY(%s) REFERENCES %s(%s), FOREIGN KEY (%s) REFERENCES %s(%s));",
+                TABLE_TRANSACTION, TRANSACTION_ID, TRANSACTION_FKEY_USERS_ID, TRANSACTION_DATE, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_TYPE, TRANSACTION_AMOUNT, TRANSACTION_DESCRIPTION, TRANSACTION_FKEY_USERS_ID, TABLE_USERS, USERS_ID, TRANSACTION_FKEY_CATEGORY_ID, TABLE_CATEGORY, CATEGORY_ID);
+
         sqLiteDatabase.execSQL(userTableCreationQuery);
+        sqLiteDatabase.execSQL(categoryTableCreationQuery);
+        sqLiteDatabase.execSQL(transactionTableCreationQuery);
     }
 
     public boolean tryAddUser(String name, String email, String phoneNumber, String password) {
@@ -121,6 +141,11 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
         return Integer.parseInt(userID);
     }
+
+    /*public ExpenseData getTodaysExpenses(String userID) {
+        ExpenseData ed = new ExpenseData();
+        String fetchDataQuery = String.format("SELECT ");
+    }*/
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
