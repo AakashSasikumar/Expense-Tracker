@@ -39,7 +39,7 @@ public class DashboardFragment extends Fragment {
         legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
         LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(dashboardView.getContext(), null, null, 1);
-        ExpenseData expenseData = localDatabaseHelper.getTodaysExpenses();
+        ExpenseData expenseData = localDatabaseHelper.getTodaysExpenses(HomeActivity.userID);
         PieData pieData = new PieData(expenseData.getPieDataSet());
         todayPieChart.setData(pieData);
         todayPieChart.invalidate();

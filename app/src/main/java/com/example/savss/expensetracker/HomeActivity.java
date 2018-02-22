@@ -11,7 +11,7 @@ import android.view.MenuItem;
 public class HomeActivity extends AppCompatActivity {
 
     private int selectedID = -1;
-    private int userID;
+    public static int userID;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

@@ -37,14 +37,15 @@ public class LoginActivity extends AppCompatActivity {
             displayError(R.string.emptyPasswordError, password);
             return;
         }
+        LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(this, null, null, 1);
 
         // TODO: Remove this if in final product
         if (id.getText().toString().equals("a") && password.getText().toString().equals("a")) {
             Intent toDashboard = new Intent(this, HomeActivity.class);
+            toDashboard.putExtra(LocalDatabaseHelper.USERS_ID, 1);
             startActivity(toDashboard);
         }
 
-        LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(this, null, null, 1);
         LocalDatabaseHelper.IDType idType;
 
         if (id.getText().toString().contains("@")) {
