@@ -26,9 +26,9 @@ public class DashboardFragment extends Fragment {
         todayPieChart = dashboardView.findViewById(R.id.todayPieChart);
         todayPieChart.setDescription(null);
         todayPieChart.setRotationEnabled(true);
-        todayPieChart.setHoleRadius(25f);
-        todayPieChart.setTransparentCircleAlpha(128);
-        todayPieChart.setDrawEntryLabels(true);
+        // todayPieChart.setHoleRadius(25f);
+        // todayPieChart.setTransparentCircleAlpha(128);
+        // todayPieChart.setDrawEntryLabels(true);
 
         LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(dashboardView.getContext(), null, null, 1);
         ExpenseData expenseData = localDatabaseHelper.getTodaysExpenses(HomeActivity.userID);
