@@ -13,7 +13,7 @@ public class ExpenseData {
     private ArrayList<PieEntry> expenseAmounts = new ArrayList<>();
 
     public void add(String category, int expenseAmount) {
-        expenseAmounts.add(new PieEntry((float) expenseAmount, category));
+        expenseAmounts.add(new PieEntry(expenseAmount, category));
     }
 
     public PieDataSet getPieDataSet() {
