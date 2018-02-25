@@ -26,8 +26,8 @@ public class DashboardFragment extends Fragment {
         todayPieChart = dashboardView.findViewById(R.id.todayPieChart);
         todayPieChart.setDescription(null);
         todayPieChart.setRotationEnabled(true);
-        todayPieChart.setHoleRadius(25f);
-        todayPieChart.setTransparentCircleAlpha(128);
+        todayPieChart.setHoleRadius(15f);
+        todayPieChart.setTransparentCircleAlpha(0);
         todayPieChart.setDrawEntryLabels(true);
 
         LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(dashboardView.getContext(), null, null, 1);

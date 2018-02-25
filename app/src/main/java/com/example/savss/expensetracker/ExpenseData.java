@@ -17,9 +17,12 @@ public class ExpenseData {
     }
 
     public PieDataSet getPieDataSet() {
-        PieDataSet pieDataSet = new PieDataSet(expenseAmounts, "Today's expense");
+        PieDataSet pieDataSet = new PieDataSet(expenseAmounts, "");
         pieDataSet.setSliceSpace(5);
-        pieDataSet.setValueTextSize(12f);
+        pieDataSet.setValueTextSize(20f);
+        pieDataSet.setFormSize(20f);
+        pieDataSet.setValueTextColor(Color.WHITE);
+
 
         /*ArrayList<Integer> chartColors = new ArrayList<>();
         Random random = new Random();
