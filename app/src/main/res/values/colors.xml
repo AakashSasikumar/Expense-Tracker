@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimary">#073f70</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#565656</color>
+    <color name="colorAccent">#fbc02d</color>
     <color name="invalidColour">#e40101</color>
     <color name="BackgroundWhiteColor">#FFFF</color>
     <color name="navigationViewBackground">#78ffffff</color>
     <color name="dashboardCardViewBackground">#55ffffff</color>
-    <!--<color name="errorTextColour">#ff0000</color>-->
 </resources>
