@@ -2,14 +2,192 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/activity_main_background">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Some shit2"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textSize="40dp"
+        android:text="Name"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="25dp"
+        android:textSize="20dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:id="@+id/tv1"
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DOB"
+        android:layout_below="@+id/tv1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="25dp"
+        android:textSize="20dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:id="@+id/tv2"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address"
+        android:layout_below="@+id/tv2"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="25dp"
+        android:textSize="20dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:id="@+id/tv3"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EMail"
+        android:layout_below="@+id/tv3"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="25dp"
+        android:textSize="20dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:id="@+id/tv4"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone No."
+        android:layout_below="@+id/tv4"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="25dp"
+        android:textSize="20dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:id="@+id/tv5"
+
+        />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Balance"
+        android:layout_below="@+id/tv5"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="25dp"
+        android:textSize="20dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:id="@+id/tv6"
+
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="30dp"
+        app:srcCompat="@android:drawable/ic_menu_edit"
+
+        />
+
+    <Button
+        android:id="@+id/changePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tv6"
+        android:layout_alignTop="@+id/fab1"
+        android:text=" Change Password "
+        android:textColor="@color/buttonBlue"
+        android:background="@color/colorPrimaryDark"
+        />
+
+    <EditText
+        android:id="@+id/editName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv1"
+        android:layout_toRightOf="@id/tv1"
+        android:layout_toEndOf="@+id/tv6"
+        android:ems="15"
+        android:textSize="18dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:background="@android:color/transparent"
+        android:inputType="textPersonName"
+        android:text="  Jane Doe" />
+    <EditText
+        android:id="@+id/editDOB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv2"
+        android:layout_toRightOf="@id/tv2"
+        android:layout_toEndOf="@+id/tv6"
+        android:ems="15"
+        android:textSize="18dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:background="@android:color/transparent"
+        android:inputType="date"
+        android:text="  1/1/1995" />
+
+    <EditText
+        android:id="@+id/editAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv3"
+        android:layout_toRightOf="@id/tv3"
+        android:layout_toEndOf="@+id/tv6"
+        android:ems="15"
+        android:textSize="18dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:background="@android:color/transparent"
+        android:inputType="textPostalAddress"
+        android:text="  Coimbatore, India" />
+
+    <EditText
+        android:id="@+id/editEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv4"
+        android:layout_toRightOf="@id/tv4"
+        android:layout_toEndOf="@+id/tv6"
+        android:ems="15"
+        android:textSize="18dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:background="@android:color/transparent"
+        android:inputType="textEmailAddress"
+        android:text="  janeDoe@gmail.com" />
+
+    <EditText
+        android:id="@+id/editAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv5"
+        android:layout_toRightOf="@id/tv5"
+        android:layout_toEndOf="@+id/tv6"
+        android:ems="15"
+        android:textSize="18dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:background="@android:color/transparent"
+        android:inputType="phone"
+        android:text=" 9999888877" />
+    <EditText
+        android:id="@+id/editBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv6"
+        android:layout_toRightOf="@id/tv6"
+        android:layout_toEndOf="@+id/tv6"
+        android:ems="15"
+        android:textSize="18dp"
+        android:textColor="@color/BackgroundWhiteColor"
+        android:background="@android:color/transparent"
+        android:inputType="numberDecimal"
+        android:text="  Rs 15,000" />
+
 
 </RelativeLayout>
