@@ -10,8 +10,8 @@
         android:text="Name"
         android:layout_marginTop="80dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="25dp"
-        android:textSize="20dp"
+        android:layout_marginLeft="40dp"
+        android:textSize="10dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:id="@+id/tv1"
         />
@@ -22,8 +22,8 @@
         android:layout_below="@+id/tv1"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="25dp"
-        android:textSize="20dp"
+        android:layout_marginLeft="40dp"
+        android:textSize="10dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:id="@+id/tv2"
 
@@ -35,8 +35,8 @@
         android:layout_below="@+id/tv2"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="25dp"
-        android:textSize="20dp"
+        android:layout_marginLeft="40dp"
+        android:textSize="10dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:id="@+id/tv3"
 
@@ -48,8 +48,8 @@
         android:layout_below="@+id/tv3"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="25dp"
-        android:textSize="20dp"
+        android:layout_marginLeft="40dp"
+        android:textSize="10dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:id="@+id/tv4"
 
@@ -61,8 +61,8 @@
         android:layout_below="@+id/tv4"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="25dp"
-        android:textSize="20dp"
+        android:layout_marginLeft="40dp"
+        android:textSize="10dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:id="@+id/tv5"
 
@@ -76,8 +76,8 @@
         android:layout_below="@+id/tv5"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="25dp"
-        android:textSize="20dp"
+        android:layout_marginLeft="40dp"
+        android:textSize="10dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:id="@+id/tv6"
 
@@ -101,11 +101,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/tv6"
-        android:layout_alignTop="@+id/fab1"
+        android:layout_below="@+id/tv6"
+        android:layout_marginTop="13dp"
+        android:background="@color/colorPrimaryDark"
         android:text=" Change Password "
         android:textColor="@color/buttonBlue"
-        android:background="@color/colorPrimaryDark"
-        />
+        android:textSize="11dp" />
 
     <EditText
         android:id="@+id/editName"
@@ -115,11 +116,11 @@
         android:layout_toRightOf="@id/tv1"
         android:layout_toEndOf="@+id/tv6"
         android:ems="15"
-        android:textSize="18dp"
+        android:textSize="15dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:background="@android:color/transparent"
         android:inputType="textPersonName"
-        android:text="  Jane Doe" />
+        android:text="      Jane Doe" />
     <EditText
         android:id="@+id/editDOB"
         android:layout_width="wrap_content"
@@ -128,11 +129,11 @@
         android:layout_toRightOf="@id/tv2"
         android:layout_toEndOf="@+id/tv6"
         android:ems="15"
-        android:textSize="18dp"
+        android:textSize="15dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:background="@android:color/transparent"
         android:inputType="date"
-        android:text="  1/1/1995" />
+        android:text="      1/1/1995" />
 
     <EditText
         android:id="@+id/editAddress"
@@ -142,11 +143,11 @@
         android:layout_toRightOf="@id/tv3"
         android:layout_toEndOf="@+id/tv6"
         android:ems="15"
-        android:textSize="18dp"
+        android:textSize="15dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:background="@android:color/transparent"
         android:inputType="textPostalAddress"
-        android:text="  Coimbatore, India" />
+        android:text="      Coimbatore, India" />
 
     <EditText
         android:id="@+id/editEmail"
@@ -156,25 +157,25 @@
         android:layout_toRightOf="@id/tv4"
         android:layout_toEndOf="@+id/tv6"
         android:ems="15"
-        android:textSize="18dp"
+        android:textSize="15dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:background="@android:color/transparent"
         android:inputType="textEmailAddress"
-        android:text="  janeDoe@gmail.com" />
+        android:text="       janeDoe@gmail.com" />
 
     <EditText
-        android:id="@+id/editAddress"
+        android:id="@+id/editAddr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/tv5"
         android:layout_toRightOf="@id/tv5"
         android:layout_toEndOf="@+id/tv6"
         android:ems="15"
-        android:textSize="18dp"
+        android:textSize="15dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:background="@android:color/transparent"
         android:inputType="phone"
-        android:text=" 9999888877" />
+        android:text="       9999888877" />
     <EditText
         android:id="@+id/editBalance"
         android:layout_width="wrap_content"
@@ -183,11 +184,11 @@
         android:layout_toRightOf="@id/tv6"
         android:layout_toEndOf="@+id/tv6"
         android:ems="15"
-        android:textSize="18dp"
+        android:textSize="15dp"
         android:textColor="@color/BackgroundWhiteColor"
         android:background="@android:color/transparent"
         android:inputType="numberDecimal"
-        android:text="  Rs 15,000" />
+        android:text="        Rs 15,000" />
 
 
 </RelativeLayout>
