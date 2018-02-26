@@ -1,5 +1,6 @@
 package com.example.savss.expensetracker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
@@ -15,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Toast toast;
 
+    @SuppressLint("ShowToast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,13 +48,13 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(toDashboard);
         }
 
-        LocalDatabaseHelper.IDType idType;
+        IDType idType;
 
         if (id.getText().toString().contains("@")) {
-            idType = LocalDatabaseHelper.IDType.Email;
+            idType = IDType.Email;
         }
         else {
-            idType = LocalDatabaseHelper.IDType.PhoneNumber;
+            idType = IDType.PhoneNumber;
         }
 
         if (password.getText().toString().equals(localDatabaseHelper.getPassword(id.getText().toString(), idType))) {

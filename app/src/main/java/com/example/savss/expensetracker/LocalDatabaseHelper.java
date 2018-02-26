@@ -36,19 +36,6 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
     public static final String TRANSACTION_AMOUNT = "amount";
     public static final String TRANSACTION_DESCRIPTION = "description";
 
-    public static enum IDType { Email, PhoneNumber }
-    public static enum TransactionType {Income, Expense;
-
-        public String toString(TransactionType tType) {
-            if (tType == TransactionType.Expense) {
-                return "expense";
-            }
-            else {
-                return "income";
-            }
-        }
-    };
-
     public LocalDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
@@ -163,7 +150,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         TransactionType tType = TransactionType.Income;
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String fetchDataQuery = String.format("SELECT SUM(%s), %s FROM %s, %s WHERE %s != '%s' AND %s.%s = %s.%s AND %s = %s AND %s = '%s' GROUP BY (%s.%s);",
-                TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(tType), TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE, "2018-22-02", TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
+                TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(), TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE, "2018-22-02", TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
         try {
             sqLiteDatabase.execSQL("insert into categories values (1, 'cat1');");
             sqLiteDatabase.execSQL("insert into categories values (2, 'cat2');");
