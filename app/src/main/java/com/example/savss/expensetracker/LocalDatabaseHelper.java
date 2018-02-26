@@ -164,6 +164,17 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String fetchDataQuery = String.format("SELECT SUM(%s), %s FROM %s, %s WHERE %s != '%s' AND %s.%s = %s.%s AND %s = %s AND %s = '%s' GROUP BY (%s.%s);",
                 TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(tType), TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE, "2018-22-02", TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
+        try {
+            sqLiteDatabase.execSQL("insert into categories values (1, 'cat1');");
+            sqLiteDatabase.execSQL("insert into categories values (2, 'cat2');");
+            sqLiteDatabase.execSQL("insert into transactions values(1, 1, '2018-22-02', 1, 'expense', 1000, 'another');");
+            sqLiteDatabase.execSQL("insert into transactions values(2, 1, '2018-22-02', 1, 'income', 1000, 'another');");
+            sqLiteDatabase.execSQL("insert into transactions values(3, 1, '2018-22-02', 1, 'expense', 2000, 'asdf');");
+            sqLiteDatabase.execSQL("insert into transactions values(4, 1, '2018-22-02', 2, 'expense', 4000, 'asdf');");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
         Cursor c = sqLiteDatabase.rawQuery(fetchDataQuery, null);
         c.moveToFirst();
         System.out.println(fetchDataQuery);
