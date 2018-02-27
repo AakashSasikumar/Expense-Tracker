@@ -12,7 +12,7 @@ import com.github.mikephil.charting.data.PieData;
 
 public class DashboardFragment extends Fragment {
 
-    private PieChart todayPieChart;
+    private View dashboardView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,14 +21,21 @@ public class DashboardFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View dashboardView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        dashboardView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        todayPieChart = dashboardView.findViewById(R.id.todayPieChart);
+        setTodayPieChart();
+
+        return dashboardView;
+    }
+
+    private void setTodayPieChart() {
+        PieChart todayPieChart = dashboardView.findViewById(R.id.todayPieChart);
         todayPieChart.setDescription(null);
         todayPieChart.setRotationEnabled(true);
         todayPieChart.setHoleRadius(15f);
-        todayPieChart.setTransparentCircleAlpha(0);
+        todayPieChart.setTransparentCircleAlpha(300);
         todayPieChart.setDrawEntryLabels(true);
+        todayPieChart.setHoleColor(R.color.transparent);
 
         LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(dashboardView.getContext(), null, null, 1);
         ExpenseData expenseData = localDatabaseHelper.getTodaysExpenses(HomeActivity.userID);
@@ -41,9 +48,6 @@ public class DashboardFragment extends Fragment {
         todayPieChart.setData(pieData);
         todayPieChart.animateXY(500, 500);
         todayPieChart.invalidate();
-
-        return dashboardView;
     }
-
 
 }
