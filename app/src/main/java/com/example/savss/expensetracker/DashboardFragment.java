@@ -5,13 +5,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 
+import java.util.ArrayList;
+
 public class DashboardFragment extends Fragment {
 
+    private LocalDatabaseHelper localDatabaseHelper;
     private View dashboardView;
 
     @Override
@@ -22,6 +28,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dashboardView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        localDatabaseHelper = new LocalDatabaseHelper(dashboardView.getContext(), null, null, 1);
 
         setTodayPieChart();
 
@@ -33,11 +40,10 @@ public class DashboardFragment extends Fragment {
         todayPieChart.setDescription(null);
         todayPieChart.setRotationEnabled(true);
         todayPieChart.setHoleRadius(15f);
-        todayPieChart.setTransparentCircleAlpha(300);
+        todayPieChart.setTransparentCircleAlpha(0);
         todayPieChart.setDrawEntryLabels(true);
-        todayPieChart.setHoleColor(R.color.transparent);
+        //todayPieChart.setHoleColor(R.color.transparent);
 
-        LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(dashboardView.getContext(), null, null, 1);
         ExpenseData expenseData = localDatabaseHelper.getTodaysExpenses(HomeActivity.userID);
 
         Legend legend = todayPieChart.getLegend();
@@ -48,6 +54,50 @@ public class DashboardFragment extends Fragment {
         todayPieChart.setData(pieData);
         todayPieChart.animateXY(500, 500);
         todayPieChart.invalidate();
+    }
+
+    private void displayTransactionlistview() {
+        ListView transactionListView = dashboardView.findViewById(R.id.transactionListView);
+        transactionListView.setAdapter(localDatabaseHelper.getTransactionDatas());
+    }
+
+    class transactionListViewAdapter extends BaseAdapter {
+
+        private ArrayList<TransactionData> transactionDatas;
+
+        private transactionListViewAdapter(ArrayList<TransactionData> transactionDatas) {
+            this.transactionDatas = transactionDatas;
+        }
+
+        @Override
+        public int getCount() {
+            return transactionDatas.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            view = getLayoutInflater().inflate(R.layout.transaction_listviewitem_template, null);
+            TextView dateTextView = view.findViewById(R.id.dateTextView);
+            TextView amountTextView = view.findViewById(R.id.amountTextView);
+            TextView catagoryTextView = view.findViewById(R.id.catagoryTextView);
+
+            TransactionData transactionData = transactionDatas.get(i);
+
+            dateTextView.setText(transactionData.getDateTime());
+            amountTextView.setText(transactionData.getAmount());
+            catagoryTextView.setText(transactionData.getCatagory());
+            return null;
+        }
     }
 
 }

@@ -86,14 +86,31 @@
             app:contentPadding="8dp"
             app:cardBackgroundColor="@color/dashboardCardViewBackground"
             app:cardCornerRadius="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Custom Days"
-                android:textSize="40dp"
-                android:textStyle="bold"
-                android:textColor="#FFFF"
-                android:layout_gravity="center"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Custom Days"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#82ffffff"
+                    android:layout_gravity="top|start"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/customDatesRelativeLayout">
+
+                </RelativeLayout>
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:id="@+id/transactionListView"
+                    android:layout_below="@+id/customDatesRelativeLayout"/>
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>
 
