@@ -58,7 +58,7 @@ public class DashboardFragment extends Fragment {
 
     private void displayTransactionlistview() {
         ListView transactionListView = dashboardView.findViewById(R.id.transactionListView);
-        transactionListView.setAdapter(localDatabaseHelper.getTransactionDatas());
+        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionDatas()));
     }
 
     class transactionListViewAdapter extends BaseAdapter {
@@ -76,12 +76,12 @@ public class DashboardFragment extends Fragment {
 
         @Override
         public Object getItem(int i) {
-            return null;
+            return transactionDatas.get(i);
         }
 
         @Override
         public long getItemId(int i) {
-            return 0;
+            return i;
         }
 
         @Override
