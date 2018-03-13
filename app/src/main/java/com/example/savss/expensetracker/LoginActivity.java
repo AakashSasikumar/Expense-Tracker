@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: Remove this if in final product
         if (id.getText().toString().equals("a") && password.getText().toString().equals("a")) {
             Intent toDashboard = new Intent(this, HomeActivity.class);
-            toDashboard.putExtra(LocalDatabaseHelper.USERS_ID, 1);
+            UserData.userID = 1;
             startActivity(toDashboard);
         }
 
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (password.getText().toString().equals(localDatabaseHelper.getPassword(id.getText().toString(), idType))) {
             Intent toDashboard = new Intent(this, HomeActivity.class);
-            toDashboard.putExtra(LocalDatabaseHelper.USERS_ID, localDatabaseHelper.getUserID(id.getText().toString(), idType));
+            UserData.userID = localDatabaseHelper.getUserID(id.getText().toString(), idType);
             startActivity(toDashboard);
         }
         else {

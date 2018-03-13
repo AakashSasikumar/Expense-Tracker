@@ -13,7 +13,6 @@ import org.w3c.dom.UserDataHandler;
 public class HomeActivity extends AppCompatActivity {
 
     private int selectedID = -1;
-    public static int userID;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -37,10 +36,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        userID = getIntent().getIntExtra(LocalDatabaseHelper.USERS_ID, -1);
-
         LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(this, null, null, 1);
-        localDatabaseHelper.setUserData(userID);
+        localDatabaseHelper.setUserData(UserData.userID);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

@@ -80,7 +80,7 @@ public class DashboardFragment extends Fragment {
         todayPieChart.setDrawEntryLabels(true);
         //todayPieChart.setHoleColor(R.color.transparent);
 
-        ExpenseData expenseData = localDatabaseHelper.getTodaysExpenses(HomeActivity.userID);
+        ExpenseData expenseData = localDatabaseHelper.getTodaysExpenses(UserData.userID);
 
         Legend legend = todayPieChart.getLegend();
         legend.setForm(Legend.LegendForm.CIRCLE);
