@@ -182,13 +182,13 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public ArrayList<TransactionData> getTransactionData() {
+    public ArrayList<TransactionData> getTransactionData(int id) {
         //id, amount, dateTime, category, desc
         ArrayList<TransactionData> transactionData = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        String fetchQuery = String.format("select %s.%s, %s.%s, %s.%s, %s.%s, %s.%s from %s, %s where %s.%s = %s.%s;",
+        String fetchQuery = String.format("select %s.%s, %s.%s, %s.%s, %s.%s, %s.%s, %s.%s from %s, %s where %s.%s = %s.%s and %s.%s = %s;",
                 TABLE_TRANSACTION, TRANSACTION_ID, TABLE_TRANSACTION, TRANSACTION_AMOUNT, TABLE_TRANSACTION, TRANSACTION_DATE, TABLE_CATEGORY, CATEGORY_NAME, TABLE_TRANSACTION, TRANSACTION_DESCRIPTION,
-                TABLE_TRANSACTION, TABLE_CATEGORY, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TABLE_CATEGORY, CATEGORY_ID);
+                TABLE_TRANSACTION, TRANSACTION_TYPE, TABLE_TRANSACTION, TABLE_CATEGORY, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_USERS_ID, String.valueOf(id));
         System.out.println(fetchQuery);
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
         c.moveToFirst();
