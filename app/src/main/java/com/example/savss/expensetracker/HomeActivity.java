@@ -40,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         userID = getIntent().getIntExtra(LocalDatabaseHelper.USERS_ID, -1);
 
         LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(this, null, null, 1);
-        localDatabaseHelper.setUserData(UserData.Name);
+        localDatabaseHelper.setUserData(userID);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

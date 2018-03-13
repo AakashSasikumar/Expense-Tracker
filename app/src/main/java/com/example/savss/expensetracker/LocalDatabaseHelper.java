@@ -172,8 +172,34 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         return ed;
     }
 
-    public void setUserData() {
+    public void setUserData(int userID) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String tempAddr = "221 Baker Street";
+        String DOB = "03-06-1997";
+        String fetchQuery = String.format("select %s, %s, %s, %s, from %s where %s = %s;",
+                USERS_NAME, USERS_EMAIL, USERS_PHONENUMBER, USERS_PASSWORD, TABLE_USERS, USERS_ID, String.valueOf(userID));
+        Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
+        c.moveToFirst();
+        while(!c.isAfterLast()) {
+            UserData.address = tempAddr;
+            UserData.userID = userID;
+            UserData.dateOfBirth = DOB;
+            UserData.Name = c.getString(0);
+            UserData.email = c.getString(1);
+            UserData.phoneNumber = c.getString(2);
+            UserData.password = c.getString(3);
+            c.moveToNext();
+        }
 
+        fetchQuery = String.format("select * from %s", TABLE_CATEGORY);
+        c = sqLiteDatabase.rawQuery(fetchQuery, null);
+        c.moveToFirst();
+        ArrayList<String> categories = new ArrayList<>();
+        while (!c.isAfterLast()) {
+            categories.add(c.getString(0));
+            c.moveToNext();
+        }
+        UserData.categories = categories;
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
@@ -189,7 +215,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         String fetchQuery = String.format("select %s.%s, %s.%s, %s.%s, %s.%s, %s.%s, %s.%s from %s, %s where %s.%s = %s.%s and %s.%s = %s;",
                 TABLE_TRANSACTION, TRANSACTION_ID, TABLE_TRANSACTION, TRANSACTION_AMOUNT, TABLE_TRANSACTION, TRANSACTION_DATE, TABLE_CATEGORY, CATEGORY_NAME, TABLE_TRANSACTION, TRANSACTION_DESCRIPTION,
                 TABLE_TRANSACTION, TRANSACTION_TYPE, TABLE_TRANSACTION, TABLE_CATEGORY, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_USERS_ID, String.valueOf(id));
-        System.out.println(fetchQuery);
+        //System.out.println(fetchQuery);
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
