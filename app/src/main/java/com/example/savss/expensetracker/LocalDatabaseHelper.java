@@ -172,8 +172,8 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         return ed;
     }
 
-    public void SetCurrentUserData() {
-        
+    public void setUserData() {
+
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
