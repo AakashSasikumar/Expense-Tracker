@@ -94,7 +94,7 @@ public class DashboardFragment extends Fragment {
 
     private void displayTransactionlistview() {
         ListView transactionListView = dashboardView.findViewById(R.id.transactionListView);
-        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(HomeActivity.userID)));
+        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID)));
     }
 
     class transactionListViewAdapter extends BaseAdapter {
