@@ -3,6 +3,7 @@ package com.example.savss.expensetracker;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,14 +18,18 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class DashboardFragment extends Fragment {
     private LocalDatabaseHelper localDatabaseHelper;
     private View dashboardView;
     private TextView fromDayTextView;
     private TextView toDayTextView;
+    private ListView transactionListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,17 +41,17 @@ public class DashboardFragment extends Fragment {
         dashboardView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         localDatabaseHelper = new LocalDatabaseHelper(dashboardView.getContext(), null, null, 1);
 
-        fromDayTextView = dashboardView.findViewById(R.id.fromDayTextView);
-        toDayTextView = dashboardView.findViewById(R.id.toDayTextView);
-
+        setDatePicker();
         setTodayPieChart();
         displayTransactionlistview();
-        setDatePicker();
 
         return dashboardView;
     }
 
     private void setDatePicker() {
+        fromDayTextView = dashboardView.findViewById(R.id.fromDayTextView);
+        toDayTextView = dashboardView.findViewById(R.id.toDayTextView);
+
         fromDayTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,21 +60,60 @@ public class DashboardFragment extends Fragment {
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(dashboardView.getContext(), R.style.Theme_AppCompat_Light_Dialog, datePickerDateSetListener, year, month, day);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(dashboardView.getContext(), R.style.Theme_AppCompat_Light_Dialog, fromDatePickerDateSetListener, year, month, day);
+                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                datePickerDialog.show();
+            }
+        });
+
+        toDayTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(dashboardView.getContext(), R.style.Theme_AppCompat_Light_Dialog, toDatePickerDateSetListener, year, month, day);
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 datePickerDialog.show();
             }
         });
     }
 
-    private DatePickerDialog.OnDateSetListener datePickerDateSetListener = new DatePickerDialog.OnDateSetListener() {
+    private DatePickerDialog.OnDateSetListener fromDatePickerDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
             month++;
             String pickedDate = day + "/" + month + "/" + year;
             fromDayTextView.setText(pickedDate);
+            transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID)));
+            setFromToDate(day + "-" + month + "-" + year, toDayTextView.getText().toString().replace('/', '-'));
         }
     };
+
+    private DatePickerDialog.OnDateSetListener toDatePickerDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+            month++;
+            String pickedDate = day + "/" + month + "/" + year;
+            toDayTextView.setText(pickedDate);
+            setFromToDate(fromDayTextView.getText().toString().replace('/', '-'), day + "-" + month + "-" + year);
+        }
+    };
+
+    private void setFromToDate(String fromDateString, String toDateString) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date fromDate = null;
+        Date toDate = null;
+        try {
+            fromDate = simpleDateFormat.parse(fromDateString);
+            toDate = simpleDateFormat.parse(toDateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, fromDate , toDate)));
+    }
 
     private void setTodayPieChart() {
         PieChart todayPieChart = dashboardView.findViewById(R.id.todayPieChart);
@@ -93,8 +137,10 @@ public class DashboardFragment extends Fragment {
     }
 
     private void displayTransactionlistview() {
-        ListView transactionListView = dashboardView.findViewById(R.id.transactionListView);
-        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID)));
+        transactionListView = dashboardView.findViewById(R.id.transactionListView);
+        Calendar toDate = Calendar.getInstance();
+        toDate.add(Calendar.MONTH, -1);
+        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, Calendar.getInstance().getTime(), toDate.getTime())));
     }
 
     class transactionListViewAdapter extends BaseAdapter {
