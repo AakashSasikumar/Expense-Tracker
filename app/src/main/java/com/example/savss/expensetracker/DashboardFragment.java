@@ -1,5 +1,8 @@
 package com.example.savss.expensetracker;
 
+import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,12 +18,14 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class DashboardFragment extends Fragment implements View.OnClickListener {
 
     private LocalDatabaseHelper localDatabaseHelper;
     private View dashboardView;
-    private DatePicker datePicker;
+    private TextView fromDayTextView;
+    private TextView toDayTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,13 +37,40 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         dashboardView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         localDatabaseHelper = new LocalDatabaseHelper(dashboardView.getContext(), null, null, 1);
 
+        fromDayTextView = dashboardView.findViewById(R.id.fromDayTextView);
+        toDayTextView = dashboardView.findViewById(R.id.toDayTextView);
+
         setTodayPieChart();
         displayTransactionlistview();
+        setDatePicker();
 
         return dashboardView;
     }
 
+    private void setDatePicker() {
+        fromDayTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+                DatePickerDialog datePickerDialog = new DatePickerDialog(dashboardView.getContext(), R.style.Theme_AppCompat_Light_Dialog, datePickerDateSetListener, year, month, day);
+                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.show();
+            }
+        });
+    }
+
+    private DatePickerDialog.OnDateSetListener datePickerDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+            month++;
+            String pickedDate = day + "/" + month + "/" + year;
+            fromDayTextView.setText(pickedDate);
+        }
+    };
 
     private void setTodayPieChart() {
         PieChart todayPieChart = dashboardView.findViewById(R.id.todayPieChart);
