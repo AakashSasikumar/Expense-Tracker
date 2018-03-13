@@ -36,15 +36,42 @@
             android:textColor="@color/BackgroundWhiteColor"
             android:text="EXPENSE"/>
     </LinearLayout>
-    <TextView
-        android:id="@+id/typeDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/valueAndSignHolder"
         android:layout_below="@id/income_expense_holder"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/valueDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
+            android:inputType="numberDecimal"
+            android:text="0.0"
+            android:textSize="80dp"
+            android:textColor="@color/BackgroundWhiteColor" />
+        <TextView
+            android:id="@+id/income_or_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textSize="80dp"
+            android:layout_margin="5dp"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/BackgroundWhiteColor"
+            />
+    </RelativeLayout>
+
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_below="@id/valueAndSignHolder"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:textSize="20dp"
-        android:textColor="@color/BackgroundWhiteColor" />
+        
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-
+    </Spinner>
 </RelativeLayout>
