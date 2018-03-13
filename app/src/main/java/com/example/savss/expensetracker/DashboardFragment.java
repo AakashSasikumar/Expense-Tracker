@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,10 +16,11 @@ import com.github.mikephil.charting.data.PieData;
 
 import java.util.ArrayList;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment implements View.OnClickListener {
 
     private LocalDatabaseHelper localDatabaseHelper;
     private View dashboardView;
+    private DatePicker datePicker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class DashboardFragment extends Fragment {
 
         return dashboardView;
     }
+
+
 
     private void setTodayPieChart() {
         PieChart todayPieChart = dashboardView.findViewById(R.id.todayPieChart);
@@ -59,6 +63,15 @@ public class DashboardFragment extends Fragment {
     private void displayTransactionlistview() {
         ListView transactionListView = dashboardView.findViewById(R.id.transactionListView);
         transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionDatas()));
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.fromDayTextView:
+
+        }
+
     }
 
     class transactionListViewAdapter extends BaseAdapter {
