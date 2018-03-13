@@ -36,7 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
             boolean addUserResult = localDatabaseHelper.tryAddUser(yourName.getText().toString(), emailAddress.getText().toString(), phoneNumber.getText().toString(), password.getText().toString());
             if (addUserResult) {
                 Intent toDashboard = new Intent(this, HomeActivity.class);
-                toDashboard.putExtra(LocalDatabaseHelper.USERS_ID, localDatabaseHelper.getUserID(emailAddress.getText().toString()));
+                UserData.userID = localDatabaseHelper.getUserID(emailAddress.getText().toString());
                 startActivity(toDashboard);
                 displayTosat(R.string.userSuccessfullyAdded);
             }
