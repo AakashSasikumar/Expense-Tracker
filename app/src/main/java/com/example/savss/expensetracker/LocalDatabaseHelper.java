@@ -165,16 +165,16 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         }
         Cursor c = sqLiteDatabase.rawQuery(fetchDataQuery, null);
         c.moveToFirst();
-        //System.out.println(fetchDataQuery);
         while (!c.isAfterLast()) {
-            //System.out.println(c.getString(1));
-            //System.out.println(c.getInt(0));
             ed.add(c.getString(1), c.getInt(0));
             c.moveToNext();
         }
         return ed;
     }
 
+    public void SetCurrentUserData() {
+        
+    }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         String dropTableQuery = "DROP TABLE IF EXISTS " + TABLE_USERS;
@@ -192,14 +192,8 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         System.out.println(fetchQuery);
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
         c.moveToFirst();
-        //System.out.println(c.getCount());
         while (!c.isAfterLast()) {
-            transactionData.add(new TransactionData(Integer.parseInt(c.getString(0)), Integer.parseInt(c.getString(1)), c.getString(2), c.getString(3), c.getString(4)));
-            System.out.println(c.getString(0));
-            System.out.println(c.getString(1));
-            System.out.println(c.getString(2));
-            System.out.println(c.getString(3));
-            System.out.println(c.getString(4));
+            transactionData.add(new TransactionData(Integer.parseInt(c.getString(0)), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5)));
             c.moveToNext();
         }
 
