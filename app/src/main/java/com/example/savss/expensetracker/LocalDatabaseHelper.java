@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -164,10 +165,10 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         }
         Cursor c = sqLiteDatabase.rawQuery(fetchDataQuery, null);
         c.moveToFirst();
-        System.out.println(fetchDataQuery);
+        //System.out.println(fetchDataQuery);
         while (!c.isAfterLast()) {
-            System.out.println(c.getString(1));
-            System.out.println(c.getInt(0));
+            //System.out.println(c.getString(1));
+            //System.out.println(c.getInt(0));
             ed.add(c.getString(1), c.getInt(0));
             c.moveToNext();
         }
@@ -179,5 +180,29 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         String dropTableQuery = "DROP TABLE IF EXISTS " + TABLE_USERS;
         sqLiteDatabase.execSQL(dropTableQuery);
         onCreate(sqLiteDatabase);
+    }
+
+    public ArrayList<TransactionData> getTransactionData() {
+        //id, amount, dateTime, category, desc
+        ArrayList<TransactionData> transactionData = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String fetchQuery = String.format("select %s.%s, %s.%s, %s.%s, %s.%s, %s.%s from %s, %s where %s.%s = %s.%s;",
+                TABLE_TRANSACTION, TRANSACTION_ID, TABLE_TRANSACTION, TRANSACTION_AMOUNT, TABLE_TRANSACTION, TRANSACTION_DATE, TABLE_CATEGORY, CATEGORY_NAME, TABLE_TRANSACTION, TRANSACTION_DESCRIPTION,
+                TABLE_TRANSACTION, TABLE_CATEGORY, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TABLE_CATEGORY, CATEGORY_ID);
+        System.out.println(fetchQuery);
+        Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
+        c.moveToFirst();
+        //System.out.println(c.getCount());
+        while (!c.isAfterLast()) {
+            transactionData.add(new TransactionData(Integer.parseInt(c.getString(0)), Integer.parseInt(c.getString(1)), c.getString(2), c.getString(3), c.getString(4)));
+            System.out.println(c.getString(0));
+            System.out.println(c.getString(1));
+            System.out.println(c.getString(2));
+            System.out.println(c.getString(3));
+            System.out.println(c.getString(4));
+            c.moveToNext();
+        }
+
+        return transactionData;
     }
 }

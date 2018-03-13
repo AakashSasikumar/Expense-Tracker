@@ -31,6 +31,7 @@ public class DashboardFragment extends Fragment {
         localDatabaseHelper = new LocalDatabaseHelper(dashboardView.getContext(), null, null, 1);
 
         setTodayPieChart();
+        displayTransactionlistview();
 
         return dashboardView;
     }
@@ -58,7 +59,7 @@ public class DashboardFragment extends Fragment {
 
     private void displayTransactionlistview() {
         ListView transactionListView = dashboardView.findViewById(R.id.transactionListView);
-        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionDatas()));
+        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData()));
     }
 
     class transactionListViewAdapter extends BaseAdapter {
@@ -94,10 +95,9 @@ public class DashboardFragment extends Fragment {
             TransactionData transactionData = transactionDatas.get(i);
 
             dateTextView.setText(transactionData.getDateTime());
-            amountTextView.setText(transactionData.getAmount());
-            catagoryTextView.setText(transactionData.getCatagory());
-            return null;
+            amountTextView.setText(String.valueOf(transactionData.getAmount()));
+            catagoryTextView.setText(transactionData.getCategory());
+            return view;
         }
     }
-
 }
