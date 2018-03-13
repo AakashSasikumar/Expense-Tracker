@@ -33,6 +33,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         localDatabaseHelper = new LocalDatabaseHelper(dashboardView.getContext(), null, null, 1);
 
         setTodayPieChart();
+        displayTransactionlistview();
 
         return dashboardView;
     }
@@ -62,7 +63,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
     private void displayTransactionlistview() {
         ListView transactionListView = dashboardView.findViewById(R.id.transactionListView);
-        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionDatas()));
+        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData()));
     }
 
     @Override
@@ -107,10 +108,9 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
             TransactionData transactionData = transactionDatas.get(i);
 
             dateTextView.setText(transactionData.getDateTime());
-            amountTextView.setText(transactionData.getAmount());
-            catagoryTextView.setText(transactionData.getCatagory());
-            return null;
+            amountTextView.setText(String.valueOf(transactionData.getAmount()));
+            catagoryTextView.setText(transactionData.getCategory());
+            return view;
         }
     }
-
 }

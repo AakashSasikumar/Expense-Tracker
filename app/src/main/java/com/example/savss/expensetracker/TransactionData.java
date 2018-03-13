@@ -4,14 +4,14 @@ public class TransactionData {
     private int id;
     private int amount;
     private String dateTime;
-    private String catagory;
+    private String category;
     private String description;
 
-    private  TransactionData(int id, int amount, String dateTime, String catagory, String description) {
+    public  TransactionData(int id, int amount, String dateTime, String category, String description) {
         this.id = id;
         this.amount = amount;
         this.dateTime = dateTime;
-        this.catagory = catagory;
+        this.category = category;
         this.description = description;
     }
 
@@ -27,8 +27,8 @@ public class TransactionData {
         return dateTime;
     }
 
-    public String getCatagory() {
-        return catagory;
+    public String getCategory() {
+        return category;
     }
 
     public String getDescription() {
