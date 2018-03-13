@@ -10,18 +10,25 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 
 public class AddTransactionFragment extends Fragment {
 
     private String transactionType = "";
+    private LocalDatabaseHelper localDatabaseHelper;
     private Button income;
     private Button expense;
     private TextView incomeOrExpense;
     private EditText value;
+    private Button clear;
+    private EditText description;
+    private Button add;
+    private Spinner categories;
     private float defaultTextSize = 80;
     private float changedTextSize = 80;
     @Override
@@ -33,12 +40,22 @@ public class AddTransactionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View addTransactionView = inflater.inflate(R.layout.fragment_add_transaction, container, false);
+        localDatabaseHelper = new LocalDatabaseHelper(addTransactionView.getContext(), null, null, 1);
         income = addTransactionView.findViewById(R.id.income_button);
         expense = addTransactionView.findViewById(R.id.expense_button);
         incomeOrExpense = addTransactionView.findViewById(R.id.income_or_expense);
         value = addTransactionView.findViewById(R.id.valueDisplay);
         value.addTextChangedListener(valueTextViewWatcher);
+        clear = addTransactionView.findViewById(R.id.clearButton);
+        clear.setOnClickListener(clearOnClickListener);
+        add = addTransactionView.findViewById(R.id.addButton);
+        add.setOnClickListener(addOnClickListener);
         income.setOnClickListener(incomeOnClickListener);
+        description = addTransactionView.findViewById(R.id.descriptionView);
+        categories = addTransactionView.findViewById(R.id.categorySpinner);
+        ArrayAdapter aa = new ArrayAdapter(addTransactionView.getContext(), R.layout.category_spinner_layout, UserData.categories.toArray());
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categories.setAdapter(aa);
         expense.setOnClickListener(expenseOnClickListener);
         return addTransactionView;
     }
@@ -58,6 +75,25 @@ public class AddTransactionFragment extends Fragment {
             transactionType = "-";
             incomeOrExpense.setTextSize(100);
             incomeOrExpense.setText(transactionType);
+        }
+    };
+
+    private View.OnClickListener clearOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            value.setText("0.0");
+            transactionType = "+";
+            incomeOrExpense.setText(transactionType);
+            description.setText("");
+        }
+    };
+
+    private View.OnClickListener addOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String valueOfTransactionType = transactionType.equals("+") ? "income" : "expense";
+            localDatabaseHelper.addTransaction(String.valueOf(UserData.userID), UserData.categories.indexOf(categories.getSelectedItem().toString()) + 1, valueOfTransactionType, value.getText().toString(), description.getText().toString());
+
         }
     };
     private TextWatcher valueTextViewWatcher = new TextWatcher() {

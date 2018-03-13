@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -155,10 +156,10 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         try {
             sqLiteDatabase.execSQL("insert into categories values (1, 'cat1');");
             sqLiteDatabase.execSQL("insert into categories values (2, 'cat2');");
-            sqLiteDatabase.execSQL("insert into transactions values(1, 1, '2018-22-02', 1, 'expense', 1000, 'another');");
-            sqLiteDatabase.execSQL("insert into transactions values(2, 1, '2018-22-02', 1, 'income', 1000, 'another');");
-            sqLiteDatabase.execSQL("insert into transactions values(3, 1, '2018-22-02', 1, 'expense', 2000, 'asdf');");
-            sqLiteDatabase.execSQL("insert into transactions values(4, 1, '2018-22-02', 2, 'expense', 4000, 'asdf');");
+            sqLiteDatabase.execSQL("insert into transactions values(1, 1, '22-02-2018', 1, 'expense', 1000, 'another');");
+            sqLiteDatabase.execSQL("insert into transactions values(2, 1, '22-02-2018', 1, 'income', 1000, 'another');");
+            sqLiteDatabase.execSQL("insert into transactions values(3, 1, '22-02-2018', 1, 'expense', 2000, 'asdf');");
+            sqLiteDatabase.execSQL("insert into transactions values(4, 1, '22-02-2018', 2, 'expense', 4000, 'asdf');");
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -169,6 +170,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
             ed.add(c.getString(1), c.getInt(0));
             c.moveToNext();
         }
+        sqLiteDatabase.close();
         return ed;
     }
 
@@ -176,7 +178,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         String tempAddr = "221 Baker Street";
         String DOB = "03-06-1997";
-        String fetchQuery = String.format("select %s, %s, %s, %s, from %s where %s = %s;",
+        String fetchQuery = String.format("select %s, %s, %s, %s from %s where %s = %s;",
                 USERS_NAME, USERS_EMAIL, USERS_PHONENUMBER, USERS_PASSWORD, TABLE_USERS, USERS_ID, String.valueOf(userID));
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
         c.moveToFirst();
@@ -196,16 +198,34 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         c.moveToFirst();
         ArrayList<String> categories = new ArrayList<>();
         while (!c.isAfterLast()) {
-            categories.add(c.getString(0));
+            categories.add(c.getString(1));
             c.moveToNext();
         }
         UserData.categories = categories;
+        sqLiteDatabase.close();
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         String dropTableQuery = "DROP TABLE IF EXISTS " + TABLE_USERS;
         sqLiteDatabase.execSQL(dropTableQuery);
         onCreate(sqLiteDatabase);
+    }
+
+    public void addTransaction(String userID, int categoryID, String transactionType, String amount, String description) {
+        Date currentDate = Calendar.getInstance().getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String date = simpleDateFormat.format(currentDate);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TRANSACTION_FKEY_USERS_ID, userID);
+        contentValues.put(TRANSACTION_DATE, date);
+        contentValues.put(TRANSACTION_FKEY_CATEGORY_ID, String.valueOf(categoryID));
+        contentValues.put(TRANSACTION_TYPE, transactionType);
+        contentValues.put(TRANSACTION_AMOUNT, amount);
+        contentValues.put(TRANSACTION_DESCRIPTION, description);
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        sqLiteDatabase.insert(TABLE_TRANSACTION, null, contentValues);
+        sqLiteDatabase.close();
+
     }
 
     public ArrayList<TransactionData> getTransactionData(int id) {
@@ -222,7 +242,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
             transactionData.add(new TransactionData(Integer.parseInt(c.getString(0)), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5)));
             c.moveToNext();
         }
-
+        sqLiteDatabase.close();
         return transactionData;
     }
 }
