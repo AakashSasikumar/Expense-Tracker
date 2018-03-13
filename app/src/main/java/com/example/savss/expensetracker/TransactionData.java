@@ -2,14 +2,14 @@ package com.example.savss.expensetracker;
 
 public class TransactionData {
     private int id;
-    private int amount;
+    private String amount;
     private String dateTime;
     private String category;
     private String description;
 
-    public  TransactionData(int id, int amount, String dateTime, String category, String description) {
+    public  TransactionData(int id, String amount, String dateTime, String category, String description, String transactionType) {
         this.id = id;
-        this.amount = amount;
+        this.amount = (transactionType.toLowerCase().equals("income") ? "+" : "-") + " " + amount;
         this.dateTime = dateTime;
         this.category = category;
         this.description = description;
@@ -19,7 +19,7 @@ public class TransactionData {
         return id;
     }
 
-    public int getAmount() {
+    public String getAmount() {
         return amount;
     }
 

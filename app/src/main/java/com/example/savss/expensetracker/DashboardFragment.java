@@ -20,8 +20,7 @@ import com.github.mikephil.charting.data.PieData;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class DashboardFragment extends Fragment implements View.OnClickListener {
-
+public class DashboardFragment extends Fragment {
     private LocalDatabaseHelper localDatabaseHelper;
     private View dashboardView;
     private TextView fromDayTextView;
@@ -57,7 +56,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(dashboardView.getContext(), R.style.Theme_AppCompat_Light_Dialog, datePickerDateSetListener, year, month, day);
-                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 datePickerDialog.show();
             }
         });
@@ -95,16 +94,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
     private void displayTransactionlistview() {
         ListView transactionListView = dashboardView.findViewById(R.id.transactionListView);
-        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData()));
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fromDayTextView:
-
-        }
-
+        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(HomeActivity.userID)));
     }
 
     class transactionListViewAdapter extends BaseAdapter {
@@ -140,7 +130,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
             TransactionData transactionData = transactionDatas.get(i);
 
             dateTextView.setText(transactionData.getDateTime());
-            amountTextView.setText(String.valueOf(transactionData.getAmount()));
+            amountTextView.setText(transactionData.getAmount());
             catagoryTextView.setText(transactionData.getCategory());
             return view;
         }
