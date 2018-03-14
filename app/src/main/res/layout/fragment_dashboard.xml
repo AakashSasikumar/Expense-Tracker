@@ -11,29 +11,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/todayCardView"
+            android:id="@+id/lastMonthCardView"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
             app:contentPadding="8dp"
             app:cardBackgroundColor="@color/dashboardCardViewBackground"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="5dp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Today's Expense"
-                    android:textSize="12sp"
+                    android:text="Last Month"
+                    android:textSize="12dp"
                     android:textStyle="bold"
-                    android:textColor="#82ffffff"
-                    android:layout_gravity="top|start"/>
+                    android:textColor="#FFFF"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/lastMonthTextView"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -43,36 +44,15 @@
                     android:textStyle="bold"
                     android:textColor="#c753ff61"
                     android:layout_centerHorizontal="true"
-                    android:id="@+id/todayExpense"/>
+                    android:layout_below="@+id/lastMonthTextView"
+                    android:id="@+id/lastMonthAmountTextView"/>
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:id="@+id/todayPieChart"
-                    android:layout_below="@id/todayExpense"/>
-
+                    android:id="@+id/lastMonthPieChart"
+                    android:layout_below="@id/lastMonthAmountTextView"/>
             </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/lastMonthCardView"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            app:contentPadding="8dp"
-            app:cardBackgroundColor="@color/dashboardCardViewBackground"
-            app:cardCornerRadius="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Last Month"
-                android:textSize="40dp"
-                android:textStyle="bold"
-                android:textColor="#FFFF"
-                android:layout_gravity="center"/>
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
@@ -140,6 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:id="@+id/transactionListView"
+                    android:nestedScrollingEnabled="true"
                     android:layout_below="@+id/customDatesLinearLayout"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>

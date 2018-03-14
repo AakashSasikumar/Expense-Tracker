@@ -44,7 +44,7 @@ public class DashboardFragment extends Fragment {
         localDatabaseHelper = new LocalDatabaseHelper(dashboardView.getContext(), null, null, 1);
 
         setDatePicker();
-        setTodayPieChart();
+        setLastMonthPieChart();
         displayTransactionlistview();
 
         return dashboardView;
@@ -124,7 +124,8 @@ public class DashboardFragment extends Fragment {
         transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, fromDate , toDate)));
     }
 
-    private void setTodayPieChart() {
+    private void setLastMonthPieChart() {
+        TextView lastMonthAmountTextView = dashboardView.findViewById(R.id.lastMonthAmountTextView);
         PieChart todayPieChart = dashboardView.findViewById(R.id.todayPieChart);
         todayPieChart.setDescription(null);
         todayPieChart.setRotationEnabled(true);
@@ -133,7 +134,9 @@ public class DashboardFragment extends Fragment {
         todayPieChart.setDrawEntryLabels(true);
         //todayPieChart.setHoleColor(R.color.transparent);
 
-        ExpenseData expenseData = localDatabaseHelper.getTodaysExpenses(UserData.userID);
+        ExpenseData expenseData = localDatabaseHelper.getLastMonthExpenses(UserData.userID);
+
+        lastMonthAmountTextView.setText(String.valueOf(expenseData.getTotalExpenseAmount()));
 
         Legend legend = todayPieChart.getLegend();
         legend.setForm(Legend.LegendForm.CIRCLE);
