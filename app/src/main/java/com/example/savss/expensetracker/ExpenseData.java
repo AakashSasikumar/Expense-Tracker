@@ -11,8 +11,10 @@ import java.util.Random;
 
 public class ExpenseData {
     private ArrayList<PieEntry> expenseAmounts = new ArrayList<>();
+    private int totalExpenseAmount = 0;
 
     public void add(String category, int expenseAmount) {
+        totalExpenseAmount += expenseAmount;
         expenseAmounts.add(new PieEntry(expenseAmount, category));
     }
 
@@ -25,5 +27,9 @@ public class ExpenseData {
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
         return pieDataSet;
+    }
+
+    public int getTotalExpenseAmount() {
+        return totalExpenseAmount;
     }
 }
