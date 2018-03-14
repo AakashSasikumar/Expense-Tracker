@@ -126,7 +126,7 @@ public class DashboardFragment extends Fragment {
 
     private void setLastMonthPieChart() {
         TextView lastMonthAmountTextView = dashboardView.findViewById(R.id.lastMonthAmountTextView);
-        PieChart todayPieChart = dashboardView.findViewById(R.id.todayPieChart);
+        PieChart todayPieChart = dashboardView.findViewById(R.id.lastMonthPieChart);
         todayPieChart.setDescription(null);
         todayPieChart.setRotationEnabled(true);
         todayPieChart.setHoleRadius(15f);

@@ -185,20 +185,16 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
         calendar.add(Calendar.MONTH, -1);
-        Date previousMonth = calendar.getTime();
 
         String strCurrentDate = simpleDateFormat.format(currentDate);
         strCurrentDate = strCurrentDate.substring(0, strCurrentDate.length() - 2) + "01";
 
-        String strPreviousMonthDate = simpleDateFormat.format(previousMonth);
-        strPreviousMonthDate = strPreviousMonthDate.substring(0, strPreviousMonthDate.length() - 2) + "01";
-
         System.out.println(strCurrentDate);
         TransactionType tType = TransactionType.Expense;
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        String fetchQuery = String.format("select sum(%s), %s from %s, %s where %s = '%s' and %s.%s = %s.%s and %s = %s and %s between '%s' and '%s' group by(%s.%s);",
+        String fetchQuery = String.format("select sum(%s), %s from %s, %s where %s = '%s' and %s.%s = %s.%s and %s = %s and %s > '%s' group by(%s.%s);",
                                             TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(), TABLE_CATEGORY,
-                                            CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE, strPreviousMonthDate,
+                                            CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE,
                                             strCurrentDate, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
         System.out.println(fetchQuery);
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
