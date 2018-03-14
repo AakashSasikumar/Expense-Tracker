@@ -152,7 +152,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         TransactionType tType = TransactionType.Income;
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String fetchDataQuery = String.format("SELECT SUM(%s), %s FROM %s, %s WHERE %s != '%s' AND %s.%s = %s.%s AND %s = %s AND %s = '%s' GROUP BY (%s.%s);",
-                TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(), TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE, "2018-22-02", TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
+                TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(), TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE, "2018-02-22", TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
         try {
             sqLiteDatabase.execSQL("insert into categories values (1, 'cat1');");
             sqLiteDatabase.execSQL("insert into categories values (2, 'cat2');");
@@ -211,10 +211,9 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public void addTransaction(String userID, int categoryID, String transactionType, String amount, String description) {
-        Date currentDate = Calendar.getInstance().getTime();
+    public void addTransaction(String userID, int categoryID, String transactionType, String amount, String description, Date tdate) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date = simpleDateFormat.format(currentDate);
+        String date = simpleDateFormat.format(tdate);
         ContentValues contentValues = new ContentValues();
         contentValues.put(TRANSACTION_FKEY_USERS_ID, userID);
         contentValues.put(TRANSACTION_DATE, date);

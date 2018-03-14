@@ -143,8 +143,6 @@ public class AddTransactionFragment extends Fragment {
                 return;
             }
 
-            clear.callOnClick();
-            
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date transactionDate = null;
             try {
@@ -154,6 +152,8 @@ public class AddTransactionFragment extends Fragment {
             }
 
             localDatabaseHelper.addTransaction(String.valueOf(UserData.userID), UserData.categories.indexOf(categorySpinner.getSelectedItem().toString()) + 1, valueOfTransactionType, value.getText().toString(), description.getText().toString(), transactionDate);
+
+            clear.callOnClick();
             displayToast("Transaction Added Successfully");
         }
     };

@@ -22,19 +22,6 @@ public class ExpenseData {
         pieDataSet.setValueTextSize(20f);
         pieDataSet.setFormSize(20f);
         pieDataSet.setValueTextColor(Color.WHITE);
-
-
-        /*ArrayList<Integer> chartColors = new ArrayList<>();
-        Random random = new Random();
-        float[] hsv = new float[3];
-
-        for (PieEntry i : expenseAmounts) {
-            hsv[0] = random.nextFloat() * 359;
-            hsv[1] = 0.5f + (random.nextFloat() * 0.5f);
-            hsv[2] = 0.5f + (random.nextFloat() * 0.5f);
-            chartColors.add(Color.HSVToColor(hsv));
-        }*/
-
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
         return pieDataSet;
