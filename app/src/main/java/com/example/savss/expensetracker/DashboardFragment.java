@@ -4,7 +4,9 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,17 +84,19 @@ public class DashboardFragment extends Fragment {
     }
 
     private DatePickerDialog.OnDateSetListener fromDatePickerDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
             month++;
             String pickedDate = day + "/" + month + "/" + year;
             fromDayTextView.setText(pickedDate);
-            transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID)));
+            //transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID)));
             setFromToDate(day + "-" + month + "-" + year, toDayTextView.getText().toString().replace('/', '-'));
         }
     };
 
     private DatePickerDialog.OnDateSetListener toDatePickerDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
             month++;
@@ -102,6 +106,7 @@ public class DashboardFragment extends Fragment {
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setFromToDate(String fromDateString, String toDateString) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date fromDate = null;
