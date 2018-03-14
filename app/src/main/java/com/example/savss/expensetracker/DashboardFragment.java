@@ -54,6 +54,12 @@ public class DashboardFragment extends Fragment {
         fromDayTextView = dashboardView.findViewById(R.id.fromDayTextView);
         toDayTextView = dashboardView.findViewById(R.id.toDayTextView);
 
+        Calendar today = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        toDayTextView.setText(simpleDateFormat.format(today.getTime()));
+        today.add(Calendar.MONTH, -1);
+        fromDayTextView.setText(simpleDateFormat.format(today.getTime()));
+
         fromDayTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,8 +96,7 @@ public class DashboardFragment extends Fragment {
             month++;
             String pickedDate = day + "/" + month + "/" + year;
             fromDayTextView.setText(pickedDate);
-            //transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID)));
-            setFromToDate(day + "-" + month + "-" + year, toDayTextView.getText().toString().replace('/', '-'));
+            setFromToDate(pickedDate, toDayTextView.getText().toString());
         }
     };
 
@@ -102,13 +107,13 @@ public class DashboardFragment extends Fragment {
             month++;
             String pickedDate = day + "/" + month + "/" + year;
             toDayTextView.setText(pickedDate);
-            setFromToDate(fromDayTextView.getText().toString().replace('/', '-'), day + "-" + month + "-" + year);
+            setFromToDate(fromDayTextView.getText().toString(), pickedDate);
         }
     };
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setFromToDate(String fromDateString, String toDateString) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date fromDate = null;
         Date toDate = null;
         try {
@@ -143,9 +148,9 @@ public class DashboardFragment extends Fragment {
 
     private void displayTransactionlistview() {
         transactionListView = dashboardView.findViewById(R.id.transactionListView);
-        Calendar toDate = Calendar.getInstance();
-        toDate.add(Calendar.MONTH, -1);
-        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, Calendar.getInstance().getTime(), toDate.getTime())));
+        Calendar today = Calendar.getInstance();
+        today.add(Calendar.MONTH, -1);
+        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, today.getTime(), Calendar.getInstance().getTime())));
     }
 
     class transactionListViewAdapter extends BaseAdapter {
