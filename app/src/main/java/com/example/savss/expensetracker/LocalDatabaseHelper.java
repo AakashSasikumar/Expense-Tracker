@@ -231,11 +231,11 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<TransactionData> getTransactionData(int id, Date fromDate, Date toDate) {
         //id, amount, dateTime, category, desc
         ArrayList<TransactionData> transactionData = new ArrayList<>();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String strFromDate = simpleDateFormat.format(fromDate);
         String strToDate = simpleDateFormat.format(toDate);
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        String fetchQuery = String.format("select %s.%s, %s.%s, %s.%s, %s.%s, %s.%s, %s.%s from %s, %s where %s.%s = %s.%s and %s.%s = %s and strftime('%%s',%s.%s) between strftime('%%s', '%s') and strftime('%%s', '%s');",
+        String fetchQuery = String.format("select %s.%s, %s.%s, %s.%s, %s.%s, %s.%s, %s.%s from %s, %s where %s.%s = %s.%s and %s.%s = %s and %s.%s between '%s' and '%s';",
                 TABLE_TRANSACTION, TRANSACTION_ID, TABLE_TRANSACTION, TRANSACTION_AMOUNT, TABLE_TRANSACTION, TRANSACTION_DATE, TABLE_CATEGORY, CATEGORY_NAME, TABLE_TRANSACTION, TRANSACTION_DESCRIPTION,
                 TABLE_TRANSACTION, TRANSACTION_TYPE, TABLE_TRANSACTION, TABLE_CATEGORY, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION,
                 TRANSACTION_FKEY_USERS_ID, String.valueOf(id), TABLE_TRANSACTION, TRANSACTION_DATE, strFromDate, strToDate);

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
@@ -28,7 +27,7 @@ import java.util.Calendar;
 
 public class AddTransactionFragment extends Fragment {
 
-    private String transactionType = "";
+    private String transactionType = "+";
     private View addTransactionView;
     private LocalDatabaseHelper localDatabaseHelper;
     private Button income;
@@ -42,6 +41,9 @@ public class AddTransactionFragment extends Fragment {
     private TextView dateTextView;
     private float defaultTextSize = 80;
     private float changedTextSize = 80;
+    int year = Calendar.getInstance().get(Calendar.YEAR);
+    int month = Calendar.getInstance().get(Calendar.MONTH);
+    int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
     Toast toast;
 
     @Override
@@ -71,7 +73,7 @@ public class AddTransactionFragment extends Fragment {
         expense.setOnClickListener(expenseOnClickListener);
         dateTextView = addTransactionView.findViewById(R.id.dateTextView);
         dateTextView.setOnClickListener(dateOnClickListener);
-
+        dateTextView.setText(day + "/" + month + "/" + year);
         ArrayList<String> categories = new ArrayList<>(UserData.categories);
         categories.add(0, "Choose a category");
         ArrayAdapter aa = new ArrayAdapter(addTransactionView.getContext(), R.layout.category_spinner_layout, categories.toArray());
@@ -114,28 +116,25 @@ public class AddTransactionFragment extends Fragment {
         public void onClick(View view) {
             String valueOfTransactionType = transactionType.equals("+") ? "income" : "expense";
 
-            if (Integer.parseInt(value.getText().toString()) == 0) {
-                displayTosat("Add transaction amount");
+            if (Float.parseFloat(value.getText().toString()) == 0.0) {
+                displayToast("Transaction amount cannot be 0");
                 return;
             }
 
             if (categorySpinner.getSelectedItem().toString().equals("Choose a category")) {
-                displayTosat("Choose a category for transaction");
+                displayToast("A category has to be chosen");
                 return;
             }
 
             localDatabaseHelper.addTransaction(String.valueOf(UserData.userID), UserData.categories.indexOf(categorySpinner.getSelectedItem().toString()) + 1, valueOfTransactionType, value.getText().toString(), description.getText().toString());
+            clear.callOnClick();
+            displayToast("Transaction Added Successfully");
         }
     };
 
     private View.OnClickListener dateOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-
             DatePickerDialog datePickerDialog = new DatePickerDialog(addTransactionView.getContext(), R.style.Theme_AppCompat_Light_Dialog, datePickerDateSetListener, year, month, day);
             datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
             datePickerDialog.show();
@@ -151,7 +150,7 @@ public class AddTransactionFragment extends Fragment {
         }
     };
 
-    private void displayTosat(String message) {
+    private void displayToast(String message) {
         Vibrator vib = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         vib.vibrate(120);
 
