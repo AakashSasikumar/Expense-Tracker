@@ -1,6 +1,9 @@
 package com.example.savss.expensetracker;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,14 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class AddTransactionFragment extends Fragment {
 
     private String transactionType = "";
+    private View addTransactionView;
     private LocalDatabaseHelper localDatabaseHelper;
     private Button income;
     private Button expense;
@@ -28,7 +36,8 @@ public class AddTransactionFragment extends Fragment {
     private Button clear;
     private EditText description;
     private Button add;
-    private Spinner categories;
+    private Spinner categorySpinner;
+    private TextView dateTextView;
     private float defaultTextSize = 80;
     private float changedTextSize = 80;
     @Override
@@ -39,8 +48,9 @@ public class AddTransactionFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View addTransactionView = inflater.inflate(R.layout.fragment_add_transaction, container, false);
+        addTransactionView = inflater.inflate(R.layout.fragment_add_transaction, container, false);
         localDatabaseHelper = new LocalDatabaseHelper(addTransactionView.getContext(), null, null, 1);
+
         income = addTransactionView.findViewById(R.id.income_button);
         expense = addTransactionView.findViewById(R.id.expense_button);
         incomeOrExpense = addTransactionView.findViewById(R.id.income_or_expense);
@@ -52,11 +62,17 @@ public class AddTransactionFragment extends Fragment {
         add.setOnClickListener(addOnClickListener);
         income.setOnClickListener(incomeOnClickListener);
         description = addTransactionView.findViewById(R.id.descriptionView);
-        categories = addTransactionView.findViewById(R.id.categorySpinner);
-        ArrayAdapter aa = new ArrayAdapter(addTransactionView.getContext(), R.layout.category_spinner_layout, UserData.categories.toArray());
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categories.setAdapter(aa);
+        categorySpinner = addTransactionView.findViewById(R.id.categorySpinner);
         expense.setOnClickListener(expenseOnClickListener);
+        dateTextView = addTransactionView.findViewById(R.id.dateTextView);
+        dateTextView.setOnClickListener(dateOnClickListener);
+
+        ArrayList<String> categories = new ArrayList<>(UserData.categories);
+        categories.add(0, "Choose a category");
+        ArrayAdapter aa = new ArrayAdapter(addTransactionView.getContext(), R.layout.category_spinner_layout, categories.toArray());
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(aa);
+
         return addTransactionView;
     }
 
@@ -92,10 +108,38 @@ public class AddTransactionFragment extends Fragment {
         @Override
         public void onClick(View view) {
             String valueOfTransactionType = transactionType.equals("+") ? "income" : "expense";
-            localDatabaseHelper.addTransaction(String.valueOf(UserData.userID), UserData.categories.indexOf(categories.getSelectedItem().toString()) + 1, valueOfTransactionType, value.getText().toString(), description.getText().toString());
 
+            if (categorySpinner.getSelectedItem().toString().equals("Choose a category")) {
+                return;
+            }
+
+            localDatabaseHelper.addTransaction(String.valueOf(UserData.userID), UserData.categories.indexOf(categorySpinner.getSelectedItem().toString()) + 1, valueOfTransactionType, value.getText().toString(), description.getText().toString());
         }
     };
+
+    private View.OnClickListener dateOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(addTransactionView.getContext(), R.style.Theme_AppCompat_Light_Dialog, datePickerDateSetListener, year, month, day);
+            datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+            datePickerDialog.show();
+        }
+    };
+
+    private DatePickerDialog.OnDateSetListener datePickerDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+            month++;
+            String pickedDate = day + "/" + month + "/" + year;
+            dateTextView.setText(pickedDate);
+        }
+    };
+
     private TextWatcher valueTextViewWatcher = new TextWatcher() {
         @Override
         public void afterTextChanged(Editable s) {
