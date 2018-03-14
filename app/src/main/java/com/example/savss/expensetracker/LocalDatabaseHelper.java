@@ -152,7 +152,10 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         TransactionType tType = TransactionType.Income;
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String fetchDataQuery = String.format("SELECT SUM(%s), %s FROM %s, %s WHERE %s != '%s' AND %s.%s = %s.%s AND %s = %s AND %s = '%s' GROUP BY (%s.%s);",
-                TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(), TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE, "2018-02-22", TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
+                                                TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(),
+                                                TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID,
+                                                userID, TRANSACTION_DATE, "2018-02-22", TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
+        System.out.println(fetchDataQuery);
         try {
             sqLiteDatabase.execSQL("insert into categories values (1, 'cat1');");
             sqLiteDatabase.execSQL("insert into categories values (2, 'cat2');");
@@ -165,6 +168,40 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         Cursor c = sqLiteDatabase.rawQuery(fetchDataQuery, null);
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            ed.add(c.getString(1), c.getInt(0));
+            c.moveToNext();
+        }
+        sqLiteDatabase.close();
+        getLastMonthExpenses(1);
+        return ed;
+    }
+
+    public ExpenseData getLastMonthExpenses(int userID) {
+        ExpenseData ed = new ExpenseData();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Calendar calendar = Calendar.getInstance();
+        Date currentDate = calendar.getTime();
+        calendar.add(Calendar.MONTH, -1);
+        Date previousMonth = calendar.getTime();
+
+        String strCurrentDate = simpleDateFormat.format(currentDate);
+        strCurrentDate = strCurrentDate.substring(0, strCurrentDate.length() - 2) + "01";
+
+        String strPreviousMonthDate = simpleDateFormat.format(previousMonth);
+        strPreviousMonthDate = strPreviousMonthDate.substring(0, strPreviousMonthDate.length() - 2) + "01";
+
+        System.out.println(strCurrentDate);
+        TransactionType tType = TransactionType.Expense;
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String fetchQuery = String.format("select sum(%s), %s from %s, %s where %s = '%s' and %s.%s = %s.%s and %s = %s and %s between '%s' and '%s' group by(%s.%s);",
+                                            TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(), TABLE_CATEGORY,
+                                            CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE, strPreviousMonthDate,
+                                            strCurrentDate, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
+        System.out.println(fetchQuery);
+        Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
             ed.add(c.getString(1), c.getInt(0));
