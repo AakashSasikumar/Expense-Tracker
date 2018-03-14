@@ -156,10 +156,10 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         try {
             sqLiteDatabase.execSQL("insert into categories values (1, 'cat1');");
             sqLiteDatabase.execSQL("insert into categories values (2, 'cat2');");
-            sqLiteDatabase.execSQL("insert into transactions values(1, 1, '22-02-2018', 1, 'expense', 1000, 'another');");
-            sqLiteDatabase.execSQL("insert into transactions values(2, 1, '22-02-2018', 1, 'income', 1000, 'another');");
-            sqLiteDatabase.execSQL("insert into transactions values(3, 1, '22-02-2018', 1, 'expense', 2000, 'asdf');");
-            sqLiteDatabase.execSQL("insert into transactions values(4, 1, '22-02-2018', 2, 'expense', 4000, 'asdf');");
+            sqLiteDatabase.execSQL("insert into transactions values(1, 1, '2018-02-22', 1, 'expense', 1000, 'another');");
+            sqLiteDatabase.execSQL("insert into transactions values(2, 1, '2018-02-22', 1, 'income', 1000, 'another');");
+            sqLiteDatabase.execSQL("insert into transactions values(3, 1, '2018-02-22', 1, 'expense', 2000, 'asdf');");
+            sqLiteDatabase.execSQL("insert into transactions values(4, 1, '2018-02-22', 2, 'expense', 4000, 'asdf');");
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -213,7 +213,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
     public void addTransaction(String userID, int categoryID, String transactionType, String amount, String description) {
         Date currentDate = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = simpleDateFormat.format(currentDate);
         ContentValues contentValues = new ContentValues();
         contentValues.put(TRANSACTION_FKEY_USERS_ID, userID);
