@@ -104,6 +104,12 @@
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
                         android:text="20/02/2017"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:textColor="@color/BackgroundWhiteColor"
+                        android:background="@drawable/signup_button_background"
                         android:id="@+id/fromDayTextView" />
 
                     <TextView
@@ -111,6 +117,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
+                        android:textColor="@color/BackgroundWhiteColor"
                         android:textSize="20dp"
                         android:text="-"/>
 
@@ -119,6 +126,12 @@
                         android:layout_height="wrap_content"
                         android:textSize="20dp"
                         android:text="22/02/2017"
+                        android:textColor="@color/BackgroundWhiteColor"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:background="@drawable/signup_button_background"
                         android:id="@+id/toDayTextView" />
 
                 </LinearLayout>
