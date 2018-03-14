@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +42,8 @@ public class AddTransactionFragment extends Fragment {
     private TextView dateTextView;
     private float defaultTextSize = 80;
     private float changedTextSize = 80;
+    Toast toast;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,7 @@ public class AddTransactionFragment extends Fragment {
         clear = addTransactionView.findViewById(R.id.clearButton);
         clear.setOnClickListener(clearOnClickListener);
         add = addTransactionView.findViewById(R.id.addButton);
+        toast = Toast.makeText(addTransactionView.getContext(), "", Toast.LENGTH_SHORT);
         add.setOnClickListener(addOnClickListener);
         income.setOnClickListener(incomeOnClickListener);
         description = addTransactionView.findViewById(R.id.descriptionView);
@@ -109,7 +114,13 @@ public class AddTransactionFragment extends Fragment {
         public void onClick(View view) {
             String valueOfTransactionType = transactionType.equals("+") ? "income" : "expense";
 
+            if (Integer.parseInt(value.getText().toString()) == 0) {
+                displayTosat("Add transaction amount");
+                return;
+            }
+
             if (categorySpinner.getSelectedItem().toString().equals("Choose a category")) {
+                displayTosat("Choose a category for transaction");
                 return;
             }
 
@@ -139,6 +150,14 @@ public class AddTransactionFragment extends Fragment {
             dateTextView.setText(pickedDate);
         }
     };
+
+    private void displayTosat(String message) {
+        Vibrator vib = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        vib.vibrate(120);
+
+        toast.setText(message);
+        toast.show();
+    }
 
     private TextWatcher valueTextViewWatcher = new TextWatcher() {
         @Override
