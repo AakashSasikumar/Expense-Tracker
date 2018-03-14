@@ -1,9 +1,11 @@
 package com.example.savss.expensetracker;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -22,8 +24,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class AddTransactionFragment extends Fragment {
@@ -55,30 +59,42 @@ public class AddTransactionFragment extends Fragment {
         addTransactionView = inflater.inflate(R.layout.fragment_add_transaction, container, false);
         localDatabaseHelper = new LocalDatabaseHelper(addTransactionView.getContext(), null, null, 1);
 
+        initialise();
+        setListener();
+
+        return addTransactionView;
+    }
+
+    @SuppressLint("ShowToast")
+    private void initialise() {
         income = addTransactionView.findViewById(R.id.income_button);
         expense = addTransactionView.findViewById(R.id.expense_button);
         incomeOrExpense = addTransactionView.findViewById(R.id.income_or_expense);
         value = addTransactionView.findViewById(R.id.valueDisplay);
-        value.addTextChangedListener(valueTextViewWatcher);
         clear = addTransactionView.findViewById(R.id.clearButton);
-        clear.setOnClickListener(clearOnClickListener);
         add = addTransactionView.findViewById(R.id.addButton);
         toast = Toast.makeText(addTransactionView.getContext(), "", Toast.LENGTH_SHORT);
-        add.setOnClickListener(addOnClickListener);
-        income.setOnClickListener(incomeOnClickListener);
         description = addTransactionView.findViewById(R.id.descriptionView);
         categorySpinner = addTransactionView.findViewById(R.id.categorySpinner);
-        expense.setOnClickListener(expenseOnClickListener);
         dateTextView = addTransactionView.findViewById(R.id.dateTextView);
-        dateTextView.setOnClickListener(dateOnClickListener);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateTextView.setText(simpleDateFormat.format(Calendar.getInstance().getTime()));
 
         ArrayList<String> categories = new ArrayList<>(UserData.categories);
         categories.add(0, "Choose a category");
-        ArrayAdapter aa = new ArrayAdapter(addTransactionView.getContext(), R.layout.category_spinner_layout, categories.toArray());
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySpinner.setAdapter(aa);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(addTransactionView.getContext(), R.layout.category_spinner_layout, categories.toArray());
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(arrayAdapter);
+    }
 
-        return addTransactionView;
+    private void setListener() {
+        value.addTextChangedListener(valueTextViewWatcher);
+        clear.setOnClickListener(clearOnClickListener);
+        add.setOnClickListener(addOnClickListener);
+        income.setOnClickListener(incomeOnClickListener);
+        expense.setOnClickListener(expenseOnClickListener);
+        dateTextView.setOnClickListener(dateOnClickListener);
     }
 
     private View.OnClickListener incomeOnClickListener = new View.OnClickListener() {
@@ -124,7 +140,15 @@ public class AddTransactionFragment extends Fragment {
                 return;
             }
 
-            localDatabaseHelper.addTransaction(String.valueOf(UserData.userID), UserData.categories.indexOf(categorySpinner.getSelectedItem().toString()) + 1, valueOfTransactionType, value.getText().toString(), description.getText().toString());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date transactionDate = null;
+            try {
+                transactionDate = simpleDateFormat.parse(dateTextView.getText().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            localDatabaseHelper.addTransaction(String.valueOf(UserData.userID), UserData.categories.indexOf(categorySpinner.getSelectedItem().toString()) + 1, valueOfTransactionType, value.getText().toString(), description.getText().toString(), transactionDate);
         }
     };
 
