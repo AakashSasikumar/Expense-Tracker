@@ -6,6 +6,7 @@ public class TransactionData {
     private String dateTime;
     private String category;
     private String description;
+    private String transactionType;
 
     public  TransactionData(int id, String amount, String dateTime, String category, String description, String transactionType) {
         this.id = id;
@@ -13,6 +14,7 @@ public class TransactionData {
         this.dateTime = dateTime;
         this.category = category;
         this.description = description;
+        this.transactionType = transactionType;
     }
 
     public int getId() {
@@ -33,5 +35,9 @@ public class TransactionData {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
     }
 }

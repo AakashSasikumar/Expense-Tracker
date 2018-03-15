@@ -10,4 +10,5 @@
     <color name="incomeExpense">#4db6ac</color>
     <color name="incomeExpenseSelected">#009688</color>
     <color name="transparent">#00000000</color>
+    <color name="black">#000000</color>
 </resources>

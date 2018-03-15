@@ -1,6 +1,8 @@
 package com.example.savss.expensetracker;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
@@ -11,8 +13,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,7 +30,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class DashboardFragment extends Fragment {
     private LocalDatabaseHelper localDatabaseHelper;
@@ -32,6 +37,7 @@ public class DashboardFragment extends Fragment {
     private TextView fromDayTextView;
     private TextView toDayTextView;
     private ListView transactionListView;
+    private TransactionListViewAdapter transactionListViewAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +116,64 @@ public class DashboardFragment extends Fragment {
         }
     };
 
+    private AdapterView.OnItemClickListener transactionListViewItemClickListener = new AdapterView.OnItemClickListener() {
+        private Dialog transactionDataPopUp;
+        private TextView transactionIDTextView;
+        private TextView transactionTypeTextView;
+        private TextView transactionAmountTextView;
+        private TextView transactionCategoryTextView;
+        private TextView transactionDateTextView;
+        private EditText transactionDescriptionEditText;
+        private Button closeButton;
+        private Button editButton;
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            TransactionData transactionData = (TransactionData)transactionListViewAdapter.getItem(i);
+
+            initialisePopUp();
+
+            transactionIDTextView.setText(String.valueOf(transactionData.getId()));
+            transactionTypeTextView.setText(transactionData.getTransactionType());
+            transactionAmountTextView.setText(transactionData.getAmount());
+            transactionCategoryTextView.setText(transactionData.getCategory());
+            transactionDateTextView.setText(transactionData.getDateTime());
+            transactionDescriptionEditText.setText(transactionData.getDescription());
+        }
+
+        private void initialisePopUp() {
+            transactionDataPopUp = new Dialog(dashboardView.getContext());
+            transactionDataPopUp.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            transactionDataPopUp.setContentView(R.layout.transaction_details_popup);
+
+            transactionIDTextView = transactionDataPopUp.findViewById(R.id.transactionIDTextView);
+            transactionTypeTextView = transactionDataPopUp.findViewById(R.id.transactionTypeTextView);
+            transactionAmountTextView = transactionDataPopUp.findViewById(R.id.transactionAmountTextView);
+            transactionCategoryTextView = transactionDataPopUp.findViewById(R.id.transactionCategoryTextView);
+            transactionDateTextView = transactionDataPopUp.findViewById(R.id.transactionDateTextView);
+            transactionDescriptionEditText = transactionDataPopUp.findViewById(R.id.transactionDescriptionEditText);
+            closeButton = transactionDataPopUp.findViewById(R.id.closeButton);
+            editButton = transactionDataPopUp.findViewById(R.id.editButton);
+
+            closeButton.setOnClickListener(closeButtonClickListener);
+            editButton.setOnClickListener(editButtonClickListener);
+        }
+
+        private View.OnClickListener closeButtonClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                transactionDataPopUp.cancel();
+            }
+        };
+
+        private View.OnClickListener editButtonClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        };
+    };
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setFromToDate(String fromDateString, String toDateString) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -121,7 +185,8 @@ public class DashboardFragment extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, fromDate , toDate)));
+        transactionListViewAdapter = new TransactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, fromDate , toDate));
+        transactionListView.setAdapter(transactionListViewAdapter);
     }
 
     private void setLastMonthPieChart() {
@@ -152,25 +217,29 @@ public class DashboardFragment extends Fragment {
         transactionListView = dashboardView.findViewById(R.id.transactionListView);
         Calendar today = Calendar.getInstance();
         today.add(Calendar.MONTH, -1);
-        transactionListView.setAdapter(new transactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, today.getTime(), Calendar.getInstance().getTime())));
+
+        transactionListViewAdapter = new TransactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, today.getTime(), Calendar.getInstance().getTime()));
+        transactionListView.setAdapter(transactionListViewAdapter);
+
+        transactionListView.setOnItemClickListener(transactionListViewItemClickListener);
     }
 
-    class transactionListViewAdapter extends BaseAdapter {
+    class TransactionListViewAdapter extends BaseAdapter {
 
-        private ArrayList<TransactionData> transactionDatas;
+        private ArrayList<TransactionData> transactionData;
 
-        private transactionListViewAdapter(ArrayList<TransactionData> transactionDatas) {
-            this.transactionDatas = transactionDatas;
+        private TransactionListViewAdapter(ArrayList<TransactionData> transactionData) {
+            this.transactionData = transactionData;
         }
 
         @Override
         public int getCount() {
-            return transactionDatas.size();
+            return transactionData.size();
         }
 
         @Override
         public Object getItem(int i) {
-            return transactionDatas.get(i);
+            return transactionData.get(i);
         }
 
         @Override
@@ -185,10 +254,11 @@ public class DashboardFragment extends Fragment {
             TextView amountTextView = view.findViewById(R.id.amountTextView);
             TextView catagoryTextView = view.findViewById(R.id.catagoryTextView);
 
-            TransactionData transactionData = transactionDatas.get(i);
+            TransactionData transactionData = this.transactionData.get(i);
 
             dateTextView.setText(transactionData.getDateTime());
-            amountTextView.setText(transactionData.getAmount());
+            String amount = (transactionData.getTransactionType().toLowerCase().equals("income") ? "+" : "-") + " " + transactionData.getAmount();
+            amountTextView.setText(amount);
             catagoryTextView.setText(transactionData.getCategory());
             return view;
         }

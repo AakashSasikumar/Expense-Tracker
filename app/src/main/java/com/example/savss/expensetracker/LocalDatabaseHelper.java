@@ -55,6 +55,18 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(userTableCreationQuery);
         sqLiteDatabase.execSQL(categoryTableCreationQuery);
         sqLiteDatabase.execSQL(transactionTableCreationQuery);
+
+        try {
+            sqLiteDatabase.execSQL("insert into categories values (1, 'cat1');");
+            sqLiteDatabase.execSQL("insert into categories values (2, 'cat2');");
+            sqLiteDatabase.execSQL("insert into transactions values(1, 1, '2018-02-22', 1, 'expense', 1000, 'another');");
+            sqLiteDatabase.execSQL("insert into transactions values(2, 1, '2018-02-22', 1, 'income', 1000, 'another');");
+            sqLiteDatabase.execSQL("insert into transactions values(3, 1, '2018-02-22', 1, 'expense', 2000, 'asdf');");
+            sqLiteDatabase.execSQL("insert into transactions values(4, 1, '2018-02-22', 2, 'expense', 4000, 'asdf');");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean tryAddUser(String name, String email, String phoneNumber, String password) {
@@ -156,17 +168,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
                                                 TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID,
                                                 userID, TRANSACTION_DATE, "2018-02-22", TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
         System.out.println(fetchDataQuery);
-        try {
-            sqLiteDatabase.execSQL("insert into categories values (1, 'cat1');");
-            sqLiteDatabase.execSQL("insert into categories values (2, 'cat2');");
-            sqLiteDatabase.execSQL("insert into transactions values(1, 1, '2018-02-22', 1, 'expense', 1000, 'another');");
-            sqLiteDatabase.execSQL("insert into transactions values(2, 1, '2018-02-22', 1, 'income', 1000, 'another');");
-            sqLiteDatabase.execSQL("insert into transactions values(3, 1, '2018-02-22', 1, 'expense', 2000, 'asdf');");
-            sqLiteDatabase.execSQL("insert into transactions values(4, 1, '2018-02-22', 2, 'expense', 4000, 'asdf');");
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+
         Cursor c = sqLiteDatabase.rawQuery(fetchDataQuery, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
