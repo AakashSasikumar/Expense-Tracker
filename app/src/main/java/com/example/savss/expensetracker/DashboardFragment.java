@@ -15,12 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -120,25 +123,32 @@ public class DashboardFragment extends Fragment {
         private Dialog transactionDataPopUp;
         private TextView transactionIDTextView;
         private TextView transactionTypeTextView;
+        private TextView transactionTypeEdit;
         private TextView transactionAmountTextView;
+        private EditText transactionAmountEditText;
         private TextView transactionCategoryTextView;
+        private Spinner transactionCategorySpinner;
         private TextView transactionDateTextView;
+        private TextView transactionDateEdit;
+        private TextView transactionDescriptionTextView;
         private EditText transactionDescriptionEditText;
         private Button closeButton;
         private Button editButton;
+        private ViewSwitcher transactionTypeViewSwitcher;
+        private ViewSwitcher transactionAmountViewSwitcher;
+        private ViewSwitcher transactionCategoryViewSwitcher;
+        private ViewSwitcher transactionDateViewViewSwitcher;
+        private ViewSwitcher transactionDescriptionViewSwitcher;
+        private TransactionData transactionData;
+        private boolean isEdited = false;
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            TransactionData transactionData = (TransactionData)transactionListViewAdapter.getItem(i);
+            transactionData = (TransactionData)transactionListViewAdapter.getItem(i);
 
             initialisePopUp();
-
-            transactionIDTextView.setText(String.valueOf(transactionData.getId()));
-            transactionTypeTextView.setText(transactionData.getTransactionType());
-            transactionAmountTextView.setText(transactionData.getAmount());
-            transactionCategoryTextView.setText(transactionData.getCategory());
-            transactionDateTextView.setText(transactionData.getDateTime());
-            transactionDescriptionEditText.setText(transactionData.getDescription());
+            displayTransactionDetails();
+            editTransactionDetails();
         }
 
         private void initialisePopUp() {
@@ -148,16 +158,100 @@ public class DashboardFragment extends Fragment {
 
             transactionIDTextView = transactionDataPopUp.findViewById(R.id.transactionIDTextView);
             transactionTypeTextView = transactionDataPopUp.findViewById(R.id.transactionTypeTextView);
+            transactionTypeEdit = transactionDataPopUp.findViewById(R.id.transactionTypeEdit);
             transactionAmountTextView = transactionDataPopUp.findViewById(R.id.transactionAmountTextView);
+            transactionAmountEditText = transactionDataPopUp.findViewById(R.id.transactionAmountEditText);
             transactionCategoryTextView = transactionDataPopUp.findViewById(R.id.transactionCategoryTextView);
+            transactionCategorySpinner = transactionDataPopUp.findViewById(R.id.transactionCategorySpinner);
             transactionDateTextView = transactionDataPopUp.findViewById(R.id.transactionDateTextView);
+            transactionDateEdit = transactionDataPopUp.findViewById(R.id.transactionDateEdit);
+            transactionDescriptionTextView = transactionDataPopUp.findViewById(R.id.transactionDescriptionTextView);
             transactionDescriptionEditText = transactionDataPopUp.findViewById(R.id.transactionDescriptionEditText);
             closeButton = transactionDataPopUp.findViewById(R.id.closeButton);
             editButton = transactionDataPopUp.findViewById(R.id.editButton);
+            transactionTypeViewSwitcher = transactionDataPopUp.findViewById(R.id.transactionTypeViewSwitcher);
+            transactionAmountViewSwitcher = transactionDataPopUp.findViewById(R.id.transactionAmountViewSwitcher);
+            transactionCategoryViewSwitcher = transactionDataPopUp.findViewById(R.id.transactionCategoryViewSwitcher);
+            transactionDateViewViewSwitcher = transactionDataPopUp.findViewById(R.id.transactionDateViewViewSwitcher);
+            transactionDescriptionViewSwitcher = transactionDataPopUp.findViewById(R.id.transactionDescriptionViewSwitcher);
 
             closeButton.setOnClickListener(closeButtonClickListener);
             editButton.setOnClickListener(editButtonClickListener);
+            transactionTypeEdit.setOnClickListener(transactionTypeEditClickListener);
+            transactionDateEdit.setOnClickListener(transactionDateEditClickListener);
+
+            String id = "#" + String.valueOf(transactionData.getId());
+            transactionIDTextView.setText(id);
+
+            transactionDataPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(180,0,0,0)));
+            transactionDataPopUp.show();
         }
+
+        private void displayTransactionDetails() {
+            setViewSwitcherView(0);
+
+            editButton.setText("Accept");
+            transactionTypeTextView.setText(transactionData.getTransactionType());
+            transactionAmountTextView.setText(transactionData.getAmount());
+            transactionCategoryTextView.setText(transactionData.getCategory());
+            transactionDateTextView.setText(transactionData.getDateTime());
+            transactionDescriptionTextView.setText(transactionData.getDescription());
+        }
+
+        private void editTransactionDetails() {
+            isEdited = true;
+
+            setViewSwitcherView(1);
+
+            transactionTypeEdit.setText(transactionData.getTransactionType());
+            transactionAmountEditText.setText(transactionData.getAmount());
+
+            ArrayAdapter arrayAdapter = new ArrayAdapter(transactionDataPopUp.getContext(), R.layout.category_spinner_layout, UserData.categories.toArray());
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            transactionCategorySpinner.setAdapter(arrayAdapter);
+
+            transactionDateEdit.setText(transactionData.getDateTime());
+            transactionDescriptionEditText.setText(transactionData.getDescription());
+        }
+
+        private void setViewSwitcherView(int viewIntex) {
+            transactionTypeViewSwitcher.setDisplayedChild(viewIntex);
+            transactionAmountViewSwitcher.setDisplayedChild(viewIntex);
+            transactionCategoryViewSwitcher.setDisplayedChild(viewIntex);
+            transactionDateViewViewSwitcher.setDisplayedChild(viewIntex);
+            transactionDescriptionViewSwitcher.setDisplayedChild(viewIntex);
+        }
+
+        private View.OnClickListener transactionTypeEditClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String transactionType = transactionTypeEdit.getText().toString().toLowerCase().equals("income") ? "Expense" : "Income";
+                transactionTypeEdit.setText(transactionType);
+            }
+        };
+
+        private View.OnClickListener transactionDateEditClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(transactionDataPopUp.getContext(), R.style.Theme_AppCompat_Light_Dialog, transactionDatePickerDateSetListener, year, month, day);
+                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                datePickerDialog.show();
+            }
+        };
+
+        private DatePickerDialog.OnDateSetListener transactionDatePickerDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month++;
+                String pickedDate = day + "/" + month + "/" + year;
+                transactionDateEdit.setText(pickedDate);
+            }
+        };
 
         private View.OnClickListener closeButtonClickListener = new View.OnClickListener() {
             @Override
@@ -169,7 +263,24 @@ public class DashboardFragment extends Fragment {
         private View.OnClickListener editButtonClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (isEdited) {
+                    // TODO: Update transaction details in SQLite
 
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    Date fromDate = null;
+                    Date toDate = null;
+                    try {
+                        fromDate = simpleDateFormat.parse(fromDayTextView.getText().toString());
+                        toDate = simpleDateFormat.parse(toDayTextView.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    transactionListViewAdapter = new TransactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, fromDate , toDate));
+                    transactionListView.setAdapter(transactionListViewAdapter);
+                }
+                else {
+                    editTransactionDetails();
+                }
             }
         };
     };

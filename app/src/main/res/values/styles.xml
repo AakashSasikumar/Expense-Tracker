@@ -17,10 +17,4 @@
         <item name="colorControlHighlight">@color/BackgroundWhiteColor</item>
     </style>
 
-    <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textColorHint">@color/black</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
 </resources>

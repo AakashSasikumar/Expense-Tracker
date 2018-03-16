@@ -10,11 +10,11 @@ public class TransactionData {
 
     public  TransactionData(int id, String amount, String dateTime, String category, String description, String transactionType) {
         this.id = id;
-        this.amount = (transactionType.toLowerCase().equals("income") ? "+" : "-") + " " + amount;
+        this.amount = amount;
         this.dateTime = dateTime;
         this.category = category;
         this.description = description;
-        this.transactionType = transactionType;
+        this.transactionType = transactionType.substring(0,1).toUpperCase() + transactionType.substring(1).toLowerCase();
     }
 
     public int getId() {
