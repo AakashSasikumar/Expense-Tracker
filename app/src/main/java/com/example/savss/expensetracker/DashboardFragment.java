@@ -233,7 +233,6 @@ public class DashboardFragment extends Fragment {
 
             String id = "#" + String.valueOf(transactionData.getId());
             transactionIDTextView.setText(id);
-            editButton.setText("Edit");
 
             transactionDataPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(180,255,255,255)));
             transactionDataPopUp.show();
@@ -242,7 +241,6 @@ public class DashboardFragment extends Fragment {
         private void displayTransactionDetails() {
             setViewSwitcherView(0);
 
-            editButton.setText("Accept");
             transactionTypeTextView.setText(transactionData.getTransactionType());
             transactionAmountTextView.setText(transactionData.getAmount());
             transactionCategoryTextView.setText(transactionData.getCategory());
@@ -334,6 +332,7 @@ public class DashboardFragment extends Fragment {
                     transactionListView.setAdapter(transactionListViewAdapter);
                 }
                 else {
+                    editButton.setText("Accept");
                     editTransactionDetails();
                 }
             }
