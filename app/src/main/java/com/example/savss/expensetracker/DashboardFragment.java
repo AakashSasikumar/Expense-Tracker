@@ -68,8 +68,17 @@ public class DashboardFragment extends Fragment {
     private void setCustomDatesBarChart() {
         customDatesBarChart = dashboardView.findViewById(R.id.customDatesBarChart);
 
-        // TODO: Get data from SQLite
-        BarChartExpenseData barChartExpenseData = new BarChartExpenseData();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fromDate = null;
+        Date toDate = null;
+        try {
+            fromDate = simpleDateFormat.parse(fromDayTextView.getText().toString());
+            toDate = simpleDateFormat.parse(toDayTextView.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        BarChartExpenseData barChartExpenseData = localDatabaseHelper.getCustomDateTransactionData(UserData.userID, fromDate, toDate);
 
         customDatesBarChart.setData(barChartExpenseData.getBarData());
         customDatesBarChart.groupBars(0f, 0.5f, 0f);
@@ -191,7 +200,6 @@ public class DashboardFragment extends Fragment {
 
             initialisePopUp();
             displayTransactionDetails();
-            editTransactionDetails();
         }
 
         private void initialisePopUp() {
@@ -226,7 +234,7 @@ public class DashboardFragment extends Fragment {
             String id = "#" + String.valueOf(transactionData.getId());
             transactionIDTextView.setText(id);
 
-            transactionDataPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(180,0,0,0)));
+            transactionDataPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(180,255,255,255)));
             transactionDataPopUp.show();
         }
 
