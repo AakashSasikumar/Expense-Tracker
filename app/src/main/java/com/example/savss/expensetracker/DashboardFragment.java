@@ -2,7 +2,6 @@ package com.example.savss.expensetracker;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
@@ -25,9 +24,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -41,6 +45,7 @@ public class DashboardFragment extends Fragment {
     private TextView toDayTextView;
     private ListView transactionListView;
     private TransactionListViewAdapter transactionListViewAdapter;
+    private BarChart customDatesBarChart;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,8 +60,46 @@ public class DashboardFragment extends Fragment {
         setDatePicker();
         setLastMonthPieChart();
         displayTransactionlistview();
+        setCustomDatesBarChart();
 
         return dashboardView;
+    }
+
+    private void setCustomDatesBarChart() {
+        customDatesBarChart = dashboardView.findViewById(R.id.customDatesBarChart);
+
+        // TODO: Get data from SQLite
+        BarChartExpenseData barChartExpenseData = new BarChartExpenseData();
+
+        customDatesBarChart.setData(barChartExpenseData.getBarData());
+        customDatesBarChart.groupBars(0f, 0.5f, 0f);
+        customDatesBarChart.getData().setHighlightEnabled(false);
+        customDatesBarChart.invalidate();
+
+        Legend barChartLegend = customDatesBarChart.getLegend();
+        barChartLegend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        barChartLegend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        barChartLegend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        barChartLegend.setDrawInside(true);
+        barChartLegend.setYOffset(20f);
+        barChartLegend.setXOffset(0f);
+        barChartLegend.setYEntrySpace(0f);
+        barChartLegend.setTextSize(12f);
+        barChartLegend.setTextColor(Color.WHITE);
+
+        XAxis xAxis = customDatesBarChart.getXAxis();
+        xAxis.setGranularity(1f);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(barChartExpenseData.getCategories()));
+
+        customDatesBarChart.getAxisRight().setEnabled(false);
+        YAxis leftAxis = customDatesBarChart.getAxisLeft();
+        leftAxis.setValueFormatter(new LargeValueFormatter());
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setSpaceTop(35f);
     }
 
     private void setDatePicker() {
@@ -310,15 +353,19 @@ public class DashboardFragment extends Fragment {
         todayPieChart.setDrawEntryLabels(true);
         //todayPieChart.setHoleColor(R.color.transparent);
 
-        ExpenseData expenseData = localDatabaseHelper.getLastMonthExpenses(UserData.userID);
+        PieChartExpenseData pieChartExpenseData = localDatabaseHelper.getLastMonthExpenses(UserData.userID);
 
-        lastMonthAmountTextView.setText(String.valueOf(expenseData.getTotalExpenseAmount()));
+        lastMonthAmountTextView.setText(String.valueOf(pieChartExpenseData.getTotalExpenseAmount()));
 
         Legend legend = todayPieChart.getLegend();
         legend.setForm(Legend.LegendForm.CIRCLE);
-        legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setTextSize(12f);
+        legend.setTextColor(Color.WHITE);
 
-        PieData pieData = new PieData(expenseData.getPieDataSet());
+        PieData pieData = new PieData(pieChartExpenseData.getPieDataSet());
         todayPieChart.setData(pieData);
         todayPieChart.animateXY(500, 500);
         todayPieChart.invalidate();

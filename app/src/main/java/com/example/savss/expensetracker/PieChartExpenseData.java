@@ -9,7 +9,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ExpenseData {
+public class PieChartExpenseData {
     private ArrayList<PieEntry> expenseAmounts = new ArrayList<>();
     private int totalExpenseAmount = 0;
 
@@ -20,7 +20,7 @@ public class ExpenseData {
 
     public PieDataSet getPieDataSet() {
         PieDataSet pieDataSet = new PieDataSet(expenseAmounts, "");
-        pieDataSet.setSliceSpace(5);
+        pieDataSet.setSliceSpace(10);
         pieDataSet.setValueTextSize(20f);
         pieDataSet.setFormSize(20f);
         pieDataSet.setValueTextColor(Color.WHITE);

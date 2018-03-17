@@ -158,8 +158,8 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         return Integer.parseInt(userID);
     }
 
-    public ExpenseData getTodaysExpenses(int userID) {
-        ExpenseData ed = new ExpenseData();
+    public PieChartExpenseData getTodaysExpenses(int userID) {
+        PieChartExpenseData pieChartExpenseData = new PieChartExpenseData();
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         TransactionType tType = TransactionType.Income;
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
@@ -172,16 +172,16 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         Cursor c = sqLiteDatabase.rawQuery(fetchDataQuery, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
-            ed.add(c.getString(1), c.getInt(0));
+            pieChartExpenseData.add(c.getString(1), c.getInt(0));
             c.moveToNext();
         }
         sqLiteDatabase.close();
         getLastMonthExpenses(1);
-        return ed;
+        return pieChartExpenseData;
     }
 
-    public ExpenseData getLastMonthExpenses(int userID) {
-        ExpenseData ed = new ExpenseData();
+    public PieChartExpenseData getLastMonthExpenses(int userID) {
+        PieChartExpenseData pieChartExpenseData = new PieChartExpenseData();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         Calendar calendar = Calendar.getInstance();
@@ -202,11 +202,11 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
-            ed.add(c.getString(1), c.getInt(0));
+            pieChartExpenseData.add(c.getString(1), c.getInt(0));
             c.moveToNext();
         }
         sqLiteDatabase.close();
-        return ed;
+        return pieChartExpenseData;
     }
 
     public void setUserData(int userID) {
