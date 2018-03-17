@@ -8,8 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import org.w3c.dom.UserDataHandler;
-
 public class HomeActivity extends AppCompatActivity {
 
     private int selectedID = -1;
@@ -37,8 +35,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(this, null, null, 1);
-        localDatabaseHelper.setUserData(UserData.userID);
-
+        localDatabaseHelper.initializeUserData(UserData.userID);
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 

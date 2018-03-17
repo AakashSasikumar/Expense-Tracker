@@ -167,7 +167,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
                                                 TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(),
                                                 TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID,
                                                 userID, TRANSACTION_DATE, "2018-02-22", TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
-        System.out.println(fetchDataQuery);
+        //System.out.println(fetchDataQuery);
 
         Cursor c = sqLiteDatabase.rawQuery(fetchDataQuery, null);
         c.moveToFirst();
@@ -185,20 +185,20 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         Calendar calendar = Calendar.getInstance();
-        Date currentDate = calendar.getTime();
         calendar.add(Calendar.MONTH, -1);
+        Date currentDate = calendar.getTime();
 
         String strCurrentDate = simpleDateFormat.format(currentDate);
         strCurrentDate = strCurrentDate.substring(0, strCurrentDate.length() - 2) + "01";
 
-        System.out.println(strCurrentDate);
+        //System.out.println(strCurrentDate);
         TransactionType tType = TransactionType.Expense;
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         String fetchQuery = String.format("select sum(%s), %s from %s, %s where %s = '%s' and %s.%s = %s.%s and %s = %s and %s > '%s' group by(%s.%s);",
                                             TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(), TABLE_CATEGORY,
                                             CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE,
                                             strCurrentDate, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
-        System.out.println(fetchQuery);
+        //System.out.println(fetchQuery);
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
@@ -209,7 +209,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         return pieChartExpenseData;
     }
 
-    public void setUserData(int userID) {
+    public void initializeUserData(int userID) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         String tempAddr = "221 Baker Street";
         String DOB = "03-06-1997";
@@ -228,14 +228,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
             c.moveToNext();
         }
 
-        fetchQuery = String.format("select * from %s", TABLE_CATEGORY);
-        c = sqLiteDatabase.rawQuery(fetchQuery, null);
-        c.moveToFirst();
-        ArrayList<String> categories = new ArrayList<>();
-        while (!c.isAfterLast()) {
-            categories.add(c.getString(1));
-            c.moveToNext();
-        }
+        ArrayList<String> categories = getAllCategories();
         UserData.categories = categories;
         sqLiteDatabase.close();
     }
@@ -273,7 +266,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
                 TABLE_TRANSACTION, TRANSACTION_ID, TABLE_TRANSACTION, TRANSACTION_AMOUNT, TABLE_TRANSACTION, TRANSACTION_DATE, TABLE_CATEGORY, CATEGORY_NAME, TABLE_TRANSACTION, TRANSACTION_DESCRIPTION,
                 TABLE_TRANSACTION, TRANSACTION_TYPE, TABLE_TRANSACTION, TABLE_CATEGORY, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TABLE_CATEGORY, CATEGORY_ID, TABLE_TRANSACTION,
                 TRANSACTION_FKEY_USERS_ID, String.valueOf(id), TABLE_TRANSACTION, TRANSACTION_DATE, strFromDate, strToDate);
-        System.out.println(fetchQuery);
+        //System.out.println(fetchQuery);
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
@@ -283,4 +276,53 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.close();
         return transactionData;
     }
+
+    private ArrayList<String> getAllCategories () {
+        ArrayList<String> categories = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String fetchQuery = String.format("select * from %s", TABLE_CATEGORY);
+        Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            categories.add(c.getString(1));
+            c.moveToNext();
+        }
+        sqLiteDatabase.close();
+        return categories;
+    }
+
+    public BarChartExpenseData getCustomDateTransactionData(int userID, Date fromDate, Date toDate) {
+        BarChartExpenseData barChartExpenseData = new BarChartExpenseData();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strFromDate = simpleDateFormat.format(fromDate);
+        String strToDate = simpleDateFormat.format(toDate);
+        //String strFromDate = "2018-03-03";
+        //String strToDate = "2018-03-03";
+
+
+        ArrayList<String> categories = getAllCategories();
+        for (String category: categories) {
+            String fetchQuery = String.format("select sum(%s), %s from %s, %s where %s.%s = %s.%s and %s.%s = '%s' and %s.%s = %s and %s.%s between '%s' and '%s' group by (%s);",
+                    TRANSACTION_AMOUNT, TRANSACTION_TYPE, TABLE_TRANSACTION, TABLE_CATEGORY, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID,
+                    TABLE_CATEGORY, CATEGORY_ID, TABLE_CATEGORY, CATEGORY_NAME, category, TABLE_TRANSACTION, TRANSACTION_FKEY_USERS_ID, userID,
+                    TABLE_TRANSACTION, TRANSACTION_DATE, strFromDate, strToDate, TRANSACTION_TYPE);
+            System.out.println(fetchQuery);
+            SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+            Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
+            c.moveToFirst();
+            while(!c.isAfterLast()) {
+                if (c.getString(1).equals("income")) {
+                    barChartExpenseData.add(category, 0, Integer.parseInt(c.getString(0)));
+                }
+                else {
+                    barChartExpenseData.add(category, Integer.parseInt(c.getString(0)), 0);
+                }
+                c.moveToNext();
+            }
+            sqLiteDatabase.close();
+
+        }
+        return barChartExpenseData;
+    }
+
 }
