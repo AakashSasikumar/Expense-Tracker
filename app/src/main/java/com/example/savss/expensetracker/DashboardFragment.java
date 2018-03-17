@@ -233,6 +233,7 @@ public class DashboardFragment extends Fragment {
 
             String id = "#" + String.valueOf(transactionData.getId());
             transactionIDTextView.setText(id);
+            editButton.setText("Edit");
 
             transactionDataPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(180,255,255,255)));
             transactionDataPopUp.show();
@@ -315,6 +316,9 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (isEdited) {
+                    isEdited = false;
+                    transactionDataPopUp.cancel();
+
                     // TODO: Update transaction details in SQLite
 
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
