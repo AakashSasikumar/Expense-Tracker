@@ -89,8 +89,8 @@ public class DashboardFragment extends Fragment {
         customDatesBarChart.setScaleEnabled(false);
         customDatesBarChart.setDrawBarShadow(false);
         customDatesBarChart.setDrawGridBackground(false);
+        customDatesBarChart.animateXY(500, 500);
         customDatesBarChart.getXAxis().setAxisMaximum(0 + customDatesBarChart.getBarData().getGroupWidth(0.5f, 0f) * barChartExpenseData.count());
-        customDatesBarChart.invalidate();
 
         Legend barChartLegend = customDatesBarChart.getLegend();
         barChartLegend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -127,6 +127,36 @@ public class DashboardFragment extends Fragment {
         yAxis.setTextSize(12f);
         yAxis.setSpaceTop(35f);
         yAxis.setAxisMinimum(0f);
+
+        customDatesBarChart.invalidate();
+    }
+
+    private void refreashListItemsAndChart() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fromDate = null;
+        Date toDate = null;
+        try {
+            fromDate = simpleDateFormat.parse(fromDayTextView.getText().toString());
+            toDate = simpleDateFormat.parse(toDayTextView.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        BarChartExpenseData barChartExpenseData = localDatabaseHelper.getCustomDateTransactionData(UserData.userID, fromDate, toDate);
+
+        customDatesBarChart.setData(barChartExpenseData.getBarData());
+        customDatesBarChart.groupBars(0f, 0.5f, 0f);
+        customDatesBarChart.getData().setHighlightEnabled(false);
+        customDatesBarChart.setDescription(null);
+        customDatesBarChart.setPinchZoom(false);
+        customDatesBarChart.setScaleEnabled(false);
+        customDatesBarChart.setDrawBarShadow(false);
+        customDatesBarChart.setDrawGridBackground(false);
+        customDatesBarChart.animateXY(500, 500);
+        customDatesBarChart.invalidate();
+
+        transactionListViewAdapter = new TransactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, fromDate , toDate));
+        transactionListView.setAdapter(transactionListViewAdapter);
     }
 
     private void setDatePicker() {
@@ -174,7 +204,7 @@ public class DashboardFragment extends Fragment {
             month++;
             String pickedDate = day + "/" + month + "/" + year;
             fromDayTextView.setText(pickedDate);
-            setFromToDate(pickedDate, toDayTextView.getText().toString());
+            refreashListItemsAndChart();
         }
     };
 
@@ -185,7 +215,7 @@ public class DashboardFragment extends Fragment {
             month++;
             String pickedDate = day + "/" + month + "/" + year;
             toDayTextView.setText(pickedDate);
-            setFromToDate(fromDayTextView.getText().toString(), pickedDate);
+            refreashListItemsAndChart();
         }
     };
 
@@ -251,6 +281,7 @@ public class DashboardFragment extends Fragment {
 
             String id = "#" + String.valueOf(transactionData.getId());
             transactionIDTextView.setText(id);
+            isEdited = false;
 
             transactionDataPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(180,255,255,255)));
             transactionDataPopUp.show();
@@ -337,17 +368,7 @@ public class DashboardFragment extends Fragment {
 
                     // TODO: Update transaction details in SQLite
 
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    Date fromDate = null;
-                    Date toDate = null;
-                    try {
-                        fromDate = simpleDateFormat.parse(fromDayTextView.getText().toString());
-                        toDate = simpleDateFormat.parse(toDayTextView.getText().toString());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    transactionListViewAdapter = new TransactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, fromDate , toDate));
-                    transactionListView.setAdapter(transactionListViewAdapter);
+                    refreashListItemsAndChart();
                 }
                 else {
                     editButton.setText("Accept");
@@ -356,21 +377,6 @@ public class DashboardFragment extends Fragment {
             }
         };
     };
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void setFromToDate(String fromDateString, String toDateString) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date fromDate = null;
-        Date toDate = null;
-        try {
-            fromDate = simpleDateFormat.parse(fromDateString);
-            toDate = simpleDateFormat.parse(toDateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        transactionListViewAdapter = new TransactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, fromDate , toDate));
-        transactionListView.setAdapter(transactionListViewAdapter);
-    }
 
     private void setLastMonthPieChart() {
         TextView lastMonthAmountTextView = dashboardView.findViewById(R.id.lastMonthAmountTextView);
