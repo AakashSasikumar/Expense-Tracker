@@ -296,9 +296,6 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String strFromDate = simpleDateFormat.format(fromDate);
         String strToDate = simpleDateFormat.format(toDate);
-        //String strFromDate = "2018-03-03";
-        //String strToDate = "2018-03-03";
-
 
         ArrayList<String> categories = getAllCategories();
         for (String category: categories) {
@@ -310,17 +307,19 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
             SQLiteDatabase sqLiteDatabase = getWritableDatabase();
             Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
             c.moveToFirst();
+            int incomeAmount = 0;
+            int expenseAmount = 0;
             while(!c.isAfterLast()) {
                 if (c.getString(1).equals("income")) {
-                    barChartExpenseData.add(category, 0, Integer.parseInt(c.getString(0)));
+                    incomeAmount = Integer.parseInt(c.getString(0));
                 }
                 else {
-                    barChartExpenseData.add(category, Integer.parseInt(c.getString(0)), 0);
+                    expenseAmount = Integer.parseInt(c.getString(0));
                 }
                 c.moveToNext();
             }
             sqLiteDatabase.close();
-
+            barChartExpenseData.add(category, expenseAmount, incomeAmount);
         }
         return barChartExpenseData;
     }
