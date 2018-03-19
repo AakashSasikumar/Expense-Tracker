@@ -42,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         setFragment(new DashboardFragment(), R.id.navigation_dashboard);
+       // FirebaseDBHelper.setMyRef();
     }
 
     private boolean setFragment(Fragment fragment, int id) {

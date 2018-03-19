@@ -11,15 +11,25 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class SignUpActivity extends AppCompatActivity {
 
     Toast toast;
+    FirebaseDatabase database;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
+        database = FirebaseDatabase.getInstance();
+
     }
 
     public void signUpButton_onClick(View view) {
@@ -33,8 +43,12 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (isSignUpDetailsValid(yourName, emailAddress, phoneNumber, password, confirmPassword)) {
             LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(this, null, null, 1);
+
             boolean addUserResult = localDatabaseHelper.tryAddUser(yourName.getText().toString(), emailAddress.getText().toString(), phoneNumber.getText().toString(), password.getText().toString());
+
             if (addUserResult) {
+
+                FirebaseDBHelper.addUser(yourName.getText().toString(), emailAddress.getText().toString(), phoneNumber.getText().toString(), password.getText().toString());
                 Intent toDashboard = new Intent(this, HomeActivity.class);
                 toDashboard.putExtra(LocalDatabaseHelper.COLUMN_ID, localDatabaseHelper.getUserID(emailAddress.getText().toString()));
                 startActivity(toDashboard);
