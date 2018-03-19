@@ -8,6 +8,8 @@
     <string name="userNameEditTextHint">YOUR NAME</string>
     <string name="emailAddressEditTextHint">EMAIL ID</string>
     <string name="phoneNumberEditTextHint">PHONE NUMBER</string>
+    <string name="addressEditTextHint">ADDRESS</string>
+    <string name="dobEditTextHint">DATE OF BIRTH</string>
     <string name="emptyIDError">Enter ID</string>
     <string name="emptyPasswordError">Enter Password</string>
     <string name="emptyYourNameError">Enter your name</string>

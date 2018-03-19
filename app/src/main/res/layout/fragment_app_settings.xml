@@ -94,7 +94,6 @@
                 android:text=" Save Category "
                 android:textColor="@color/buttonBlue" />
 
-
         </RelativeLayout>
     </ViewSwitcher>
 
