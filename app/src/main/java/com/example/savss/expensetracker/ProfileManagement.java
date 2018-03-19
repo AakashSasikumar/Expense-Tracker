@@ -16,7 +16,7 @@ import android.widget.Button;
 public class ProfileManagement extends Fragment {
 
     private ViewSwitcher viewSwitcher;
-    Button btnNext, btnPrev;
+    Button btnNext, btnPrev,btn;
     private TextView name;
     private TextView email;
     private TextView address;
@@ -37,6 +37,7 @@ public class ProfileManagement extends Fragment {
 
         btnNext = (Button) viewapp.findViewById(R.id.changeProfile);
         btnPrev = (Button) viewapp.findViewById(R.id.updateProfile);
+        btn = (Button) viewapp.findViewById(R.id.cancel);
         viewSwitcher = (ViewSwitcher) viewapp.findViewById(R.id.profileViewSwitcher);
 
         setName();
@@ -46,6 +47,7 @@ public class ProfileManagement extends Fragment {
         setDOB();
         btnNext.setOnClickListener(setViewSwitcherNext);
         btnPrev.setOnClickListener(setViewSwitcherPrev);
+        btn.setOnClickListener(setViewSwitcherPrev1);
         return viewapp;
 
     }
@@ -64,11 +66,18 @@ public class ProfileManagement extends Fragment {
             //Toast.makeText(getActivity(), "hello", Toast.LENGTH_SHORT).show();
         }
     };
+    private View.OnClickListener setViewSwitcherPrev1 = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            viewSwitcher.setDisplayedChild(0);
+            //Toast.makeText(getActivity(), "hello", Toast.LENGTH_SHORT).show();
+        }
+    };
     private void setName(){
 
         name = viewSwitcher.findViewById(R.id.textView6);
         name.setText(UserData.Name);
-        
+
 
     }
     private void setEmail(){
