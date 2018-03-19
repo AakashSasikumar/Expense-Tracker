@@ -24,4 +24,6 @@
     <string name="userSuccessfullyAdded">Account successfully created</string>
     <string name="tab_text_1">Profile Management</string>
     <string name="tab_text_2">App Settings</string>
+    <string name="newCategory">New Category</string>
+    <string name="newBudget">Budget</string>
 </resources>

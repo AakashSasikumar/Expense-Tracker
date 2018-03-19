@@ -3,6 +3,7 @@ package com.example.savss.expensetracker;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,11 +12,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.PopupWindow;
 import android.widget.TextView;
-
+import android.widget.ViewSwitcher;
+import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +48,10 @@ public class SettingsFragment extends Fragment {
         // Set Tabs inside Toolbar
         TabLayout tabs = (TabLayout) view.findViewById(R.id.result_tabs);//fixture_tabs?????????????
         tabs.setupWithViewPager(viewPager);
-
-
         return view;
 
     }
+
     private void setupViewPager(ViewPager viewPager) {
 
 
