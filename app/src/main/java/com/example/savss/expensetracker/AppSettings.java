@@ -19,7 +19,7 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 /**
- * Created by Saumya on 26-02-2018.
+ * Created by Shradhaa on 26-02-2018.
  */
 
 public class AppSettings extends Fragment {
