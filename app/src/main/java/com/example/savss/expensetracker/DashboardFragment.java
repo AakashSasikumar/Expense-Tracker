@@ -316,7 +316,10 @@ public class DashboardFragment extends Fragment {
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             transactionCategorySpinner.setAdapter(arrayAdapter);
 
-            transactionDateEdit.setText(transactionData.getDateTime());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String transactionDateString = simpleDateFormat.format(transactionData.getDateTime());
+
+            transactionDateEdit.setText(transactionDateString);
             transactionDescriptionEditText.setText(transactionData.getDescription());
         }
 
