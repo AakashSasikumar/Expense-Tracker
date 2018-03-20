@@ -31,9 +31,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="50dp"
-                android:background="@color/colorPrimaryDark"
-                android:text=" Add Category "
-                android:textColor="@color/buttonBlue" />
+                android:background="@drawable/login_button_background"
+                android:text=" Add Category " />
 
         </RelativeLayout>
 
@@ -87,12 +86,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
                 android:layout_gravity="bottom"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="50dp"
-                android:background="@color/colorPrimaryDark"
-                android:text=" Save Category "
-                android:textColor="@color/buttonBlue" />
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/login_button_background"
+                android:text=" Save Category " />
+
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="bottom"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="50dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/login_button_background"
+                android:text=" Cancel " />
 
         </RelativeLayout>
     </ViewSwitcher>
