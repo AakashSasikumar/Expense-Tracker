@@ -257,7 +257,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<TransactionData> getTransactionData(int id, Date fromDate, Date toDate) throws ParseException {
+    public ArrayList<TransactionData> getTransactionData(int id, Date fromDate, Date toDate){
         //id, amount, dateTime, category, desc
         ArrayList<TransactionData> transactionData = new ArrayList<>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -272,7 +272,12 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
-            Date date = simpleDateFormat.parse(c.getString(2));
+            Date date = null;
+            try {
+                date = simpleDateFormat.parse(c.getString(2));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             transactionData.add(new TransactionData(Integer.parseInt(c.getString(0)), c.getString(1), date, c.getString(3), c.getString(4), c.getString(5)));
             c.moveToNext();
         }
