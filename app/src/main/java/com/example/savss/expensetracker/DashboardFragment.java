@@ -241,6 +241,7 @@ public class DashboardFragment extends Fragment {
         private ViewSwitcher transactionDescriptionViewSwitcher;
         private TransactionData transactionData;
         private boolean isEdited = false;
+        private Button deleteButton;
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -267,6 +268,7 @@ public class DashboardFragment extends Fragment {
             transactionDescriptionTextView = transactionDataPopUp.findViewById(R.id.transactionDescriptionTextView);
             transactionDescriptionEditText = transactionDataPopUp.findViewById(R.id.transactionDescriptionEditText);
             closeButton = transactionDataPopUp.findViewById(R.id.closeButton);
+            deleteButton = transactionDataPopUp.findViewById(R.id.deleteButton);
             editButton = transactionDataPopUp.findViewById(R.id.editButton);
             transactionTypeViewSwitcher = transactionDataPopUp.findViewById(R.id.transactionTypeViewSwitcher);
             transactionAmountViewSwitcher = transactionDataPopUp.findViewById(R.id.transactionAmountViewSwitcher);
@@ -275,6 +277,7 @@ public class DashboardFragment extends Fragment {
             transactionDescriptionViewSwitcher = transactionDataPopUp.findViewById(R.id.transactionDescriptionViewSwitcher);
 
             closeButton.setOnClickListener(closeButtonClickListener);
+            deleteButton.setOnClickListener(deleteButtonClickListener);
             editButton.setOnClickListener(editButtonClickListener);
             transactionTypeEdit.setOnClickListener(transactionTypeEditClickListener);
             transactionDateEdit.setOnClickListener(transactionDateEditClickListener);
@@ -293,7 +296,11 @@ public class DashboardFragment extends Fragment {
             transactionTypeTextView.setText(transactionData.getTransactionType());
             transactionAmountTextView.setText(transactionData.getAmount());
             transactionCategoryTextView.setText(transactionData.getCategory());
-            transactionDateTextView.setText(transactionData.getDateTime());
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String transactionDateString = simpleDateFormat.format(transactionData.getDateTime());
+
+            transactionDateTextView.setText(transactionDateString);
             transactionDescriptionTextView.setText(transactionData.getDescription());
         }
 
@@ -309,7 +316,10 @@ public class DashboardFragment extends Fragment {
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             transactionCategorySpinner.setAdapter(arrayAdapter);
 
-            transactionDateEdit.setText(transactionData.getDateTime());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String transactionDateString = simpleDateFormat.format(transactionData.getDateTime());
+
+            transactionDateEdit.setText(transactionDateString);
             transactionDescriptionEditText.setText(transactionData.getDescription());
         }
 
@@ -359,6 +369,14 @@ public class DashboardFragment extends Fragment {
             }
         };
 
+        private View.OnClickListener deleteButtonClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                localDatabaseHelper.deleteTransaction(transactionData.getId());
+                refreashListItemsAndChart();
+            }
+        };
+
         private View.OnClickListener editButtonClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -366,7 +384,17 @@ public class DashboardFragment extends Fragment {
                     isEdited = false;
                     transactionDataPopUp.cancel();
 
-                    // TODO: Update transaction details in SQLite
+                    TransactionType transactionType = transactionTypeEdit.getText().toString().toLowerCase().equals("income") ? TransactionType.Income : TransactionType.Expense;
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    Date transactionDate = null;
+                    try {
+                        transactionDate = simpleDateFormat.parse(transactionDateEdit.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    localDatabaseHelper.updateTransactionDetails(transactionData.getId(), transactionType, transactionAmountEditText.getText().toString(), UserData.categories.indexOf(transactionCategorySpinner.getSelectedItem().toString()) + 1, transactionDate, transactionDescriptionEditText.getText().toString());
 
                     refreashListItemsAndChart();
                 }
@@ -449,7 +477,10 @@ public class DashboardFragment extends Fragment {
 
             TransactionData transactionData = this.transactionData.get(i);
 
-            dateTextView.setText(transactionData.getDateTime());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String transactionDateString = simpleDateFormat.format(transactionData.getDateTime());
+
+            dateTextView.setText(transactionDateString);
             String amount = (transactionData.getTransactionType().toLowerCase().equals("income") ? "+" : "-") + " " + transactionData.getAmount();
             amountTextView.setText(amount);
             catagoryTextView.setText(transactionData.getCategory());
