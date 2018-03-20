@@ -56,21 +56,24 @@ public class ProfileManagement extends Fragment {
         @Override
         public void onClick(View view) {
             viewSwitcher.setDisplayedChild(1);
-            //Toast.makeText(getActivity(), "hello", Toast.LENGTH_SHORT).show();
+
         }
     };
     private View.OnClickListener setViewSwitcherPrev = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+
+            LocalDatabaseHelper localDatabaseHelper = new LocalDatabaseHelper(getActivity(),null,null,1);
+
+            //localDatabaseHelper.updateUserData(UserData.userID, yourName.getText().toString(), emailAddress.getText().toString(),address.getText().toString(),phoneNumber.getText().toString(),password.getText().toString());
+            localDatabaseHelper.initializeUserData(UserData.userID);
             viewSwitcher.setDisplayedChild(0);
-            //Toast.makeText(getActivity(), "hello", Toast.LENGTH_SHORT).show();
         }
     };
     private View.OnClickListener setViewSwitcherPrev1 = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             viewSwitcher.setDisplayedChild(0);
-            //Toast.makeText(getActivity(), "hello", Toast.LENGTH_SHORT).show();
         }
     };
     private void setName(){
