@@ -377,9 +377,9 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
     public void updateUserData(int userID, String name, String email, String address, String phone, String password) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        String updateQuery = String.format("update %s set %s='%s, %s='%s', %s='%s', %s='%s';", TABLE_USERS,
+        String updateQuery = String.format("update %s set %s='%s, %s='%s', %s='%s', %s='%s' where %s = %s;", TABLE_USERS,
                                             USERS_NAME, name, USERS_EMAIL, email, USERS_PHONENUMBER, phone,
-                                            USERS_PASSWORD, password);
+                                            USERS_PASSWORD, password, USERS_ID, userID);
         sqLiteDatabase.rawQuery(updateQuery, null);
         sqLiteDatabase.close();
     }
