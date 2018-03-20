@@ -30,6 +30,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 
@@ -83,7 +84,13 @@ public class DashboardFragment extends Fragment {
         customDatesBarChart.setData(barChartExpenseData.getBarData());
         customDatesBarChart.groupBars(0f, 0.5f, 0f);
         customDatesBarChart.getData().setHighlightEnabled(false);
-        customDatesBarChart.invalidate();
+        customDatesBarChart.setDescription(null);
+        customDatesBarChart.setPinchZoom(false);
+        customDatesBarChart.setScaleEnabled(false);
+        customDatesBarChart.setDrawBarShadow(false);
+        customDatesBarChart.setDrawGridBackground(false);
+        customDatesBarChart.animateXY(500, 500);
+        customDatesBarChart.getXAxis().setAxisMaximum(0 + customDatesBarChart.getBarData().getGroupWidth(0.5f, 0f) * barChartExpenseData.count());
 
         Legend barChartLegend = customDatesBarChart.getLegend();
         barChartLegend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -97,18 +104,59 @@ public class DashboardFragment extends Fragment {
         barChartLegend.setTextColor(Color.WHITE);
 
         XAxis xAxis = customDatesBarChart.getXAxis();
+        xAxis.setAxisLineColor(Color.WHITE);
+        xAxis.setGridColor(Color.WHITE);
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextSize(12f);
         xAxis.setGranularity(1f);
         xAxis.setGranularityEnabled(true);
         xAxis.setCenterAxisLabels(true);
         xAxis.setDrawGridLines(false);
+        xAxis.setAxisMinimum(0);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(barChartExpenseData.getCategories()));
+        xAxis.setLabelCount(barChartExpenseData.getBarData().getEntryCount());
 
         customDatesBarChart.getAxisRight().setEnabled(false);
-        YAxis leftAxis = customDatesBarChart.getAxisLeft();
-        leftAxis.setValueFormatter(new LargeValueFormatter());
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setSpaceTop(35f);
+        YAxis yAxis = customDatesBarChart.getAxisLeft();
+        yAxis.setAxisLineColor(Color.WHITE);
+        yAxis.setGridColor(Color.WHITE);
+        yAxis.setTextColor(Color.WHITE);
+        yAxis.setValueFormatter(new LargeValueFormatter());
+        yAxis.setDrawGridLines(true);
+        yAxis.setTextSize(12f);
+        yAxis.setSpaceTop(35f);
+        yAxis.setAxisMinimum(0f);
+
+        customDatesBarChart.invalidate();
+    }
+
+    private void refreashListItemsAndChart() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fromDate = null;
+        Date toDate = null;
+        try {
+            fromDate = simpleDateFormat.parse(fromDayTextView.getText().toString());
+            toDate = simpleDateFormat.parse(toDayTextView.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        BarChartExpenseData barChartExpenseData = localDatabaseHelper.getCustomDateTransactionData(UserData.userID, fromDate, toDate);
+
+        customDatesBarChart.setData(barChartExpenseData.getBarData());
+        customDatesBarChart.groupBars(0f, 0.5f, 0f);
+        customDatesBarChart.getData().setHighlightEnabled(false);
+        customDatesBarChart.setDescription(null);
+        customDatesBarChart.setPinchZoom(false);
+        customDatesBarChart.setScaleEnabled(false);
+        customDatesBarChart.setDrawBarShadow(false);
+        customDatesBarChart.setDrawGridBackground(false);
+        customDatesBarChart.animateXY(500, 500);
+        customDatesBarChart.invalidate();
+
+        transactionListViewAdapter = new TransactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, fromDate , toDate));
+        transactionListView.setAdapter(transactionListViewAdapter);
     }
 
     private void setDatePicker() {
@@ -156,7 +204,7 @@ public class DashboardFragment extends Fragment {
             month++;
             String pickedDate = day + "/" + month + "/" + year;
             fromDayTextView.setText(pickedDate);
-            setFromToDate(pickedDate, toDayTextView.getText().toString());
+            refreashListItemsAndChart();
         }
     };
 
@@ -167,7 +215,7 @@ public class DashboardFragment extends Fragment {
             month++;
             String pickedDate = day + "/" + month + "/" + year;
             toDayTextView.setText(pickedDate);
-            setFromToDate(fromDayTextView.getText().toString(), pickedDate);
+            refreashListItemsAndChart();
         }
     };
 
@@ -233,7 +281,7 @@ public class DashboardFragment extends Fragment {
 
             String id = "#" + String.valueOf(transactionData.getId());
             transactionIDTextView.setText(id);
-            editButton.setText("Edit");
+            isEdited = false;
 
             transactionDataPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(180,255,255,255)));
             transactionDataPopUp.show();
@@ -242,7 +290,6 @@ public class DashboardFragment extends Fragment {
         private void displayTransactionDetails() {
             setViewSwitcherView(0);
 
-            editButton.setText("Accept");
             transactionTypeTextView.setText(transactionData.getTransactionType());
             transactionAmountTextView.setText(transactionData.getAmount());
             transactionCategoryTextView.setText(transactionData.getCategory());
@@ -321,39 +368,15 @@ public class DashboardFragment extends Fragment {
 
                     // TODO: Update transaction details in SQLite
 
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    Date fromDate = null;
-                    Date toDate = null;
-                    try {
-                        fromDate = simpleDateFormat.parse(fromDayTextView.getText().toString());
-                        toDate = simpleDateFormat.parse(toDayTextView.getText().toString());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    transactionListViewAdapter = new TransactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, fromDate , toDate));
-                    transactionListView.setAdapter(transactionListViewAdapter);
+                    refreashListItemsAndChart();
                 }
                 else {
+                    editButton.setText("Accept");
                     editTransactionDetails();
                 }
             }
         };
     };
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void setFromToDate(String fromDateString, String toDateString) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date fromDate = null;
-        Date toDate = null;
-        try {
-            fromDate = simpleDateFormat.parse(fromDateString);
-            toDate = simpleDateFormat.parse(toDateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        transactionListViewAdapter = new TransactionListViewAdapter(localDatabaseHelper.getTransactionData(UserData.userID, fromDate , toDate));
-        transactionListView.setAdapter(transactionListViewAdapter);
-    }
 
     private void setLastMonthPieChart() {
         TextView lastMonthAmountTextView = dashboardView.findViewById(R.id.lastMonthAmountTextView);

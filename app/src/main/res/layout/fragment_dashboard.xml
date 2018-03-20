@@ -120,7 +120,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:layout_below="@+id/customDatesLinearLayout"
-                    android:id="@+id/customDatesBarChart"/>
+                    android:id="@+id/customDatesBarChart"
+                    android:layout_marginBottom="10dp"/>
 
                 <ListView
                     android:layout_width="match_parent"
