@@ -29,6 +29,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String CATEGORY_ID = "category_id";
     public static final String CATEGORY_NAME = "name";
+    public static final String CATEGORY_BUDGET = "budget";
 
     public static final String TRANSACTION_ID = "transaction_id";
     public static final String TRANSACTION_FKEY_USERS_ID = "user_id";
@@ -46,8 +47,8 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String userTableCreationQuery = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT, %s TEXT, %s TEXT);",
                 TABLE_USERS, USERS_ID, USERS_NAME, USERS_EMAIL, USERS_PHONENUMBER, USERS_PASSWORD);
-        String categoryTableCreationQuery = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT);",
-                TABLE_CATEGORY, CATEGORY_ID, CATEGORY_NAME);
+        String categoryTableCreationQuery = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s INTEGER);",
+                TABLE_CATEGORY, CATEGORY_ID, CATEGORY_NAME, CATEGORY_BUDGET);
 
         String transactionTableCreationQuery = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s INTEGER, %s DATETIME, %s INTEGER, %s TEXT, %s INTEGER, %s TEXT, FOREIGN KEY(%s) REFERENCES %s(%s), FOREIGN KEY (%s) REFERENCES %s(%s));",
                 TABLE_TRANSACTION, TRANSACTION_ID, TRANSACTION_FKEY_USERS_ID, TRANSACTION_DATE, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_TYPE, TRANSACTION_AMOUNT, TRANSACTION_DESCRIPTION, TRANSACTION_FKEY_USERS_ID, TABLE_USERS, USERS_ID, TRANSACTION_FKEY_CATEGORY_ID, TABLE_CATEGORY, CATEGORY_ID);
@@ -57,8 +58,8 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(transactionTableCreationQuery);
 
         try {
-            sqLiteDatabase.execSQL("insert into categories values (1, 'cat1');");
-            sqLiteDatabase.execSQL("insert into categories values (2, 'cat2');");
+            sqLiteDatabase.execSQL("insert into categories values (1, 'cat1', 5000);");
+            sqLiteDatabase.execSQL("insert into categories values (2, 'cat2', 10000);");
             sqLiteDatabase.execSQL("insert into transactions values(1, 1, '2018-02-22', 1, 'expense', 1000, 'another');");
             sqLiteDatabase.execSQL("insert into transactions values(2, 1, '2018-02-22', 1, 'income', 1000, 'another');");
             sqLiteDatabase.execSQL("insert into transactions values(3, 1, '2018-02-22', 1, 'expense', 2000, 'asdf');");
@@ -277,7 +278,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         return transactionData;
     }
 
-    private ArrayList<String> getAllCategories () {
+    public ArrayList<String> getAllCategories () {
         ArrayList<String> categories = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         String fetchQuery = String.format("select * from %s", TABLE_CATEGORY);
@@ -323,6 +324,15 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
         }
         return barChartExpenseData;
+    }
+
+    public void makeNewCategory (String name, int budget) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CATEGORY_NAME, name);
+        contentValues.put(CATEGORY_BUDGET, budget);
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        sqLiteDatabase.insert(TABLE_CATEGORY, null, contentValues);
+        sqLiteDatabase.close();
     }
 
 }
