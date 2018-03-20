@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -256,7 +257,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<TransactionData> getTransactionData(int id, Date fromDate, Date toDate) {
+    public ArrayList<TransactionData> getTransactionData(int id, Date fromDate, Date toDate){
         //id, amount, dateTime, category, desc
         ArrayList<TransactionData> transactionData = new ArrayList<>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -271,7 +272,13 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
         c.moveToFirst();
         while (!c.isAfterLast()) {
-            transactionData.add(new TransactionData(Integer.parseInt(c.getString(0)), c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5)));
+            Date date = null;
+            try {
+                date = simpleDateFormat.parse(c.getString(2));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            transactionData.add(new TransactionData(Integer.parseInt(c.getString(0)), c.getString(1), date, c.getString(3), c.getString(4), c.getString(5)));
             c.moveToNext();
         }
         sqLiteDatabase.close();
@@ -335,7 +342,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Integer> getAllCategoryBudgets() {
-        String fetchQuery = String.format("select %s from %s", CATEGORY_BUDGET, TABLE_CATEGORY);
+        String fetchQuery = String.format("select %s from %s;", CATEGORY_BUDGET, TABLE_CATEGORY);
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ArrayList<Integer> budgets = new ArrayList<>();
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
@@ -352,25 +359,27 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = simpleDateFormat.format(date);
-        String updateQuery = String.format("update %s set %s='%s', %s=%s, %s=%s, %s='%s', %s='%s' where %s = %s",
+        String updateQuery = String.format("update %s set %s='%s', %s=%s, %s=%s, %s='%s', %s='%s' where %s = %s;",
                 TABLE_TRANSACTION, TRANSACTION_TYPE, type.toString(), TRANSACTION_AMOUNT, amount, TRANSACTION_FKEY_CATEGORY_ID, categoryID,
                 TRANSACTION_DATE, strDate, TRANSACTION_DESCRIPTION, description, TRANSACTION_ID, transactionID);
+        System.out.println(updateQuery);
         sqLiteDatabase.rawQuery(updateQuery, null);
         sqLiteDatabase.close();
     }
 
     public void deleteTransaction(int transactionID) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        String deleteQuery = String.format("delete from %s where %s = %s", TABLE_TRANSACTION, TRANSACTION_ID, transactionID);
+        String deleteQuery = String.format("delete from %s where %s = %s;", TABLE_TRANSACTION, TRANSACTION_ID, transactionID);
+        System.out.println(deleteQuery);
         sqLiteDatabase.rawQuery(deleteQuery, null);
         sqLiteDatabase.close();
     }
 
     public void updateUserData(int userID, String name, String email, String address, String phone, String password) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        String updateQuery = String.format("update %s set %s='%s, %s='%s', %s='%s', %s='%s'", TABLE_USERS,
+        String updateQuery = String.format("update %s set %s='%s, %s='%s', %s='%s', %s='%s' where %s = %s;", TABLE_USERS,
                                             USERS_NAME, name, USERS_EMAIL, email, USERS_PHONENUMBER, phone,
-                                            USERS_PASSWORD, password);
+                                            USERS_PASSWORD, password, USERS_ID, userID);
         sqLiteDatabase.rawQuery(updateQuery, null);
         sqLiteDatabase.close();
     }
