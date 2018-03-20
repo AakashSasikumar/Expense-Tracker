@@ -334,4 +334,18 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
+    public ArrayList<Integer> getAllCategoryBudgets() {
+        String fetchQuery = String.format("select %s from %s", CATEGORY_BUDGET, TABLE_CATEGORY);
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        ArrayList<Integer> budgets = new ArrayList<>();
+        Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
+        c.moveToFirst();
+        while(!c.isAfterLast()) {
+            budgets.add(Integer.parseInt(c.getString(0)));
+            c.moveToNext();
+        }
+        sqLiteDatabase.close();
+        return budgets;
+    }
+
 }
