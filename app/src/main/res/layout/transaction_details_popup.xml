@@ -158,6 +158,18 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/login_button_background"
+        android:text="Delete"
+        android:id="@+id/deleteButton"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/transactionDescriptionViewSwitcher"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_alignParentEnd="true"
         android:background="@drawable/login_button_background"
         android:text="Edit"

@@ -1,14 +1,16 @@
 package com.example.savss.expensetracker;
 
+import java.util.Date;
+
 public class TransactionData {
     private int id;
     private String amount;
-    private String dateTime;
+    private Date dateTime;
     private String category;
     private String description;
     private String transactionType;
 
-    public  TransactionData(int id, String amount, String dateTime, String category, String description, String transactionType) {
+    public  TransactionData(int id, String amount, Date dateTime, String category, String description, String transactionType) {
         this.id = id;
         this.amount = amount;
         this.dateTime = dateTime;
@@ -25,7 +27,7 @@ public class TransactionData {
         return amount;
     }
 
-    public String getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
