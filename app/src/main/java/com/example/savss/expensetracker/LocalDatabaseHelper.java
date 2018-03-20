@@ -363,7 +363,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
                 TABLE_TRANSACTION, TRANSACTION_TYPE, type.toString(), TRANSACTION_AMOUNT, amount, TRANSACTION_FKEY_CATEGORY_ID, categoryID,
                 TRANSACTION_DATE, strDate, TRANSACTION_DESCRIPTION, description, TRANSACTION_ID, transactionID);
         System.out.println(updateQuery);
-        sqLiteDatabase.rawQuery(updateQuery, null);
+        sqLiteDatabase.execSQL(updateQuery);
         sqLiteDatabase.close();
     }
 
@@ -371,7 +371,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         String deleteQuery = String.format("delete from %s where %s = %s;", TABLE_TRANSACTION, TRANSACTION_ID, transactionID);
         System.out.println(deleteQuery);
-        sqLiteDatabase.rawQuery(deleteQuery, null);
+        sqLiteDatabase.execSQL(deleteQuery);
         sqLiteDatabase.close();
     }
 
@@ -380,7 +380,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         String updateQuery = String.format("update %s set %s='%s', %s='%s', %s='%s', %s='%s' where %s = %s;", TABLE_USERS,
                                             USERS_NAME, name, USERS_EMAIL, email, USERS_PHONENUMBER, phone,
                                             USERS_PASSWORD, password, USERS_ID, userID);
-        sqLiteDatabase.rawQuery(updateQuery, null);
+        sqLiteDatabase.execSQL(updateQuery);
         sqLiteDatabase.close();
     }
 
