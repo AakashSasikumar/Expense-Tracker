@@ -296,7 +296,11 @@ public class DashboardFragment extends Fragment {
             transactionTypeTextView.setText(transactionData.getTransactionType());
             transactionAmountTextView.setText(transactionData.getAmount());
             transactionCategoryTextView.setText(transactionData.getCategory());
-            transactionDateTextView.setText(transactionData.getDateTime());
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String transactionDateString = simpleDateFormat.format(transactionData.getDateTime());
+
+            transactionDateTextView.setText(transactionDateString);
             transactionDescriptionTextView.setText(transactionData.getDescription());
         }
 
@@ -366,6 +370,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 localDatabaseHelper.deleteTransaction(transactionData.getId());
+                refreashListItemsAndChart();
             }
         };
 
@@ -469,7 +474,10 @@ public class DashboardFragment extends Fragment {
 
             TransactionData transactionData = this.transactionData.get(i);
 
-            dateTextView.setText(transactionData.getDateTime());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String transactionDateString = simpleDateFormat.format(transactionData.getDateTime());
+
+            dateTextView.setText(transactionDateString);
             String amount = (transactionData.getTransactionType().toLowerCase().equals("income") ? "+" : "-") + " " + transactionData.getAmount();
             amountTextView.setText(amount);
             catagoryTextView.setText(transactionData.getCategory());
