@@ -77,27 +77,36 @@ public class ProfileManagement extends Fragment {
 
         name = viewSwitcher.findViewById(R.id.textView6);
         name.setText(UserData.Name);
-
+        name = viewSwitcher.findViewById(R.id.yourName);
+        name.setText(UserData.Name);
 
     }
     private void setEmail(){
         email = viewSwitcher.findViewById(R.id.textView7);
+        email.setText(UserData.email);
+        email = viewSwitcher.findViewById(R.id.emailAddress);
         email.setText(UserData.email);
 
     }
     private void setAddress(){
         address = viewSwitcher.findViewById(R.id.textView8);
         address.setText(UserData.address);
+        address = viewSwitcher.findViewById(R.id.address);
+        address.setText(UserData.address);
 
     }
     private void setPhoneNumber(){
         phone = viewSwitcher.findViewById(R.id.textView3);
+        phone.setText(UserData.phoneNumber);
+        phone = viewSwitcher.findViewById(R.id.phoneNumber);
         phone.setText(UserData.phoneNumber);
 
     }
     private void setDOB(){
         dob = viewSwitcher.findViewById(R.id.textView10);
         dob.setText(UserData.dateOfBirth);
+
+
 
     }
 }

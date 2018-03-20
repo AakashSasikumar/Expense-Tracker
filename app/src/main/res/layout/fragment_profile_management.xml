@@ -167,7 +167,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="54dp"
             android:backgroundTint="@color/navigationViewBackground"
-
+            android:background="@drawable/login_button_background"
             android:text="Change Profile Settings"
             android:textColor="@color/buttonBlue"
             android:textSize="12dp" />
@@ -317,6 +317,7 @@
             android:textColor="@color/buttonBlue"
             android:text="Update Profile"
             android:textSize="12dp"
+            android:background="@drawable/login_button_background"
 
             />
         <Button
@@ -325,7 +326,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="80dp"
-
+            android:background="@drawable/login_button_background"
             android:layout_toEndOf="@id/updateProfile"
             android:backgroundTint="@color/navigationViewBackground"
             android:textColor="@color/buttonBlue"
