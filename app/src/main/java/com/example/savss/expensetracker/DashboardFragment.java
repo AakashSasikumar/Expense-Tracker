@@ -293,6 +293,8 @@ public class DashboardFragment extends Fragment {
         private void displayTransactionDetails() {
             setViewSwitcherView(0);
 
+            deleteButton.setVisibility(View.INVISIBLE);
+
             transactionTypeTextView.setText(transactionData.getTransactionType());
             transactionAmountTextView.setText(transactionData.getAmount());
             transactionCategoryTextView.setText(transactionData.getCategory());
@@ -308,6 +310,8 @@ public class DashboardFragment extends Fragment {
             isEdited = true;
 
             setViewSwitcherView(1);
+
+            deleteButton.setVisibility(View.VISIBLE);
 
             transactionTypeEdit.setText(transactionData.getTransactionType());
             transactionAmountEditText.setText(transactionData.getAmount());
@@ -374,6 +378,7 @@ public class DashboardFragment extends Fragment {
             public void onClick(View view) {
                 localDatabaseHelper.deleteTransaction(transactionData.getId());
                 refreashListItemsAndChart();
+                transactionDataPopUp.cancel();
             }
         };
 
