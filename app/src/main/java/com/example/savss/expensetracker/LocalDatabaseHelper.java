@@ -348,4 +348,15 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         return budgets;
     }
 
+    public void updateTransactionDetails(int transactionID, TransactionType type, String amount, int categoryID, Date date, String description) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = simpleDateFormat.format(date);
+        String fetchQuery = String.format("update %s set %s='%s', %s=%s, %s=%s, %s='%s', %s='%s' where %s = %s",
+                TABLE_TRANSACTION, TRANSACTION_TYPE, type.toString(), TRANSACTION_AMOUNT, amount, TRANSACTION_FKEY_CATEGORY_ID, categoryID,
+                TRANSACTION_DATE, strDate, TRANSACTION_DESCRIPTION, description, TRANSACTION_ID, transactionID);
+        sqLiteDatabase.rawQuery(fetchQuery, null);
+        sqLiteDatabase.close();
+    }
+
 }
