@@ -25,12 +25,15 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 
@@ -103,6 +106,7 @@ public class DashboardFragment extends Fragment {
         barChartLegend.setTextSize(12f);
         barChartLegend.setTextColor(Color.WHITE);
 
+        IAxisValueFormatter xAxisFormatter = new LabelFormatter(customDatesBarChart, barChartExpenseData.getCategories());
         XAxis xAxis = customDatesBarChart.getXAxis();
         xAxis.setAxisLineColor(Color.WHITE);
         xAxis.setGridColor(Color.WHITE);
@@ -114,7 +118,7 @@ public class DashboardFragment extends Fragment {
         xAxis.setDrawGridLines(false);
         xAxis.setAxisMinimum(0);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(barChartExpenseData.getCategories()));
+        xAxis.setValueFormatter(xAxisFormatter);
         xAxis.setLabelCount(barChartExpenseData.getBarData().getEntryCount());
 
         customDatesBarChart.getAxisRight().setEnabled(false);
@@ -448,6 +452,21 @@ public class DashboardFragment extends Fragment {
         transactionListView.setAdapter(transactionListViewAdapter);
 
         transactionListView.setOnItemClickListener(transactionListViewItemClickListener);
+    }
+
+    private class LabelFormatter implements IAxisValueFormatter {
+        ArrayList<String> labels;
+        BarLineChartBase<?> chart;
+
+        LabelFormatter(BarLineChartBase<?> chart, ArrayList<String> labels) {
+            this.chart = chart;
+            this.labels = labels;
+        }
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            return labels.get((int) value);
+        }
     }
 
     class TransactionListViewAdapter extends BaseAdapter {
