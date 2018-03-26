@@ -6,12 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
@@ -188,18 +189,18 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -1);
-        Date currentDate = calendar.getTime();
+        Date lastMonthDate = calendar.getTime();
 
-        String strCurrentDate = simpleDateFormat.format(currentDate);
-        strCurrentDate = strCurrentDate.substring(0, strCurrentDate.length() - 2) + "01";
+        String strLastMonthDate = simpleDateFormat.format(lastMonthDate);
+        strLastMonthDate = strLastMonthDate.substring(0, strLastMonthDate.length() - 2) + "01";
 
-        //System.out.println(strCurrentDate);
+        //System.out.println(strLastMonthDate);
         TransactionType tType = TransactionType.Expense;
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         String fetchQuery = String.format("select sum(%s), %s from %s, %s where %s = '%s' and %s.%s = %s.%s and %s = %s and %s > '%s' group by(%s.%s);",
                                             TRANSACTION_AMOUNT, CATEGORY_NAME, TABLE_TRANSACTION, TABLE_CATEGORY, TRANSACTION_TYPE, tType.toString(), TABLE_CATEGORY,
                                             CATEGORY_ID, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID, TRANSACTION_FKEY_USERS_ID, userID, TRANSACTION_DATE,
-                                            strCurrentDate, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
+                strLastMonthDate, TABLE_TRANSACTION, TRANSACTION_FKEY_CATEGORY_ID);
         //System.out.println(fetchQuery);
         Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
         c.moveToFirst();
@@ -209,6 +210,32 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         }
         sqLiteDatabase.close();
         return pieChartExpenseData;
+    }
+
+    public ArrayList<String> getLastMonthSpending(int userID) {
+        ArrayList<String> expenses = new ArrayList<>();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+        Date lastMonthDate = calendar.getTime();
+        String strCurrentDate = simpleDateFormat.format(lastMonthDate);
+        strCurrentDate = strCurrentDate.substring(0, strCurrentDate.length() - 2) + "01";
+        Map<String, String> categoryExpenseMap = new HashMap<>();
+        ArrayList<String> allCategories = getAllCategories();
+        for (String category: allCategories) {
+            if (categoryExpenseMap.containsKey((String) category)) {
+                String expense = categoryExpenseMap.get((String) category);
+                expenses.add(expense);
+            }
+            else {
+                expenses.add("0");
+            }
+        }
+
+        for (String e:expenses) {
+            System.out.println(e);
+        }
+        return expenses;
     }
 
     public void initializeUserData(int userID) {
