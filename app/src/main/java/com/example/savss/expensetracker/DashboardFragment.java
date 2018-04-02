@@ -84,8 +84,11 @@ public class DashboardFragment extends Fragment {
 
         BarChartExpenseData barChartExpenseData = localDatabaseHelper.getCustomDateTransactionData(UserData.userID, fromDate, toDate);
 
+        float barWidth = 0.3f;
+        float barSpace = 0f;
+        float groupSpace = 0.4f;
+
         customDatesBarChart.setData(barChartExpenseData.getBarData());
-        customDatesBarChart.groupBars(0f, 0.5f, 0f);
         customDatesBarChart.getData().setHighlightEnabled(false);
         customDatesBarChart.setDescription(null);
         customDatesBarChart.setPinchZoom(false);
@@ -93,7 +96,6 @@ public class DashboardFragment extends Fragment {
         customDatesBarChart.setDrawBarShadow(false);
         customDatesBarChart.setDrawGridBackground(false);
         customDatesBarChart.animateXY(500, 500);
-        customDatesBarChart.getXAxis().setAxisMaximum(0 + customDatesBarChart.getBarData().getGroupWidth(0.5f, 0f) * barChartExpenseData.count());
 
         Legend barChartLegend = customDatesBarChart.getLegend();
         barChartLegend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -106,7 +108,6 @@ public class DashboardFragment extends Fragment {
         barChartLegend.setTextSize(12f);
         barChartLegend.setTextColor(Color.WHITE);
 
-        IAxisValueFormatter xAxisFormatter = new LabelFormatter(customDatesBarChart, barChartExpenseData.getCategories());
         XAxis xAxis = customDatesBarChart.getXAxis();
         xAxis.setAxisLineColor(Color.WHITE);
         xAxis.setGridColor(Color.WHITE);
@@ -118,7 +119,7 @@ public class DashboardFragment extends Fragment {
         xAxis.setDrawGridLines(false);
         xAxis.setAxisMinimum(0);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setValueFormatter(xAxisFormatter);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(barChartExpenseData.getCategories()));
         xAxis.setLabelCount(barChartExpenseData.getBarData().getEntryCount());
 
         customDatesBarChart.getAxisRight().setEnabled(false);
@@ -131,6 +132,12 @@ public class DashboardFragment extends Fragment {
         yAxis.setTextSize(12f);
         yAxis.setSpaceTop(35f);
         yAxis.setAxisMinimum(0f);
+
+        customDatesBarChart.groupBars(0f, groupSpace, barSpace);
+        // customDatesBarChart.getBarData().setBarWidth(barWidth);
+        customDatesBarChart.getXAxis().setAxisMinimum(0);
+        customDatesBarChart.getXAxis().setAxisMaximum(0 + customDatesBarChart.getBarData().getGroupWidth(groupSpace, barSpace) * barChartExpenseData.count());
+        // customDatesBarChart.getXAxis().setAxisMaximum(barChartExpenseData.count() - 1.1f);
 
         customDatesBarChart.invalidate();
     }
@@ -452,21 +459,6 @@ public class DashboardFragment extends Fragment {
         transactionListView.setAdapter(transactionListViewAdapter);
 
         transactionListView.setOnItemClickListener(transactionListViewItemClickListener);
-    }
-
-    private class LabelFormatter implements IAxisValueFormatter {
-        ArrayList<String> labels;
-        BarLineChartBase<?> chart;
-
-        LabelFormatter(BarLineChartBase<?> chart, ArrayList<String> labels) {
-            this.chart = chart;
-            this.labels = labels;
-        }
-
-        @Override
-        public String getFormattedValue(float value, AxisBase axis) {
-            return labels.get((int) value);
-        }
     }
 
     class TransactionListViewAdapter extends BaseAdapter {
