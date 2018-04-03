@@ -11,11 +11,11 @@ User should be able set category-wise spend limit and application should alert t
     - [x] Enable logging-in [user-id, password, OTP (if applicable)]
     - [x] Upon successful login, redirect to the page intended
     - [x] Upon failure, redirect to exception processing (retry, forgot password or register)
-- [ ] Profile Management - Show the personal information collect and allow options for editing (name, address, DoB, current password, preferences)
+- [x] Profile Management - Show the personal information collect and allow options for editing (name, address, DoB, current password, preferences)
 - [ ] Settings Management
-    - [ ] Display the current list of categories and the maximum monthly spending limit under each category
+    - [x] Display the current list of categories and the maximum monthly spending limit under each category
     - [ ] Display the % of expense before alert is generated for each category and the incremental % for sending alerts
-    - [ ] Provide option to add new categories
+    - [x] Provide option to add new categories
     - [ ] Provide an option to list the common shops names under these categories
     - [ ] Type the pattern of the messages usually received from the card companies
 - [ ] Show Analysis
