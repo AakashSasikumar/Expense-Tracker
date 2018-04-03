@@ -43,15 +43,15 @@ public class ProfileManagement extends Fragment {
         btnPrev = (Button) viewapp.findViewById(R.id.updateProfile);
         btn = (Button) viewapp.findViewById(R.id.cancel);
         viewSwitcher = (ViewSwitcher) viewapp.findViewById(R.id.profileViewSwitcher);
+        btnNext.setOnClickListener(setViewSwitcherNext);
+        btnPrev.setOnClickListener(setViewSwitcherPrev);
+        btn.setOnClickListener(setViewSwitcherPrev1);
         setName();
         setEmail();
         setAddress();
         setPhoneNumber();
         setDOB();
         setPassword();
-        btnNext.setOnClickListener(setViewSwitcherNext);
-        btnPrev.setOnClickListener(setViewSwitcherPrev);
-        btn.setOnClickListener(setViewSwitcherPrev1);
         return viewapp;
     }
 
@@ -73,6 +73,12 @@ public class ProfileManagement extends Fragment {
                 localDatabaseHelper.updateUserData(UserData.userID, name.getText().toString(), email.getText().toString(), address.getText().toString(), phone.getText().toString(), password.getText().toString());
                 localDatabaseHelper.initializeUserData(UserData.userID);
                 viewSwitcher.setDisplayedChild(0);
+                setName();
+                setEmail();
+                setAddress();
+                setPhoneNumber();
+                setDOB();
+                setPassword();
             }
         }
     };
