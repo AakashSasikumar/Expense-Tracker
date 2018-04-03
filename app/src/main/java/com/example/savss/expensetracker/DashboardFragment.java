@@ -25,12 +25,15 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 
@@ -81,8 +84,11 @@ public class DashboardFragment extends Fragment {
 
         BarChartExpenseData barChartExpenseData = localDatabaseHelper.getCustomDateTransactionData(UserData.userID, fromDate, toDate);
 
+        float barWidth = 0.3f;
+        float barSpace = 0f;
+        float groupSpace = 0.4f;
+
         customDatesBarChart.setData(barChartExpenseData.getBarData());
-        customDatesBarChart.groupBars(0f, 0.5f, 0f);
         customDatesBarChart.getData().setHighlightEnabled(false);
         customDatesBarChart.setDescription(null);
         customDatesBarChart.setPinchZoom(false);
@@ -90,7 +96,6 @@ public class DashboardFragment extends Fragment {
         customDatesBarChart.setDrawBarShadow(false);
         customDatesBarChart.setDrawGridBackground(false);
         customDatesBarChart.animateXY(500, 500);
-        customDatesBarChart.getXAxis().setAxisMaximum(0 + customDatesBarChart.getBarData().getGroupWidth(0.5f, 0f) * barChartExpenseData.count());
 
         Legend barChartLegend = customDatesBarChart.getLegend();
         barChartLegend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -127,6 +132,12 @@ public class DashboardFragment extends Fragment {
         yAxis.setTextSize(12f);
         yAxis.setSpaceTop(35f);
         yAxis.setAxisMinimum(0f);
+
+        customDatesBarChart.groupBars(0f, groupSpace, barSpace);
+        // customDatesBarChart.getBarData().setBarWidth(barWidth);
+        customDatesBarChart.getXAxis().setAxisMinimum(0);
+        customDatesBarChart.getXAxis().setAxisMaximum(0 + customDatesBarChart.getBarData().getGroupWidth(groupSpace, barSpace) * barChartExpenseData.count());
+        // customDatesBarChart.getXAxis().setAxisMaximum(barChartExpenseData.count() - 1.1f);
 
         customDatesBarChart.invalidate();
     }
