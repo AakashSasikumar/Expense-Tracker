@@ -212,8 +212,8 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         return pieChartExpenseData;
     }
 
-    public ArrayList<String> getLastMonthSpending(int userID) {
-        ArrayList<String> expenses = new ArrayList<>();
+    public ArrayList<Integer> getLastMonthSpending(int userID) {
+        ArrayList<Integer> expenses = new ArrayList<>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -1);
@@ -225,14 +225,14 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         for (String category: allCategories) {
             if (categoryExpenseMap.containsKey((String) category)) {
                 String expense = categoryExpenseMap.get((String) category);
-                expenses.add(expense);
+                expenses.add(Integer.parseInt(expense));
             }
             else {
-                expenses.add("0");
+                expenses.add(Integer.parseInt("0"));
             }
         }
 
-        for (String e:expenses) {
+        for (int e:expenses) {
             System.out.println(e);
         }
         return expenses;
