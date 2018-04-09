@@ -2,9 +2,12 @@ package com.example.savss.expensetracker;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
@@ -169,25 +172,21 @@ public class AddTransactionFragment extends Fragment {
     private void notifyIfExceededLimit(String category, float amount) {
         ArrayList<String> categories = localDatabaseHelper.getAllCategories();
         ArrayList<Integer> budgets = localDatabaseHelper.getAllCategoryBudgets();
-        ArrayList<Integer> expense = localDatabaseHelper.getLastMonthSpending(UserData.userID);
+        ArrayList<Float> expense = localDatabaseHelper.getCategoryWiseExpenses();
 
         int categoryIndex = categories.indexOf(category);
         float finalAmount = expense.get(categoryIndex) + amount;
 
-        if (budgets.get(categoryIndex) < (expense.get(categoryIndex) + amount) || true) {
-            String NOTIFICATION_CHANNEL_ID = "Limit-Alert";
+        if (budgets.get(categoryIndex) < (expense.get(categoryIndex) + amount)) {
+            /*String NOTIFICATION_CHANNEL_ID = "Limit-Alert";
 
             NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
 
-                // Configure the notification channel.
-                notificationChannel.setDescription("Limit alert");
-                notificationChannel.enableLights(true);
-                notificationChannel.setLightColor(Color.RED);
-                notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-                notificationChannel.enableVibration(true);
-                notificationManager.createNotificationChannel(notificationChannel);
+                NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+                        "Channel human readable title",
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(channel);
             }
 
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(addTransactionView.getContext(), NOTIFICATION_CHANNEL_ID);
@@ -195,8 +194,14 @@ public class AddTransactionFragment extends Fragment {
                     .setContentTitle("Category " + category + " Exceeded Limit")
                     .setContentText("You have exceeded your budget " + budgets.get(categoryIndex) + ". Your current expenditure is " + finalAmount + ".");
 
+            Intent notificationIntent = new Intent(getContext(), HomeActivity.class);
+            PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            notificationBuilder.setContentIntent(contentIntent);
+
             notificationManager.notify(1, notificationBuilder.build());
-            System.out.println("notify");
+            System.out.println("notify");*/
+
+            displayToast("You have exceeded your budget " + budgets.get(categoryIndex) + " for " + category + ". Your current expenditure is " + finalAmount + ".");
         }
     }
 

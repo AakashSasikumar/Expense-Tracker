@@ -413,7 +413,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    public ArrayList getCategoryWiseExpenses() {
+    public ArrayList<Float> getCategoryWiseExpenses() {
         ArrayList<Float> expenses = new ArrayList<>();
         String fetchQuery = String.format("select distinct %s, (select sum(%s) from %s where %s = a.%s and %s = 'expense') from %s as a order by (%s);",
                                             CATEGORY_ID, TRANSACTION_AMOUNT, TABLE_TRANSACTION, CATEGORY_ID, CATEGORY_ID, TRANSACTION_TYPE,
