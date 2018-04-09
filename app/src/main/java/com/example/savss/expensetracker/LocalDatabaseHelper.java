@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
@@ -409,6 +410,28 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
                                             USERS_PASSWORD, password, USERS_ID, userID);
         sqLiteDatabase.execSQL(updateQuery);
         sqLiteDatabase.close();
+    }
+
+    public void getCategoryWiseExpenses() {
+        ArrayList<Float> expenses = new ArrayList<>();
+        String fetchQuery = String.format("select distinct %s, (select sum(%s) from %s where %s = a.%s and %s = 'expense') from %s as a order by (%s);",
+                                            CATEGORY_ID, TRANSACTION_AMOUNT, TABLE_TRANSACTION, CATEGORY_ID, CATEGORY_ID, TRANSACTION_TYPE,
+                                            TABLE_TRANSACTION, CATEGORY_ID);
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+
+            if (c.getString(1).length() == 0) {
+                expenses.add((float) 0.0);
+            }
+            else {
+                expenses.add(Float.parseFloat(c.getString(1)));
+            }
+            c.moveToNext();
+        }
+
+
     }
 
 }
