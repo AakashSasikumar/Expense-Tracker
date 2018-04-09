@@ -233,9 +233,9 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
             }
         }
 
-        for (int e:expenses) {
+        /*for (int e:expenses) {
             System.out.println(e);
-        }
+        }*/
         return expenses;
     }
 
@@ -260,6 +260,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
         ArrayList<String> categories = getAllCategories();
         UserData.categories = categories;
+        getCategoryWiseExpenses();
         sqLiteDatabase.close();
     }
     @Override
@@ -430,6 +431,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
             }
             c.moveToNext();
         }
+        sqLiteDatabase.close();
         return  expenses;
 
     }
