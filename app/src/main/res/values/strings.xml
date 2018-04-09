@@ -8,6 +8,8 @@
     <string name="userNameEditTextHint">YOUR NAME</string>
     <string name="emailAddressEditTextHint">EMAIL ID</string>
     <string name="phoneNumberEditTextHint">PHONE NUMBER</string>
+    <string name="addressEditTextHint">ADDRESS</string>
+    <string name="dobEditTextHint">DATE OF BIRTH</string>
     <string name="emptyIDError">Enter ID</string>
     <string name="emptyPasswordError">Enter Password</string>
     <string name="emptyYourNameError">Enter your name</string>
@@ -22,4 +24,8 @@
     <string name="title_settings">Settings</string>
     <string name="userAlreadyExistError">An account with this phone number already exist</string>
     <string name="userSuccessfullyAdded">Account successfully created</string>
+    <string name="tab_text_1">Profile Management</string>
+    <string name="tab_text_2">App Settings</string>
+    <string name="newCategory">New Category</string>
+    <string name="newBudget">Budget</string>
 </resources>

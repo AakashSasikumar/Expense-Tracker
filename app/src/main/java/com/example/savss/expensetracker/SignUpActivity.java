@@ -120,6 +120,10 @@ public class SignUpActivity extends AppCompatActivity {
 
 //                startActivity(toDashboard);
 //                displayTosat(R.string.userSuccessfullyAdded);
+                Intent toDashboard = new Intent(this, HomeActivity.class);
+                UserData.userID = localDatabaseHelper.getUserID(emailAddress.getText().toString());
+                startActivity(toDashboard);
+                displayTosat(R.string.userSuccessfullyAdded);
             }
             else {
                 displayTosat(R.string.userAlreadyExistError);
