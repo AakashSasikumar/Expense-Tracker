@@ -86,7 +86,7 @@ public class SignUpActivity extends AppCompatActivity {
                         hashMap.put("password",password.getText().toString());
                         firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
                         String uid=firebaseUser.getUid();
-                        firebaseFirestore.collection("users").document(uid).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        firebaseFirestore.collection("users").document(phoneNumber.getText().toString()).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
