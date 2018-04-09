@@ -423,7 +423,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         c.moveToFirst();
         while (!c.isAfterLast()) {
 
-            if (c.getString(1).length() == 0) {
+            if (c.getString(1) == null) {
                 expenses.add((float) 0.0);
             }
             else {
