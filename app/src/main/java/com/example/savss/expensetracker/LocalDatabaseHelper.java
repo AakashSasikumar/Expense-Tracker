@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
@@ -59,9 +60,9 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(categoryTableCreationQuery);
         sqLiteDatabase.execSQL(transactionTableCreationQuery);
 
-        try {
-            sqLiteDatabase.execSQL("insert into categories values (1, 'cat1', 5000);");
-            sqLiteDatabase.execSQL("insert into categories values (2, 'cat2', 10000);");
+        /*try {
+            sqLiteDatabase.execSQL("insert into categories values (1, 'Personal', 5000);");
+            sqLiteDatabase.execSQL("insert into categories values (2, 'Medical', 10000);");
             sqLiteDatabase.execSQL("insert into transactions values(1, 1, '2018-02-22', 1, 'expense', 1000, 'another');");
             sqLiteDatabase.execSQL("insert into transactions values(2, 1, '2018-02-22', 1, 'income', 1000, 'another');");
             sqLiteDatabase.execSQL("insert into transactions values(3, 1, '2018-02-22', 1, 'expense', 2000, 'asdf');");
@@ -69,7 +70,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         }
         catch(Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public boolean tryAddUser(String name, String email, String phoneNumber, String password) {
@@ -212,8 +213,8 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         return pieChartExpenseData;
     }
 
-    public ArrayList<String> getLastMonthSpending(int userID) {
-        ArrayList<String> expenses = new ArrayList<>();
+    public ArrayList<Integer> getLastMonthSpending(int userID) {
+        ArrayList<Integer> expenses = new ArrayList<>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -1);
@@ -225,16 +226,16 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         for (String category: allCategories) {
             if (categoryExpenseMap.containsKey((String) category)) {
                 String expense = categoryExpenseMap.get((String) category);
-                expenses.add(expense);
+                expenses.add(Integer.parseInt(expense));
             }
             else {
-                expenses.add("0");
+                expenses.add(Integer.parseInt("0"));
             }
         }
 
-        for (String e:expenses) {
+        /*for (int e:expenses) {
             System.out.println(e);
-        }
+        }*/
         return expenses;
     }
 
@@ -259,6 +260,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
 
         ArrayList<String> categories = getAllCategories();
         UserData.categories = categories;
+        getCategoryWiseExpenses();
         sqLiteDatabase.close();
     }
     @Override
@@ -409,6 +411,29 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
                                             USERS_PASSWORD, password, USERS_ID, userID);
         sqLiteDatabase.execSQL(updateQuery);
         sqLiteDatabase.close();
+    }
+
+    public ArrayList<Float> getCategoryWiseExpenses() {
+        ArrayList<Float> expenses = new ArrayList<>();
+        String fetchQuery = String.format("select distinct %s, (select sum(%s) from %s where %s = a.%s and %s = 'expense') from %s as a order by (%s);",
+                                            CATEGORY_ID, TRANSACTION_AMOUNT, TABLE_TRANSACTION, CATEGORY_ID, CATEGORY_ID, TRANSACTION_TYPE,
+                                            TABLE_TRANSACTION, CATEGORY_ID);
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        Cursor c = sqLiteDatabase.rawQuery(fetchQuery, null);
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+
+            if (c.getString(1) == null) {
+                expenses.add((float) 0.0);
+            }
+            else {
+                expenses.add(Float.parseFloat(c.getString(1)));
+            }
+            c.moveToNext();
+        }
+        sqLiteDatabase.close();
+        return  expenses;
+
     }
 
 }

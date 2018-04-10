@@ -87,6 +87,7 @@ public class AppSettings extends Fragment {
         LocalDatabaseHelper DB = new LocalDatabaseHelper(getActivity(), null, null, 1);
         ArrayList<String> categories = DB.getAllCategories();
         ArrayList<Integer> budgets = DB.getAllCategoryBudgets();
+        ArrayList<Float> expenses = DB.getCategoryWiseExpenses();
 
         int count=categories.size(); //has to be retrieved dynamically
         String rv[]=new String[count];
@@ -126,8 +127,14 @@ public class AppSettings extends Fragment {
                 {
                     rowentry[0]=categories.get(i-1);
                     rowentry[1]=""+budgets.get(i-1);
+                    float spent;
+                    if(i-1<expenses.size())
+                        spent = expenses.get(i-1)/budgets.get(i-1);
+                    else
+                        spent= (float) 0.0;
+                    rowentry[2]=spent+"%";
                 }
-                rowentry[2]="0%";
+                //rowentry[2]="0%";
 
                 //Log.d ("TAG", "-___>"+id);
                 if (i ==0 && j==0){
