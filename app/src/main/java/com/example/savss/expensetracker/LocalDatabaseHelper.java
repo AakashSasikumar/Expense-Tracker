@@ -60,9 +60,9 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(categoryTableCreationQuery);
         sqLiteDatabase.execSQL(transactionTableCreationQuery);
 
-        try {
-            sqLiteDatabase.execSQL("insert into categories values (1, 'cat1', 5000);");
-            sqLiteDatabase.execSQL("insert into categories values (2, 'cat2', 10000);");
+        /*try {
+            sqLiteDatabase.execSQL("insert into categories values (1, 'Personal', 5000);");
+            sqLiteDatabase.execSQL("insert into categories values (2, 'Medical', 10000);");
             sqLiteDatabase.execSQL("insert into transactions values(1, 1, '2018-02-22', 1, 'expense', 1000, 'another');");
             sqLiteDatabase.execSQL("insert into transactions values(2, 1, '2018-02-22', 1, 'income', 1000, 'another');");
             sqLiteDatabase.execSQL("insert into transactions values(3, 1, '2018-02-22', 1, 'expense', 2000, 'asdf');");
@@ -70,7 +70,7 @@ public class LocalDatabaseHelper extends SQLiteOpenHelper {
         }
         catch(Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public boolean tryAddUser(String name, String email, String phoneNumber, String password) {

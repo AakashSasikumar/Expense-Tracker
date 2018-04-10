@@ -158,24 +158,27 @@ public class AddTransactionFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            if (valueOfTransactionType.equals("expense")) {
-                notifyIfExceededLimit(categorySpinner.getSelectedItem().toString(), Float.parseFloat(value.getText().toString()));
-            }
+            String message = "";
+
+            /*if (valueOfTransactionType.equals("expense")) {
+                message = notifyIfExceededLimit(categorySpinner.getSelectedItem().toString(), Float.parseFloat(value.getText().toString()));
+            }*/
 
             localDatabaseHelper.addTransaction(String.valueOf(UserData.userID), UserData.categories.indexOf(categorySpinner.getSelectedItem().toString()) + 1, valueOfTransactionType, value.getText().toString(), description.getText().toString(), transactionDate);
 
             clear.callOnClick();
-            displayToast("Transaction Added Successfully");
+            displayToast(message + "Transaction Added Successfully");
         }
     };
 
-    private void notifyIfExceededLimit(String category, float amount) {
+    private String notifyIfExceededLimit(String category, float amount) {
         ArrayList<String> categories = localDatabaseHelper.getAllCategories();
         ArrayList<Integer> budgets = localDatabaseHelper.getAllCategoryBudgets();
         ArrayList<Float> expense = localDatabaseHelper.getCategoryWiseExpenses();
 
         int categoryIndex = categories.indexOf(category);
         float finalAmount = expense.get(categoryIndex) + amount;
+        String message = "";
 
         if (budgets.get(categoryIndex) < (expense.get(categoryIndex) + amount)) {
             /*String NOTIFICATION_CHANNEL_ID = "Limit-Alert";
@@ -201,8 +204,10 @@ public class AddTransactionFragment extends Fragment {
             notificationManager.notify(1, notificationBuilder.build());
             System.out.println("notify");*/
 
-            displayToast("You have exceeded your budget " + budgets.get(categoryIndex) + " for " + category + ". Your current expenditure is " + finalAmount + ".");
+            message = "You have exceeded your budget " + budgets.get(categoryIndex) + " for " + category + ". Your current expenditure is " + finalAmount + ".\n";
         }
+
+        return message;
     }
 
     private View.OnClickListener dateOnClickListener = new View.OnClickListener() {
