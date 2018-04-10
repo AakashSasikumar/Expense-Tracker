@@ -78,6 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
 //                        Intent intent = new Intent(SignUpActivity.this,HomeActivity.class);
 //                        startActivity(intent);
 //                        finish();
+                        UserData.userID = localDatabaseHelper.getUserID(emailAddress.getText().toString());
                         HashMap<String,Object> hashMap=new HashMap<>();
                         hashMap.put("name",yourName.getText().toString().trim());
                         hashMap.put("email",emailAddress.getText().toString());
@@ -90,8 +91,8 @@ public class SignUpActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
 
                                 if (task.isSuccessful()){
+
                                     Intent intent=new Intent(SignUpActivity.this,HomeActivity.class);
-                                    intent.putExtra(LocalDatabaseHelper.COLUMN_ID, localDatabaseHelper.getUserID(emailAddress.getText().toString()));
                                     startActivity(intent);
                                     Toast.makeText(SignUpActivity.this, "success", Toast.LENGTH_SHORT).show();
                                     finish();
@@ -117,13 +118,9 @@ public class SignUpActivity extends AppCompatActivity {
             });
 
 //                Intent toDashboard = new Intent(this, HomeActivity.class);
-
+//                toDashboard.putExtra(LocalDatabaseHelper.COLUMN_ID, localDatabaseHelper.getUserID(emailAddress.getText().toString()));
 //                startActivity(toDashboard);
 //                displayTosat(R.string.userSuccessfullyAdded);
-                Intent toDashboard = new Intent(this, HomeActivity.class);
-                UserData.userID = localDatabaseHelper.getUserID(emailAddress.getText().toString());
-                startActivity(toDashboard);
-                displayTosat(R.string.userSuccessfullyAdded);
             }
             else {
                 displayTosat(R.string.userAlreadyExistError);
