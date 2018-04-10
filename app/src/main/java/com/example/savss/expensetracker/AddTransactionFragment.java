@@ -2,14 +2,21 @@ package com.example.savss.expensetracker;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -151,12 +158,52 @@ public class AddTransactionFragment extends Fragment {
                 e.printStackTrace();
             }
 
+            if (valueOfTransactionType.equals("expense")) {
+                notifyIfExceededLimit(categorySpinner.getSelectedItem().toString(), Float.parseFloat(value.getText().toString()));
+            }
+
             localDatabaseHelper.addTransaction(String.valueOf(UserData.userID), UserData.categories.indexOf(categorySpinner.getSelectedItem().toString()) + 1, valueOfTransactionType, value.getText().toString(), description.getText().toString(), transactionDate);
 
             clear.callOnClick();
             displayToast("Transaction Added Successfully");
         }
     };
+
+    private void notifyIfExceededLimit(String category, float amount) {
+        ArrayList<String> categories = localDatabaseHelper.getAllCategories();
+        ArrayList<Integer> budgets = localDatabaseHelper.getAllCategoryBudgets();
+        ArrayList<Float> expense = localDatabaseHelper.getCategoryWiseExpenses();
+
+        int categoryIndex = categories.indexOf(category);
+        float finalAmount = expense.get(categoryIndex) + amount;
+
+        if (budgets.get(categoryIndex) < (expense.get(categoryIndex) + amount)) {
+            /*String NOTIFICATION_CHANNEL_ID = "Limit-Alert";
+
+            NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+                        "Channel human readable title",
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(channel);
+            }
+
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(addTransactionView.getContext(), NOTIFICATION_CHANNEL_ID);
+            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher_round)
+                    .setContentTitle("Category " + category + " Exceeded Limit")
+                    .setContentText("You have exceeded your budget " + budgets.get(categoryIndex) + ". Your current expenditure is " + finalAmount + ".");
+
+            Intent notificationIntent = new Intent(getContext(), HomeActivity.class);
+            PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            notificationBuilder.setContentIntent(contentIntent);
+
+            notificationManager.notify(1, notificationBuilder.build());
+            System.out.println("notify");*/
+
+            displayToast("You have exceeded your budget " + budgets.get(categoryIndex) + " for " + category + ". Your current expenditure is " + finalAmount + ".");
+        }
+    }
 
     private View.OnClickListener dateOnClickListener = new View.OnClickListener() {
         @Override
